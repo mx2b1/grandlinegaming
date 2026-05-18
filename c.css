@@ -398,3 +398,67 @@
             color: #888;
             border-top: 1px solid rgba(212, 175, 55, 0.15);
         }
+                           @media (max-width: 768px) {
+            
+                               nav {
+                                   padding: 12px 5%;
+                                   flex-direction: row;
+                                   justify-content: space-between;
+                                   align-items: center;
+                               }
+            
+                               .logo {
+                                   font-size: 18px;
+                               }
+            
+                               nav ul {
+                                   display: flex;
+                                   flex-direction: row;
+                                   /* يخليهم جنب بعض */
+                                   gap: 15px;
+                                   padding: 0;
+                               }
+            
+                               nav ul li a {
+                                   font-size: 14px;
+                               }
+            
+                               /* HERO */
+                               .hero h1 {
+                                   font-size: 38px;
+                               }
+            
+                               .hero p {
+                                   font-size: 16px;
+                               }
+            
+                               /* CARDS */
+                               .cards {
+                                   grid-template-columns: 1fr;
+                               }
+            
+                               /* CART */
+                               .cart-content {
+                                   flex-direction: column;
+                               }
+            
+                               .cart-card {
+                                   flex-direction: column;
+                                   text-align: center;
+                               }
+            
+                               .cart-card .game-img {
+                                   width: 100%;
+                                   max-width: 220px;
+                               }
+            
+                               .empty-cart {
+                                   width: 90%;
+                                   padding: 25px;
+                               }
+            
+                               .cart-page h1 {
+                                   width: 90%;
+                                   font-size: 22px;
+                               }
+                           }
