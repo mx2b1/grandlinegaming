@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="ChatGPT Image 17 مايو 2026، 11_18_08 ص.png" type="image/x-icon" rel="icon">
+    <meta name="keywords" content="Grandline Gaming,GRANDLINE,Grandline,randline gaming ">
+    <meta name="Mohammed" content="Grandline Gaming">
+    <meta name="description" content="Grandline Gaming - Buy Games, Accounts and Gift Cards">
+    <title>Grandline Gaming</title>
+    <link rel="stylesheet" href="c.css">
+</head>
+
+<body>
+
+    <nav>
+
+        <div class="logo">
+            GRANDLINE GAMING
+        </div>
+
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="games.html">Games</a></li>
+            <li><a href="cart.html">Cart</a></li>
+            <li><a href="cn.html">Contact us</a></li>
+        </ul>
+
+    </nav>
+
+    <!------------------------------------------------------------->
+
+    <div class="cart-page">
+
+        <h1>Your Cart</h1>
+
+        <div id="cartContainer"></div>
+
+    </div>
+
+    <!------------------------------------------------------------->
+
+    <script>
+
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        let container = document.getElementById("cartContainer");
+
+        if (cart.length === 0) {
+
+            container.innerHTML = `
+
+            <div class="empty-cart">
+
+                <h2>Your cart is empty</h2>
+
+                <p>
+                    Looks like you haven't added any games yet.
+                </p>
+
+                <a href="games.html" class="browse-btn">
+                    Browse Games
+                </a>
+
+            </div>
+
+            `;
+
+        } else {
+
+            let total = 0;
+
+            let gamesHTML = "";
+
+            cart.forEach((game, index) => {
+
+                total += Number(game.price.replace("$", ""));
+
+                gamesHTML += `
+
+                <div class="cart-card">
+
+                    <img src="${game.image}" class="game-img">
+
+                    <div class="game-info">
+                        <h2>${game.name}</h2>
+                        <p class="price">${game.price}</p>
+                    </div>
+
+                    <button class="remove-btn"
+                    onclick="removeGame(${index})">
+                        Remove
+                    </button>
+
+                </div>
+
+                `;
+            });
+
+            container.innerHTML = `
+
+            <div class="cart-content">
+
+                <div class="cart-items">
+
+                    ${gamesHTML}
+
+                </div>
+
+                <div class="summary-box">
+
+                    <h2>Order Summary</h2>
+
+                    <div class="summary-line">
+                        <span>Total</span>
+                        <span>$${total}</span>
+                    </div>
+
+                    <button class="checkout-btn">
+                        Checkout
+                    </button>
+
+                </div>
+
+            </div>
+
+            `;
+        }
+
+        function removeGame(index) {
+
+            cart.splice(index, 1);
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+
+            location.reload();
+        }
+
+    </script>
+    <br>
+    <br>
+    <br><br><br><br><br><br>
+    <br><br><br><br>
+    
+<footer>
+    © 2026 Grandline Gaming — All Rights Reserved
+</footer>
+
+</body>
+
+</html>
