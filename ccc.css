@@ -70,9 +70,9 @@
 
       background:
           linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-          url("newwww.png");
+          url("ChatGPT\ Image\ 17\ مايو\ 2026،\ 11_18_08\ ص.png");
 
-      background-size: 100%;
+      background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
 
@@ -156,7 +156,7 @@
 
   .game-img {
       width: 100%;
-      height: 230px;
+      height: 220px;
       object-fit: cover;
   }
 
@@ -225,7 +225,6 @@
   }
 
   .cart-page h1 {
-    color: #d4af37;
       text-align: center;
       font-size: 40px;
       width: 50%;
@@ -253,13 +252,11 @@
   }
 
   .empty-cart h2 {
-    color: #d4af37;
       font-size: 35px;
       margin-bottom: 20px;
   }
 
   .empty-cart p {
-    color: #f5d061;
       font-size: 18px;
       margin-bottom: 30px;
   }
@@ -317,7 +314,6 @@
 
   .cart-card .game-img {
       width: 180px;
-      height: 100%;
       border-radius: 10px;
   }
 
@@ -542,141 +538,3 @@
   .contact-box button:hover {
       transform: scale(1.03);
   }
-  /* ===================== */
-  /* CHECKOUT PAGE */
-  /* ===================== */
-
-  .checkout-page {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 80px 20px;
-  }
-
-  .checkout-card {
-      width: 550px;
-      background: #111;
-      border: 2px solid goldenrod;
-      border-radius: 20px;
-      padding: 40px;
-      box-shadow: 0 0 25px rgba(218, 165, 32, 0.2);
-  }
-
-  .checkout-card h1 {
-      text-align: center;
-      color: goldenrod;
-      margin-bottom: 15px;
-  }
-
-  .checkout-text {
-      text-align: center;
-      color: goldenrod;
-      margin-bottom: 30px;
-  }
-
-  .checkout-card input {
-      width: 100%;
-      padding: 15px;
-      margin-bottom: 20px;
-      border: 2px solid goldenrod;
-      border-radius: 10px;
-      background: black;
-      color: goldenrod;
-      box-sizing: border-box;
-  }
-
-  .checkout-card input::placeholder {
-      color: #b8860b;
-  }
-
-  .card-row {
-      display: flex;
-      gap: 15px;
-  }
-
-  .payment-summary {
-      border: 2px solid goldenrod;
-      border-radius: 15px;
-      padding: 20px;
-      margin: 20px 0;
-      color: goldenrod;
-  }
-
-  .payment-summary h3 {
-      margin-bottom: 15px;
-  }
-
-  .payment-summary span {
-      font-size: 28px;
-      font-weight: bold;
-  }
-
-  .checkout-card button {
-      width: 100%;
-      padding: 15px;
-      background: goldenrod;
-      color: black;
-      border: none;
-      border-radius: 10px;
-      font-size: 18px;
-      cursor: pointer;
-      transition: .3s;
-  }
-
-  .checkout-card button:hover {
-      transform: scale(1.03);
-  }
-
-  
-
-  .checkout-btn {
-      display: block;
-      text-align: center;
-      text-decoration: none;
-  }
-  /* SEARCH */
-
-  .search-box {
-      text-align: center;
-      margin-bottom: 40px;
-  }
-
-  .search-box input {
-      width: 500px;
-      max-width: 90%;
-      padding: 18px;
-      border: 2px solid goldenrod;
-      border-radius: 15px;
-      background-color: #111;
-      color: goldenrod;
-      font-size: 18px;
-      outline: none;
-  }
-
-  .search-box input::placeholder {
-      color: #b8860b;
-  }
-
-  .search-box input:focus {
-      box-shadow: 0 0 15px rgba(218, 165, 32, 0.3);
-  }
-  /* Animation for game images */
-
-  .game-img {
-      animation: showImage 1s ease;
-  }
-
-  @keyframes showImage {
-
-      from {
-          opacity: 0;
-          transform: scale(0.8) translateY(30px);
-      }
-
-      to {
-          opacity: 1;
-          transform: scale(1) translateY(0);
-      }
-  }
-
-

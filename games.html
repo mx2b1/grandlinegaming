@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link href="ChatGPT Image 17 مايو 2026، 11_18_08 ص.png" type="image/x-icon" rel="icon">
+    <link href="newwww.png" type="image/x-icon" rel="icon">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta name="keywords" content="Grandline Gaming,GRANDLINE,Grandline,randline gaming ">
     <meta name="author" content="Mohammed">
@@ -26,6 +26,37 @@
 
 </script>
 
+<script>
+
+    function searchGames() {
+
+        let input =
+            document.getElementById("searchInput")
+                .value.toLowerCase();
+
+        let cards =
+            document.querySelectorAll(".card");
+
+        cards.forEach(card => {
+
+            let gameName =
+                card.querySelector("h2")
+                    .innerText.toLowerCase();
+
+            if (gameName.includes(input)) {
+
+                card.style.display = "";
+
+            } else {
+
+                card.style.display = "none";
+            }
+        });
+    }
+
+</script>
+
+
 <body>
     
     <nav>
@@ -38,6 +69,7 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="games.html">Games</a></li>
             <li><a href="cart.html">Cart</a></li>
+            <li><a href="checkout.html">Card</a></li>
             <li><a href="cn.html">Contact us</a></li>
         </ul>
     
@@ -45,13 +77,16 @@
     <!------------------------------------------------------------->
 
     <!------------------------------------------------------------->
+
 <section id="t1" class="section">
 
-    <h1 class="section-title">
-        The Most Famous Games
-    </h1>
+    <div class="search-box">
+    
+        <input type="text" id="searchInput" placeholder="Search for a game..." onkeyup="searchGames()">
+    
+    </div>
 
-    <div class="cards">
+    <di class="cards">
 
         <!-- -->
 
@@ -63,12 +98,7 @@
 
                 <h2>Red Dead Redemption II</h2>
 
-                <p>
-                    Red Dead Redemption 2 is an open-world action-adventure game set in the Wild West. Play as Arthur
-                    Morgan, an outlaw
-                    fighting to survive with his gang while exploring a massive world full of action, missions, and
-                    stunning visuals.
-                </p>
+                
 
                 <div class="price">$60</div>
 
@@ -90,12 +120,7 @@
 
                 <h2>Resident Evil Requiem</h2>
 
-                <p>
-                    Resident Evil Requiem is a survival horror game filled with terrifying creatures, dark mysteries,
-                    and intense action.
-                    Explore dangerous locations, solve puzzles, and fight to survive in a world consumed by fear and
-                    chaos.
-                </p>
+           
 
                 <div class="price">$52</div>
 
@@ -118,13 +143,7 @@
 
                 <h2>Hollow Knight</h2>
 
-                <p>
-                    Hollow Knight is a dark and atmospheric action-adventure game set in the ruined kingdom of
-                    Hallownest. Explore
-                    mysterious caves, battle powerful enemies, and uncover hidden secrets with fast-paced combat and
-                    beautiful hand-drawn
-                    visuals.
-                </p>
+              
 
                 <div class="price">$6</div>
 
@@ -147,13 +166,7 @@
 
                 <h2>Mafia: The Old Country</h2>
 
-                <p>
-                    Mafia: The Old Country is a story-driven action game set in the brutal world of organized crime in
-                    early 1900s Sicily.
-                    Rise through the ranks of the mafia, experience intense gunfights, and uncover a dark tale of
-                    loyalty, power, and
-                    betrayal
-                </p>
+       
 
                 <div class="price">$52</div>
 
@@ -174,16 +187,11 @@
 
                 <h2>Elding ring</h2>
 
-                <p>
-                    Elden Ring is an open-world action RPG developed by FromSoftware and directed by Hidetaka Miyazaki,
-                    with
-                    worldbuilding
-                    contributions from George R. R. Martin
-                </p>
+               
 
-                <div class="price">$60</div>
+                <div class="price">$34</div>
 
-                <a href="cart.html" class="buy-btn" onclick="addToCart('Elden Ring','$60','2651915.webp')">
+                <a href="cart.html" class="buy-btn" onclick="addToCart('Elden Ring','$34','2651915.webp')">
                     Buy Now
                 </a>
 
@@ -199,11 +207,7 @@
 
                 <h2>FC26</h2>
 
-                <p>
-                    EA Sports FC is a popular football video game that lets players build teams, compete in matches, and
-                    enjoy realistic
-                    soccer gameplay with famous clubs, leagues, and players from around the world.
-                </p>
+                
 
                 <div class="price">$40</div>
 
@@ -223,11 +227,6 @@
 
                 <h2>Call of duty </h2>
 
-                <p>
-                    Call of Duty is a fast-paced first-person shooter game focused on military combat, action-packed
-                    missions, and online
-                    multiplayer battles
-                </p>
 
                 <div class="price">$60</div>
 
@@ -239,7 +238,7 @@
 
         </div>
 
-        <!-- Counter Strike -->
+ <!-- GTA -->
 
         <div class="card">
 
@@ -249,13 +248,7 @@
 
                 <h2>Grand Theft Auto V Enhanced</h2>
 
-                <p>
-                    Grand Theft Auto V Enhanced is an open-world action game where players explore the massive city of
-                    Los Santos through
-                    the lives of three criminals. Experience high-speed chases, intense missions, online multiplayer,
-                    and enhanced graphics
-                    with improved performance and visuals..
-                </p>
+              
 
                 <div class="price">$30</div>
 
@@ -269,17 +262,541 @@
 
 
         </div>
-        <div>
-            <a href="games.html" class="more">
-                More...
-            </a>
-        </div>
 
+<!-----------one piece---------------> 
+  <div class="card">
 
+    <img src="capsule_616x353.jpg" class="game-img">
 
+    <div class="card-content">
 
+        <h2>ONE PIECE: PIRATE WARRIORS 4</h2>
+
+  
+
+        <div class="price">$26</div>
+
+        <a href="cart.html" class="buy-btn"
+            onclick="addToCart('ONE PIECE: PIRATE WARRIORS 4','$26','capsule_616x353.jpg')">
+            Buy Now
+        </a>
 
     </div>
+
+
+
+  </div>
+<!------------------------------->
+
+<!-----------naruto--------------->
+<div class="card">
+
+    <img src="nar.jpg" class="game-img">
+
+    <div class="card-content">
+
+        <h2>NARUTO SHIPPUDEN: Ultimate Ninja STORM 4</h2>
+
+      
+
+        <div class="price">$12</div>
+
+        <a href="cart.html" class="buy-btn" onclick="addToCart('NARUTO SHIPPUDEN: Ultimate Ninja STORM 4','$12','nar.jpg')">
+            Buy Now
+        </a>
+
+    </div>
+
+
+
+</div>
+<!------------------------------->
+
+<!-----------DRAGON BALL: Sparking! ZERO--------------->
+<div class="card">
+
+    <img src="thumb-1920-1379692.jpg" class="game-img">
+
+    <div class="card-content">
+
+        <h2>DRAGON BALL: Sparking! ZERO</h2>
+
+
+        <div class="price">$64</div>
+
+        <a href="cart.html" class="buy-btn" onclick="addToCart('DRAGON BALL: Sparking! ZERO','$64','thumb-1920-1379692.jpg')">
+            Buy Now
+        </a>
+
+    </div>
+
+
+
+</div>
+<!------------------------------->
+
+<!---HITMAN World of Assassination----------------------->
+
+<div class="card">
+
+    <img src="EGS_HITMANWorldofAssassinationDeluxeEdition_IOInteractiveAS_Bundles_S1_2560x1440-eaff0f09fcf41fb9c1092492e20339e7.jpg" class="game-img">
+
+    <div class="card-content">
+
+        <h2>HITMAN World of Assassination</h2>
+
+
+        <div class="price">$14</div>
+
+        <a href="cart.html" class="buy-btn" onclick="addToCart('HITMAN World of Assassination','$14','EGS_HITMANWorldofAssassinationDeluxeEdition_IOInteractiveAS_Bundles_S1_2560x1440-eaff0f09fcf41fb9c1092492e20339e7.jpg')">
+            Buy Now
+        </a>
+
+    </div>
+
+
+
+</div>
+<!-------------batman------------------>
+<div class="card">
+
+    <img src="batr.webp" class="game-img">
+
+    <div class="card-content">
+
+        <h2>Batman: Arkham Collection</h2>
+
+
+
+        <div class="price">$59</div>
+
+        <a href="cart.html" class="buy-btn" onclick="addToCart('Batman: Arkham Collection','$59','batr.webp')">
+            Buy Now
+        </a>
+
+    </div>
+
+
+
+</div>
+<!----------------Spider-Man Remastered--------------------------->
+<div class="card">
+
+    <img src="spider.avif" class="game-img">
+
+    <div class="card-content">
+
+        <h2>Spider-Man Remastered</h2>
+
+
+
+        <div class="price">$59</div>
+
+        <a href="cart.html" class="buy-btn" onclick="addToCart('Spider-Man Remastered','$59','spider.avif')">
+            Buy Now
+        </a>
+
+    </div>
+
+
+
+</div>
+<!--------------------------Assassin's Creed Black Flag Resynced------------------------------------------------------------------->
+<div class="card">
+
+    <img src="ACBFR_KeyArt_StandardEdition_960x540_23.04.26_615PMCEST.avif" class="game-img">
+
+    <div class="card-content">
+
+        <h2>Assassin's Creed Black Flag Resynced</h2>
+
+
+
+        <div class="price">$47</div>
+
+        <a href="cart.html" class="buy-btn" onclick="addToCart('Assassin Creed Black Flag Resynced','$47','ACBFR_KeyArt_StandardEdition_960x540_23.04.26_615PMCEST.avif')">
+            Buy Now
+        </a>
+
+    </div>
+
+
+
+</div>
+<!------------------------Dying Light: The Beast-------------------------------------------------------------------->
+<div class="card">
+
+    <img src="Dying-Light_-The-Beast-key-visual-ENG-ea4991b13af607f23ee6.jpg" class="game-img">
+
+    <div class="card-content">
+
+        <h2>Dying Light: The Beast</h2>
+
+
+
+        <div class="price">$56</div>
+
+        <a href="cart.html" class="buy-btn" onclick="addToCart('Dying Light: The Beast','$56','Dying-Light_-The-Beast-key-visual-ENG-ea4991b13af607f23ee6.jpg')">
+            Buy Now
+        </a>
+
+    </div>
+
+
+
+</div>
+<!-------------------------Devil May Cry HD Collection----------------------------------------------------->
+<div class="card">
+
+    <img src="DevilMayCryHDCollection-1024x768.jpg" class="game-img">
+
+    <div class="card-content">
+
+        <h2>Devil May Cry HD Collection</h2>
+
+
+
+        <div class="price">$22</div>
+
+        <a href="cart.html" class="buy-btn" onclick="addToCart('Devil May Cry HD Collection','$22','DevilMayCryHDCollection-1024x768.jpg')">
+            Buy Now
+        </a>
+
+    </div>
+
+
+
+</div>
+<!------------------------NINJA GAIDEN 4---------------------------------------------------->
+<div class="card">
+
+    <img src="NINJA GAIDEN 4.jpg" class="game-img">
+
+    <div class="card-content">
+
+        <h2>NINJA GAIDEN 4</h2>
+
+
+
+        <div class="price">$47</div>
+
+        <a href="cart.html" class="buy-btn" onclick="addToCart('NINJA GAIDEN 4','$47','NINJA GAIDEN 4.jpg')">
+            Buy Now
+        </a>
+
+    </div>
+
+
+
+</div>
+<!------------------------Resident Evil 4------------------------------------------------------->
+<div class="card">
+
+    <img src="8929582.jpg" class="game-img">
+
+    <div class="card-content">
+
+        <h2>Resident Evil 4</h2>
+
+
+
+        <div class="price">$29</div>
+
+        <a href="cart.html" class="buy-btn" onclick="addToCart('Resident Evil 4','$29','8929582.jpg')">
+            Buy Now
+        </a>
+
+    </div>
+
+
+
+</div>
+<!-------------------The Last of Us™ Part I------------------------------------------------------------->
+<div class="card">
+
+    <img src="1295037.jpg" class="game-img">
+
+    <div class="card-content">
+
+        <h2>The Last of Us™ Part I</h2>
+
+
+        <div class="price">$59</div>
+
+        <a href="cart.html" class="buy-btn" onclick="addToCart('The Last of Us™ Part I','$59','1295037.jpg')">
+            Buy Now
+        </a>
+
+    </div>
+
+
+
+</div>
+<!------------------------DEATH STRANDING 2: ON THE BEACH----------------------------------------------------->
+<div class="card">
+
+    <img src="4.jpg" class="game-img">
+
+    <div class="card-content">
+
+        <h2>DEATH STRANDING 2: ON THE BEACH</h2>
+
+
+
+        <div class="price">$70</div>
+
+        <a href="cart.html" class="buy-btn" onclick="addToCart('DEATH STRANDING 2: ON THE BEACH','$70','4.jpg')">
+            Buy Now
+        </a>
+
+    </div>
+
+
+
+</div>
+<!--------------------------God of War Ragnarök-------------------------------------------------->
+<div class="card">
+
+    <img src="god-of-war-ragnarok-store-art-01-10sep21$ru.webp" class="game-img">
+
+    <div class="card-content">
+
+        <h2>God of War Ragnarök</h2>
+
+
+
+        <div class="price">$49</div>
+
+        <a href="cart.html" class="buy-btn" onclick="addToCart('God of War Ragnarök','$49','god-of-war-ragnarok-store-art-01-10sep21$ru.webp')">
+            Buy Now
+        </a>
+
+    </div>
+
+
+
+</div>
+<!----------------Black Myth: Wukong--------------------------->
+<div class="card">
+
+    <img src="blackmyth-1723969364570.webp" class="game-img">
+
+    <div class="card-content">
+
+        <h2>Black Myth: Wukong</h2>
+
+
+
+        <div class="price">$60</div>
+
+        <a href="cart.html" class="buy-btn" onclick="addToCart('Black Myth: Wukong','$60','blackmyth-1723969364570.webp')">
+            Buy Now
+        </a>
+
+    </div>
+
+
+
+</div>
+<!-------------------Crimson Desert----------------------------->
+<div class="card">
+
+    <img src="cr.jpg" class="game-img">
+
+    <div class="card-content">
+
+        <h2>Crimson Desert</h2>
+
+
+
+        <div class="price">$71</div>
+
+        <a href="cart.html" class="buy-btn" onclick="addToCart('Crimson Desert','$71','cr.jpg')">
+            Buy Now
+        </a>
+
+    </div>
+
+
+
+</div>
+<!-----------------Cyberpunk 2077----------------------->
+<div class="card">
+
+    <img src="Untitled3177.jpg" class="game-img">
+
+    <div class="card-content">
+
+        <h2>Cyberpunk 2077</h2>
+
+
+
+        <div class="price">$45</div>
+
+        <a href="cart.html" class="buy-btn" onclick="addToCart('Cyberpunk 2077','$45','Untitled3177.jpg')">
+            Buy Now
+        </a>
+
+    </div>
+
+
+
+</div>
+<!------------------------Starfield------------------------------>
+<div class="card">
+
+    <img src="starfield_with_a_4k_trailer-23446.jpg" class="game-img">
+
+    <div class="card-content">
+
+        <h2>Starfield</h2>
+
+
+
+        <div class="price">$35</div>
+
+        <a href="cart.html" class="buy-btn" onclick="addToCart('Starfield','$35','starfield_with_a_4k_trailer-23446.jpg')">
+            Buy Now
+        </a>
+
+    </div>
+
+
+
+</div>
+<!---------------STAR WARS Jedi: Survivor™-------------------->
+<div class="card">
+
+    <img src="thRXewvyDTl9bI9h.jpg" class="game-img">
+
+    <div class="card-content">
+
+        <h2>STAR WARS Jedi: Survivor™</h2>
+
+
+
+        <div class="price">$70</div>
+
+        <a href="cart.html" class="buy-btn" onclick="addToCart('STAR WARS Jedi: Survivor™','$70','thRXewvyDTl9bI9h.jpg')">
+            Buy Now
+        </a>
+
+    </div>
+
+
+
+</div>
+<!--------------------DARK SOULS™ III------------------------->
+<div class="card">
+
+    <img src="dark-souls-3-hd-wallpaper-wallpaper-preview.jpg" class="game-img">
+
+    <div class="card-content">
+
+        <h2>DARK SOULS™ III</h2>
+
+
+
+        <div class="price">$40</div>
+
+        <a href="cart.html" class="buy-btn" onclick="addToCart('DARK SOULS™ III','$40','dark-souls-3-hd-wallpaper-wallpaper-preview.jpg')">
+            Buy Now
+        </a>
+
+    </div>
+
+
+
+</div>
+<!-------------------------BLEACH Rebirth of Souls--------------------------------------------------------->
+<div class="card">
+
+    <img src="BLEACH-ROS-Wallpaper-Article.jpg" class="game-img">
+
+    <div class="card-content">
+
+        <h2>BLEACH Rebirth of Souls</h2>
+
+
+
+        <div class="price">$39</div>
+
+        <a href="cart.html" class="buy-btn" onclick="addToCart('BLEACH Rebirth of Souls','$39','BLEACH-ROS-Wallpaper-Article.jpg')">
+            Buy Now
+        </a>
+
+    </div>
+
+
+
+</div>
+<!----------------------Solo Leveling: ARISE OVERDRIVE-------------------------------------->
+<div class="card">
+
+    <img src="solo-leveling-arise-7680x4320-24734.jpg" class="game-img">
+
+    <div class="card-content">
+
+        <h2>Solo Leveling: ARISE OVERDRIVE</h2>
+
+
+
+        <div class="price">$39</div>
+
+        <a href="cart.html" class="buy-btn" onclick="addToCart('Solo Leveling: ARISE OVERDRIVE','$39','solo-leveling-arise-7680x4320-24734.jpg')">
+            Buy Now
+        </a>
+
+    </div>
+
+
+
+</div>
+<!-----Demon Slayer -Kimetsu no Yaiba- The Hinokami Chronicles 2----->
+<div class="card">
+
+    <img src="demon_slayer_the_hinokami_chronicles.webp" class="game-img">
+
+    <div class="card-content">
+
+        <h2>Demon Slayer -Kimetsu no Yaiba- The Hinokami Chronicles 2</h2>
+
+
+
+        <div class="price">$50</div>
+
+        <a href="cart.html" class="buy-btn" onclick="addToCart('Demon Slayer -Kimetsu no Yaiba- The Hinokami Chronicles 2','$50','demon_slayer_the_hinokami_chronicles.webp')">
+            Buy Now
+        </a>
+
+    </div>
+
+
+
+</div>
+<!--------TEKKEN 8-------->
+<div class="card">
+
+    <img src="tekken-8-4k-bandai-namco-entertainment-video-games-hd-wallpaper-preview.jpg" class="game-img">
+
+    <div class="card-content">
+
+        <h2>TEKKEN 8</h2>
+
+
+
+        <div class="price">$26</div>
+
+        <a href="cart.html" class="buy-btn" onclick="addToCart('TEKKEN 8','$26','tekken-8-4k-bandai-namco-entertainment-video-games-hd-wallpaper-preview.jpg')">
+            Buy Now
+        </a>
+
+    </div>
+
+
+
+</div>
+<!-------------------------->
 
 </section>
    

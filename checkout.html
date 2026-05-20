@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="newwww.png" type="image/x-icon" rel="icon">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="keywords" content="Grandline Gaming,GRANDLINE,Grandline,randline gaming ">
+    <meta name="author" content="Mohammed">
+    <meta name="description" content="Grandline Gaming - Buy Games, Accounts and Gift Cards">
+    <title>Grandline Gaming</title>
+    <link rel="stylesheet" href="c.css">
+</head>
+
+<body>
+
+    <nav>
+
+        <div class="logo">
+            GRANDLINE GAMING
+        </div>
+
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="games.html">Games</a></li>
+            <li><a href="cart.html">Cart</a></li>
+            <li><a href="checkout.html">Card</a></li>
+            <li><a href="cn.html">Contact us</a></li>
+        </ul>
+
+    </nav>
+
+    <!---------------------------------->
+
+    <div class="checkout-page">
+
+        <div class="checkout-card">
+
+            <h1>Checkout</h1>
+
+            <p class="checkout-text">
+                Complete your purchase
+            </p>
+
+            <form>
+
+                <input type="text" placeholder="Full Name" required>
+
+                <input type="email" placeholder="Email Address" required>
+
+                <input type="text" placeholder="Card Number" maxlength="16" required>
+
+                <div class="card-row">
+
+                    <input type="text" placeholder="MM/YY" required>
+
+                    <input type="password" placeholder="CVV" maxlength="3" required>
+
+                </div>
+
+                <div class="payment-summary">
+
+                    <h3>Order Summary</h3>
+
+                    <p>Total Payment</p>
+                    <span id="checkoutTotal">$0</span>
+
+                </div>
+
+                <button type="submit">
+                    Complete Payment
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        let cart =
+            JSON.parse(localStorage.getItem("cart")) || [];
+
+        let total = 0;
+
+        cart.forEach(game => {
+            total += Number(
+                game.price.replace("$", ""));
+        });
+
+        document.getElementById(
+            "checkoutTotal").innerText =
+            "$" + total;
+
+    </script>
+    <footer>
+        © 2026 Grandline Gaming — All Rights Reserved
+    </footer>
+
+</body>
+
+</html>
