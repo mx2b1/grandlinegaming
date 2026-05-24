@@ -825,13 +825,28 @@ nav ul li a:hover, nav ul li a.active {
     transition: all 0.5s ease;
 }
 
-.cart-card .game-img {
-    width: 120px;
-    height: 80px;
-    object-fit: cover;
+.cart-card .game-img-container {
+    width: 160px;
+    height: 100px;
+    flex-shrink: 0;
+    overflow: hidden;
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    background: rgba(0, 0, 0, 0.4);
 }
+
+.cart-card .game-img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition-speed) ease;
+}
+
+.cart-card:hover .game-img {
+    transform: scale(1.06);
+}
+
 
 .game-info {
     flex-grow: 1;
@@ -1341,23 +1356,21 @@ form button[type="submit"]:hover {
     padding: 0 20px;
     flex-grow: 1;
     width: 100%;
-}
-
-.contact-layout {
     display: flex;
-    gap: 40px;
-    flex-wrap: wrap;
-    align-items: stretch;
+    justify-content: center;
+    align-items: center;
 }
 
 .contact-box {
-    flex: 2 1 500px;
+    max-width: 600px;
+    width: 100%;
     background: var(--bg-glass);
     border: 1px solid var(--border-glass);
     padding: 40px;
     border-radius: var(--radius);
     box-shadow: 0 8px 35px rgba(0, 0, 0, 0.3);
 }
+
 
 .contact-box h1 {
     font-family: 'Orbitron', sans-serif;
@@ -1938,9 +1951,11 @@ footer {
         text-align: center;
     }
     
-    .cart-card .game-img {
+    .cart-card .game-img-container {
         width: 100%;
-        height: 120px;
+        max-width: 240px;
+        height: 145px;
+        margin: 0 auto 10px auto;
     }
     
     .checkout-card, .contact-box {
@@ -2034,3 +2049,167 @@ footer {
     .nav-user-name { display: none; }
     .nav-login-btn { font-size: 0.65rem; padding: 7px 14px; }
 }
+
+/* ==========================================================================
+   FLOATING BOTTOM NAV DOCK
+   ========================================================================== */
+
+/* Add bottom padding to body so content is not blocked by the dock */
+body {
+    padding-bottom: 110px !important;
+}
+
+.bottom-nav-dock {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(8, 7, 5, 0.9);
+    border: 1px solid rgba(212, 175, 55, 0.22);
+    padding: 10px 20px;
+    border-radius: 40px;
+    z-index: 2500;
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.85), 
+        0 0 30px rgba(212, 175, 55, 0.08), 
+        inset 0 1px 0 rgba(212, 175, 55, 0.12);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bottom-nav-dock:hover {
+    border-color: rgba(212, 175, 55, 0.4);
+    box-shadow: 
+        0 16px 45px rgba(0, 0, 0, 0.9), 
+        0 0 35px rgba(212, 175, 55, 0.12), 
+        inset 0 1px 0 rgba(212, 175, 55, 0.15);
+}
+
+.dock-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: #000000;
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    color: #d4af37;
+    cursor: pointer;
+}
+
+.dock-svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2.2;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Hover State */
+.dock-item:hover {
+    background: #d4af37;
+    border-color: #f6e0a4;
+    color: #000000;
+    transform: translateY(-6px);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+}
+
+.dock-item:hover .dock-svg {
+    transform: scale(1.18);
+}
+
+/* Active State */
+.dock-item.active {
+    background: #d4af37;
+    border-color: #f6e0a4;
+    color: #000000;
+    box-shadow: 0 0 22px rgba(212, 175, 55, 0.6);
+    transform: translateY(-4px);
+}
+
+.dock-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    width: 5px;
+    height: 5px;
+    background: #d4af37;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #d4af37;
+}
+
+/* Tooltip Styling */
+.dock-item::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 64px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: rgba(5, 5, 5, 0.98);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    color: #f6e0a4;
+    padding: 6px 12px;
+    font-size: 0.72rem;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+}
+
+.dock-item::after {
+    content: '';
+    position: absolute;
+    bottom: 58px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    border-width: 6px 6px 0;
+    border-style: solid;
+    border-color: rgba(212, 175, 55, 0.35) transparent transparent;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dock-item:hover::before,
+.dock-item:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Responsive: scale down the dock slightly on very small screens */
+@media (max-width: 480px) {
+    .bottom-nav-dock {
+        bottom: 16px;
+        padding: 8px 12px;
+        gap: 8px;
+    }
+    .dock-item {
+        width: 40px;
+        height: 40px;
+    }
+    .dock-icon {
+        font-size: 1.25rem;
+    }
+    .dock-item::before {
+        bottom: 56px;
+        font-size: 0.65rem;
+    }
+    .dock-item::after {
+        bottom: 50px;
+    }
+}
+

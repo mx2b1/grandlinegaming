@@ -88,18 +88,11 @@ function updateSharedNavbar() {
            </div>`
         : `<a href="login.html" class="nav-login-btn${filename === 'login.html' ? ' active' : ''}">Login</a>`;
 
+    // TOP SLEEK HEADER (removes standard link list)
     nav.innerHTML = `
         <div class="logo" onclick="location.href='index.html'">
             GRANDLINE GAMING
         </div>
-        <ul>
-            <li><a href="index.html" class="${filename === 'index.html' ? 'active' : ''}">Home</a></li>
-            <li><a href="games.html" class="${filename === 'games.html' ? 'active' : ''}">Games</a></li>
-            <li><a href="arcade.html" class="${filename === 'arcade.html' ? 'active' : ''}">Arcade</a></li>
-            <li><a href="cart.html" class="${filename === 'cart.html' ? 'active' : ''}">Cart</a></li>
-            <li><a href="checkout.html" class="${filename === 'checkout.html' ? 'active' : ''}">Card</a></li>
-            <li><a href="cn.html" class="${filename === 'cn.html' ? 'active' : ''}">Contact us</a></li>
-        </ul>
         <div style="display:flex;align-items:center;gap:14px;">
             <div class="coin-counter" title="Earn coins in the Arcade, redeem in Cart!">
                 <span class="coin-icon">🪙</span>
@@ -107,6 +100,60 @@ function updateSharedNavbar() {
             </div>
             ${authPill}
         </div>
+    `;
+
+    // BOTTOM DOCK
+    let dock = document.getElementById("bottom-nav-dock");
+    if (!dock) {
+        dock = document.createElement("div");
+        dock.id = "bottom-nav-dock";
+        dock.className = "bottom-nav-dock";
+        document.body.appendChild(dock);
+    }
+
+    dock.innerHTML = `
+        <a href="index.html" class="dock-item ${filename === 'index.html' ? 'active' : ''}" data-tooltip="Home">
+            <svg class="dock-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+        </a>
+        <a href="games.html" class="dock-item ${filename === 'games.html' ? 'active' : ''}" data-tooltip="Store">
+            <svg class="dock-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="6" y1="12" x2="10" y2="12"></line>
+                <line x1="8" y1="10" x2="8" y2="14"></line>
+                <circle cx="15.5" cy="13" r="1" fill="currentColor"></circle>
+                <circle cx="18.5" cy="11" r="1" fill="currentColor"></circle>
+                <rect x="2" y="6" width="20" height="12" rx="3"></rect>
+            </svg>
+        </a>
+        <a href="arcade.html" class="dock-item ${filename === 'arcade.html' ? 'active' : ''}" data-tooltip="Arcade">
+            <svg class="dock-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="6" r="3"></circle>
+                <line x1="12" y1="9" x2="12" y2="17"></line>
+                <path d="M6 17h12l2 4H4z"></path>
+            </svg>
+        </a>
+        <a href="cart.html" class="dock-item ${filename === 'cart.html' ? 'active' : ''}" data-tooltip="Cart">
+            <svg class="dock-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="21" r="1" fill="currentColor"></circle>
+                <circle cx="20" cy="21" r="1" fill="currentColor"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+        </a>
+        <a href="checkout.html" class="dock-item ${filename === 'checkout.html' ? 'active' : ''}" data-tooltip="Card">
+            <svg class="dock-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                <line x1="2" y1="10" x2="22" y2="10"></line>
+                <line x1="7" y1="15" x2="12" y2="15"></line>
+            </svg>
+        </a>
+        <a href="cn.html" class="dock-item ${filename === 'cn.html' ? 'active' : ''}" data-tooltip="Contact Us">
+            <svg class="dock-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+        </a>
     `;
 
     // Global listener for cross-tab or manual updates to sync GLC coin display
