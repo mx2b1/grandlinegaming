@@ -1,69 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <link href="newwww.png" type="image/x-icon" rel="icon">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta name="keywords" content="Grandline Gaming,GRANDLINE,Grandline,randline gaming ">
     <meta name="author" content="Mohammed">
     <meta name="description" content="Grandline Gaming - Buy Games, Accounts and Gift Cards">
-    <title>Grandline Gaming</title>
+    <title>Grandline Gaming - Checkout</title>
     <link rel="stylesheet" href="c.css">
+    <script src="shared.js"></script>
 </head>
-
 <body>
 
-    <nav>
-
-        <div class="logo">
-            GRANDL GAMING
-        </div>
-
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="games.html">Games</a></li>
-            <li><a href="cart.html">Cart</a></li>
-            <li><a href="checkout.html">Card</a></li>
-            <li><a href="cn.html">Contact us</a></li>
-        </ul>
-
-    </nav>
-
-    <!---------------------------------->
+    <!-- NAVBAR dynamically injected by shared.js -->
+    <nav></nav>
 
     <div class="checkout-page">
 
-        <div class="checkout-card">
+        <div class="checkout-card" id="checkoutContainer">
 
             <h1>Checkout</h1>
+            <p class="checkout-text">Complete your holographic secure purchase</p>
 
-            <p class="checkout-text">
-                Complete your purchase
-            </p>
+            <!-- Credit Card Real-Time 3D/Glass visualizer panel -->
+            <div class="card-visual-wrapper">
+                <div class="credit-card-visual" id="creditCardVisual">
+                    <!-- Front Face -->
+                    <div class="card-face card-face-front">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div class="card-chip"></div>
+                            <div class="card-network" id="cardNetwork">GRANDLINE</div>
+                        </div>
+                        <div class="card-num-display" id="cardNumDisplay">•••• •••• •••• ••••</div>
+                        <div class="card-details-row">
+                            <div>
+                                <div class="card-holder-label">Card Holder</div>
+                                <div class="card-holder-val" id="cardHolderDisplay">YOUR NAME</div>
+                            </div>
+                            <div>
+                                <div class="card-exp-label">Expires</div>
+                                <div class="card-exp-val" id="cardExpDisplay">MM/YY</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Back Face -->
+                    <div class="card-face card-face-back">
+                        <div class="card-stripe"></div>
+                        <div class="card-back-body">
+                            <div style="color:var(--text-secondary); font-size:0.6rem; text-transform:uppercase;">CVV / CVC</div>
+                            <div class="card-signature-area">
+                                <div class="card-cvv-val" id="cardCvvDisplay">•••</div>
+                            </div>
+                            <div class="card-back-instructions">This card is property of the Grandline starfleet. Authorized use only.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-            <form>
+            <!-- Checkout Form -->
+            <form id="checkoutForm" onsubmit="handleCheckoutFormSubmit(event)">
 
-                <input type="text" placeholder="Full Name" required>
+                <input type="text" id="cardNameInput" placeholder="Full Name" oninput="syncCardName(this)" required>
 
                 <input type="email" placeholder="Email Address" required>
 
-                <input type="text" placeholder="Card Number" maxlength="16" required>
+                <input type="text" id="cardNumInput" placeholder="Card Number" maxlength="19" oninput="syncCardNumber(this)" required>
 
                 <div class="card-row">
-
-                    <input type="text" placeholder="MM/YY" required>
-
-                    <input type="password" placeholder="CVV" maxlength="3" required>
-
+                    <input type="text" id="cardExpInput" placeholder="MM/YY" maxlength="5" oninput="syncCardExp(this)" required>
+                    <input type="password" id="cardCvvInput" placeholder="CVV" maxlength="4" oninput="syncCardCvv(this)" 
+                           onfocus="flipCard(true)" onblur="flipCard(false)" required>
                 </div>
 
                 <div class="payment-summary">
-
                     <h3>Order Summary</h3>
+                    
+                    <div class="summary-line" style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:8px;">
+                        <span>Subtotal</span>
+                        <span id="checkoutSubtotal">$0.00</span>
+                    </div>
+                    
+                    <div class="summary-line discount" id="checkoutDiscountLine" style="font-size:0.85rem; color:var(--neon-green); margin-bottom:8px; display:none;">
+                        <span>GLC Points Discount</span>
+                        <span id="checkoutDiscount">-$0.00</span>
+                    </div>
 
-                    <p>Total Payment</p>
-                    <span id="checkoutTotal">$0</span>
-
+                    <div style="font-weight: 700; display:flex; justify-content:space-between; align-items:center; margin-top:8px; border-top:1px solid rgba(255,255,255,0.05); padding-top:8px;">
+                        <span style="font-size: 0.9rem;">Total Payment</span>
+                        <span id="checkoutTotal" style="font-size:1.3rem;">$0.00</span>
+                    </div>
                 </div>
 
                 <button type="submit">
@@ -76,27 +101,191 @@
 
     </div>
 
+    <!-- SCRIPT FOR CARD SYNC & CHECKOUT SUCCESS -->
     <script>
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        let subtotal = 0;
+        let discount = parseFloat(sessionStorage.getItem("discountApplied")) || 0;
+        let coinsRedeemed = parseInt(sessionStorage.getItem("coinsApplied")) || 0;
 
-        let cart =
-            JSON.parse(localStorage.getItem("cart")) || [];
-
-        let total = 0;
-
+        // Calculate checkout invoice totals
         cart.forEach(game => {
-            total += Number(
-                game.price.replace("$", ""));
+            subtotal += Number(game.price.replace("$", ""));
         });
 
-        document.getElementById(
-            "checkoutTotal").innerText =
-            "$" + total;
+        let finalTotal = Math.max(0, subtotal - discount);
 
+        // Bind calculation elements in UI
+        document.getElementById("checkoutSubtotal").innerText = "$" + subtotal.toFixed(2);
+        
+        if (discount > 0) {
+            const discLine = document.getElementById("checkoutDiscountLine");
+            const discSpan = document.getElementById("checkoutDiscount");
+            discLine.style.display = "flex";
+            discSpan.innerText = `-$${discount.toFixed(2)} (${coinsRedeemed} Coins)`;
+        }
+        
+        document.getElementById("checkoutTotal").innerText = "$" + finalTotal.toFixed(2);
+
+        // 3D Visual Card rotations
+        function flipCard(isFlipped) {
+            const card = document.getElementById("creditCardVisual");
+            if (isFlipped) {
+                card.classList.add("flipped");
+            } else {
+                card.classList.remove("flipped");
+            }
+        }
+
+        // Live input listeners for mirror updates
+        function syncCardName(input) {
+            const display = document.getElementById("cardHolderDisplay");
+            display.innerText = input.value.trim().toUpperCase() || "YOUR NAME";
+        }
+
+        function syncCardNumber(input) {
+            const display = document.getElementById("cardNumDisplay");
+            const network = document.getElementById("cardNetwork");
+            
+            // Filter digits only and format with spaces every 4 indexes
+            let value = input.value.replace(/\D/g, '');
+            let formatted = "";
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) formatted += " ";
+                formatted += value[i];
+            }
+            input.value = formatted;
+            
+            display.innerText = formatted || "•••• •••• •••• ••••";
+
+            // Simple bank network visual card routing
+            if (value.startsWith("4")) {
+                network.innerText = "VISA";
+                network.style.color = "#3b82f6";
+            } else if (value.startsWith("5")) {
+                network.innerText = "MASTERCARD";
+                network.style.color = "#ef4444";
+            } else {
+                network.innerText = "GRANDLINE";
+                network.style.color = "var(--neon-cyan)";
+            }
+        }
+
+        function syncCardExp(input) {
+            const display = document.getElementById("cardExpDisplay");
+            
+            // Format automatically with slash MM/YY
+            let value = input.value.replace(/\D/g, '');
+            if (value.length > 2) {
+                input.value = value.substring(0, 2) + "/" + value.substring(2, 4);
+            } else {
+                input.value = value;
+            }
+            display.innerText = input.value || "MM/YY";
+        }
+
+        function syncCardExpSelect(input) {
+            // Unused but handles fallbacks
+        }
+
+        function syncCardCvv(input) {
+            const display = document.getElementById("cardCvvDisplay");
+            let value = input.value.replace(/\D/g, '');
+            input.value = value;
+            
+            let masked = "";
+            for (let i = 0; i < value.length; i++) masked += "•";
+            display.innerText = masked || "•••";
+        }
+
+        // Complete Checkout and Invoice logic
+        function handleCheckoutFormSubmit(event) {
+            event.preventDefault();
+
+            if (cart.length === 0) {
+                showToast("Your cart is empty!", "error");
+                return;
+            }
+
+            // Deduct coins if they were used for coupon
+            if (coinsRedeemed > 0) {
+                updateGLC(-coinsRedeemed);
+            }
+
+            // Build individual invoice items list
+            let itemsHTML = "";
+            cart.forEach(game => {
+                itemsHTML += `
+                    <div class="invoice-row">
+                        <span>${game.name}</span>
+                        <span>${game.price}</span>
+                    </div>
+                `;
+            });
+
+            const checkoutCard = document.getElementById("checkoutContainer");
+            
+            // Replace form contents with animated success screen
+            checkoutCard.innerHTML = `
+                <div class="order-success-screen">
+                    <div class="success-icon-circle">
+                        <span class="success-icon-checkmark">✓</span>
+                    </div>
+                    
+                    <h1>PAYMENT COMPLETED</h1>
+                    <p class="checkout-text" style="margin-bottom:15px;">Your holographic keys have been authorized successfully.</p>
+                    <div style="font-size:0.8rem; color:var(--neon-cyan); letter-spacing:1px; font-family:'Orbitron'; font-weight:600; text-transform:uppercase;">
+                        Order Reference: #GL-${Math.floor(100000 + Math.random() * 900000)}
+                    </div>
+
+                    <!-- Holographic invoice block -->
+                    <div class="invoice-box">
+                        <div class="invoice-title">RECEIPT SPECIFICATION</div>
+                        
+                        ${itemsHTML}
+                        
+                        ${discount > 0 ? `
+                        <div class="invoice-row" style="color: var(--neon-green); font-weight:600;">
+                            <span>GLC Points Discount</span>
+                            <span>-$${discount.toFixed(2)}</span>
+                        </div>` : ''}
+
+                        <div class="invoice-row grand-total">
+                            <span>TOTAL PAID</span>
+                            <span>$${finalTotal.toFixed(2)}</span>
+                        </div>
+                    </div>
+
+                    <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:30px;">
+                        A confirmation receipt has been dispatched to your email address. You have earned points for this purchase!
+                    </p>
+
+                    <div style="display:flex; gap:15px; justify-content:center; width:100%; flex-wrap:wrap;">
+                        <button class="btn" style="flex:1 1 180px;" onclick="location.href='index.html'">Return Home</button>
+                        <button class="btn" style="flex:1 1 180px; background:linear-gradient(135deg, var(--neon-pink), var(--neon-purple)); box-shadow:var(--glow-pink);" onclick="location.href='arcade.html'">Play Arcade</button>
+                    </div>
+                </div>
+            `;
+
+            // Clear catalog shopping cart from local storage
+            localStorage.removeItem("cart");
+            sessionStorage.removeItem("coinsApplied");
+            sessionStorage.removeItem("discountApplied");
+
+            // Award loyalty points for buying games! (10 coins for every $10 spent)
+            let awardedCoins = Math.floor(finalTotal / 10) * 10;
+            if (awardedCoins > 0) {
+                setTimeout(() => {
+                    updateGLC(awardedCoins);
+                    showToast(`Loyalty Reward! Credited +${awardedCoins} GLC to your wallet for this purchase! 🪙`);
+                }, 1000);
+            }
+        }
     </script>
+
     <footer>
         © 2026 Grandline Gaming — All Rights Reserved
     </footer>
 
 </body>
-
 </html>

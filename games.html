@@ -6,800 +6,1171 @@
     <meta name="keywords" content="Grandline Gaming,GRANDLINE,Grandline,randline gaming ">
     <meta name="author" content="Mohammed">
     <meta name="description" content="Grandline Gaming - Buy Games, Accounts and Gift Cards">
-    <title>Grandline Gaming</title>
+    <title>Grandline Gaming - Store</title>
     <link rel="stylesheet" href="c.css">
+    <script src="shared.js"></script>
 </head>
-<script>
-
-    function addToCart(name, price, image) {
-
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-        cart.push({
-            name: name,
-            price: price,
-            image: image
-        });
-
-        localStorage.setItem("cart", JSON.stringify(cart));
-    }
-
-</script>
-
-<script>
-
-    function searchGames() {
-
-        let input =
-            document.getElementById("searchInput")
-                .value.toLowerCase();
-
-        let cards =
-            document.querySelectorAll(".card");
-
-        cards.forEach(card => {
-
-            let gameName =
-                card.querySelector("h2")
-                    .innerText.toLowerCase();
-
-            if (gameName.includes(input)) {
-
-                card.style.display = "";
-
-            } else {
-
-                card.style.display = "none";
-            }
-        });
-    }
-
-</script>
-
-
 <body>
     
-    <nav>
-    
-        <div class="logo">
-            GRANDL GAMING
+    <!-- NAVBAR dynamically injected by shared.js -->
+    <nav></nav>
+
+    <section id="t1" class="section">
+
+        <!-- Search Bar with dynamic clearing and keyup -->
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search for a game..." onkeyup="filterAndSortGames()">
         </div>
-    
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="games.html">Games</a></li>
-            <li><a href="cart.html">Cart</a></li>
-            <li><a href="checkout.html">Card</a></li>
-            <li><a href="cn.html">Contact us</a></li>
-        </ul>
-    
-    </nav>
-    <!------------------------------------------------------------->
 
-    <!------------------------------------------------------------->
+        <!-- Cyberpunk Category Tabs -->
+        <div class="filter-tabs">
+            <button class="filter-tab active" onclick="setCategoryFilter('all', this)">All Games</button>
+            <button class="filter-tab" onclick="setCategoryFilter('action-rpg', this)">Action & RPG</button>
+            <button class="filter-tab" onclick="setCategoryFilter('anime', this)">Anime & Fighting</button>
+            <button class="filter-tab" onclick="setCategoryFilter('horror', this)">Horror & Survival</button>
+            <button class="filter-tab" onclick="setCategoryFilter('sports', this)">Sports & Racing</button>
+        </div>
 
-<section id="t1" class="section">
+        <!-- Sorting dropdown and catalog status -->
+        <div class="catalog-controls">
+            <div id="catalogCount">Showing all 32 games</div>
+            <div>
+                <label for="sortSelect" style="margin-right: 8px;">Sort by:</label>
+                <select id="sortSelect" class="sort-select" onchange="filterAndSortGames()">
+                    <option value="featured">Featured</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="name-az">Alphabetical: A-Z</option>
+                    <option value="name-za">Alphabetical: Z-A</option>
+                </select>
+            </div>
+        </div>
 
-    <div class="search-box">
-    
-        <input type="text" id="searchInput" placeholder="Search for a game..." onkeyup="searchGames()">
-    
-    </div>
+        <!-- Games Grid (Fixed the <di> typo to <div>) -->
+        <div class="cards" id="gamesGrid">
 
-    <di class="cards">
+            <!-- Card 1: Red Dead Redemption 2 -->
+            <div class="card" 
+                 data-category="action-rpg" 
+                 data-price="60" 
+                 data-name="Red Dead Redemption II"
+                 data-platform="PC / PS5 / Xbox Series X"
+                 data-year="2018"
+                 data-developer="Rockstar Games"
+                 data-esrb="M (Mature)"
+                 data-cpu="Intel Core i7-4770 / AMD FX-8350"
+                 data-gpu="NVIDIA GTX 1060 6GB / AMD RX 480 4GB"
+                 data-ram="12 GB RAM"
+                 data-storage="150 GB available space"
+                 data-desc="Play as Arthur Morgan, an outlaw fighting to survive with his gang in the final years of the Wild West. Experience a massive, stunning, open-world adventure filled with lawmen, outlaws, and dynamic natural wildlife.">
+                <div class="game-img-container">
+                    <img src="red-dead-redemption-2-full-hd-ih17xbavwjw7t2cy.jpg" class="game-img" alt="Red Dead Redemption II">
+                </div>
+                <div class="card-content">
+                    <h2>Red Dead Redemption II</h2>
+                    <p>Red Dead Redemption 2 is an open-world action-adventure game set in the Wild West. Play as Arthur Morgan and fight to survive.</p>
+                    <div class="price">$60</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('Red Dead Redemption II','$60','red-dead-redemption-2-full-hd-ih17xbavwjw7t2cy.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
 
-        <!-- -->
+            <!-- Card 2: Resident Evil Requiem -->
+            <div class="card" 
+                 data-category="horror" 
+                 data-price="52" 
+                 data-name="Resident Evil Requiem"
+                 data-platform="PC / PS5"
+                 data-year="2025"
+                 data-developer="Capcom"
+                 data-esrb="M (Mature)"
+                 data-cpu="Intel Core i7-8700 / AMD Ryzen 5 3600"
+                 data-gpu="NVIDIA RTX 2070 / AMD Radeon RX 5700 XT"
+                 data-ram="16 GB RAM"
+                 data-storage="60 GB available space"
+                 data-desc="Resident Evil Requiem is a survival horror game filled with terrifying creatures, dark mysteries, and intense action. Explore dangerous locations, solve puzzles, and fight to survive in a world consumed by fear and chaos.">
+                <div class="game-img-container">
+                    <img src="RE-R-Dec-2025.jpg" class="game-img" alt="Resident Evil Requiem">
+                </div>
+                <div class="card-content">
+                    <h2>Resident Evil Requiem</h2>
+                    <p>Survival horror filled with terrifying creatures, dark mysteries, and intense action. Solve puzzles and fight to survive.</p>
+                    <div class="price">$52</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('Resident Evil Requiem','$52','RE-R-Dec-2025.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
 
-        <div class="card">
+            <!-- Card 3: Hollow Knight -->
+            <div class="card" 
+                 data-category="action-rpg" 
+                 data-price="6" 
+                 data-name="Hollow Knight"
+                 data-platform="PC / Nintendo Switch"
+                 data-year="2017"
+                 data-developer="Team Cherry"
+                 data-esrb="E10+ (Everyone 10+)"
+                 data-cpu="Intel Core i3"
+                 data-gpu="NVIDIA GeForce GTX 560"
+                 data-ram="4 GB RAM"
+                 data-storage="9 GB available space"
+                 data-desc="Forge your own path in Hollow Knight! An epic action-adventure through a vast ruined kingdom of insects and heroes. Explore twisting caverns, battle tainted creatures and befriend bizarre bugs, all in a classic, hand-drawn 2D style.">
+                <div class="game-img-container">
+                    <img src="HD-wallpaper-hollow-knight-hollow.jpg" class="game-img" alt="Hollow Knight">
+                </div>
+                <div class="card-content">
+                    <h2>Hollow Knight</h2>
+                    <p>Forge your own path in Hollow Knight! An epic action-adventure through a vast ruined kingdom of insects and heroes.</p>
+                    <div class="price">$6</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('Hollow Knight','$6','HD-wallpaper-hollow-knight-hollow.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
 
-            <img src="red-dead-redemption-2-full-hd-ih17xbavwjw7t2cy.jpg" class="game-img">
+            <!-- Card 4: Mafia: The Old Country -->
+            <div class="card" 
+                 data-category="action-rpg" 
+                 data-price="52" 
+                 data-name="Mafia: The Old Country"
+                 data-platform="PC / PS5 / Xbox Series X"
+                 data-year="2025"
+                 data-developer="Hangar 13"
+                 data-esrb="M (Mature)"
+                 data-cpu="Intel Core i5-10400F / AMD Ryzen 5 3600"
+                 data-gpu="NVIDIA GTX 1660 Super / AMD RX 5600 XT"
+                 data-ram="16 GB RAM"
+                 data-storage="80 GB available space"
+                 data-desc="Unearth the origins of organized crime in Mafia: The Old Country, a gritty mob story set in the brutal underworld of 1900s Sicily. Fight to survive in this dangerous era, with linear, narrative-focused mobster action.">
+                <div class="game-img-container">
+                    <img src="maf.jpg" class="game-img" alt="Mafia: The Old Country">
+                </div>
+                <div class="card-content">
+                    <h2>Mafia: The Old Country</h2>
+                    <p>Unearth the origins of organized crime in Mafia: The Old Country, a gritty mob story set in 1900s Sicily.</p>
+                    <div class="price">$52</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('Mafia: The Old Country','$52','maf.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
 
-            <div class="card-content">
+            <!-- Card 5: Elden Ring -->
+            <div class="card" 
+                 data-category="action-rpg" 
+                 data-price="34" 
+                 data-name="Elden Ring"
+                 data-platform="PC / PS5 / Xbox Series X"
+                 data-year="2022"
+                 data-developer="FromSoftware"
+                 data-esrb="M (Mature)"
+                 data-cpu="Intel Core i5-8400 / AMD Ryzen 3 3300X"
+                 data-gpu="NVIDIA GTX 1060 3GB / AMD RX 580 4GB"
+                 data-ram="12 GB RAM"
+                 data-storage="60 GB available space"
+                 data-desc="Rise, Tarnished, and be guided by grace to brandish the power of the Elden Ring and become an Elden Lord in the Lands Between. Explore massive castles and vast field plains in a legendary world crafted by Hidetaka Miyazaki and George R. R. Martin.">
+                <div class="game-img-container">
+                    <img src="2651915.webp" class="game-img" alt="Elden Ring">
+                </div>
+                <div class="card-content">
+                    <h2>Elding ring</h2>
+                    <p>Rise, Tarnished, and brandish the power of the Elden Ring to become an Elden Lord in the Lands Between.</p>
+                    <div class="price">$34</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('Elden Ring','$34','2651915.webp')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
 
-                <h2>Red Dead Redemption II</h2>
+            <!-- Card 6: FC26 -->
+            <div class="card" 
+                 data-category="sports" 
+                 data-price="40" 
+                 data-name="FC26"
+                 data-platform="PC / PS5 / Xbox Series X / Switch"
+                 data-year="2025"
+                 data-developer="EA Sports"
+                 data-esrb="E (Everyone)"
+                 data-cpu="Intel Core i5-6600K / AMD Ryzen 5 1600"
+                 data-gpu="NVIDIA GTX 1050 Ti / AMD RX 570"
+                 data-ram="8 GB RAM"
+                 data-storage="50 GB available space"
+                 data-desc="EA Sports FC 26 brings realistic football simulation with hyper-advanced HyperMotion gameplay, refreshed career modes, and customizable clubs. Play with the absolute best clubs, leagues, and star athletes worldwide.">
+                <div class="game-img-container">
+                    <img src="Gn-1RxwW8AA-R4t.jpg" class="game-img" alt="FC26">
+                </div>
+                <div class="card-content">
+                    <h2>FC26</h2>
+                    <p>EA Sports FC is a popular football video game that lets players build teams, compete, and enjoy realistic matches.</p>
+                    <div class="price">$40</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('FC26','$40','Gn-1RxwW8AA-R4t.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
 
+            <!-- Card 7: Call of Duty -->
+            <div class="card" 
+                 data-category="action-rpg" 
+                 data-price="60" 
+                 data-name="Call of Duty"
+                 data-platform="PC / PS5 / Xbox Series X"
+                 data-year="2024"
+                 data-developer="Activision"
+                 data-esrb="M (Mature)"
+                 data-cpu="Intel Core i5-9600K / AMD Ryzen 5 3600X"
+                 data-gpu="NVIDIA GTX 1080 / AMD RX 5700"
+                 data-ram="16 GB RAM"
+                 data-storage="120 GB available space"
+                 data-desc="Step into intense action with Call of Duty, featuring theatrical single-player campaign structures, high-performance competitive multiplayer matches, and massive survival mode maps.">
+                <div class="game-img-container">
+                    <img src="2866271.jpg" class="game-img" alt="Call of Duty">
+                </div>
+                <div class="card-content">
+                    <h2>Call of duty </h2>
+                    <p>Enjoy intense campaigns and high-speed competitive multiplayer matches across military combat zones.</p>
+                    <div class="price">$60</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('Call of Duty','$60','2866271.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 8: Grand Theft Auto V Enhanced -->
+            <div class="card" 
+                 data-category="action-rpg" 
+                 data-price="30" 
+                 data-name="Grand Theft Auto V Enhanced"
+                 data-platform="PC / PS5 / Xbox Series X"
+                 data-year="2022"
+                 data-developer="Rockstar Games"
+                 data-esrb="M (Mature)"
+                 data-cpu="Intel Core i5-4460 / AMD FX-8350"
+                 data-gpu="NVIDIA GTX 760 / AMD HD 7870"
+                 data-ram="8 GB RAM"
+                 data-storage="90 GB available space"
+                 data-desc="Experience the blockbuster open-world game, now enhanced for modern hardware. Explore the sprawling city of Los Santos and Blaine County through the intertwined stories of three distinct criminals pulling off daring heists.">
+                <div class="game-img-container">
+                    <img src="gta-v-hd-wallpaper-wallpaper-preview.jpg" class="game-img" alt="Grand Theft Auto V Enhanced">
+                </div>
+                <div class="card-content">
+                    <h2>Grand Theft Auto V Enhanced</h2>
+                    <p>Explore the massive city of Los Santos in this open world blockbuster, now featuring enhanced graphics.</p>
+                    <div class="price">$30</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('Grand Theft Auto V Enhanced','$30','gta-v-hd-wallpaper-wallpaper-preview.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 9: ONE PIECE: PIRATE WARRIORS 4 -->
+            <div class="card" 
+                 data-category="anime" 
+                 data-price="26" 
+                 data-name="ONE PIECE: PIRATE WARRIORS 4"
+                 data-platform="PC / PS4 / Xbox One / Switch"
+                 data-year="2020"
+                 data-developer="Koei Tecmo"
+                 data-esrb="T (Teen)"
+                 data-cpu="Intel Core i5-3470"
+                 data-gpu="NVIDIA GeForce GTX 660"
+                 data-ram="8 GB RAM"
+                 data-storage="40 GB available space"
+                 data-desc="Join Luffy and the Straw Hat Pirates on a massive field-battling odyssey! Blast away thousands of enemies with colossal anime attacks, experiencing stories directly from the Wano Arc and beyond.">
+                <div class="game-img-container">
+                    <img src="capsule_616x353.jpg" class="game-img" alt="ONE PIECE: PIRATE WARRIORS 4">
+                </div>
+                <div class="card-content">
+                    <h2>ONE PIECE: PIRATE WARRIORS 4</h2>
+                    <p>Join Luffy and the Straw Hat Pirates to fight off massive waves of enemies with dramatic anime attacks.</p>
+                    <div class="price">$26</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('ONE PIECE: PIRATE WARRIORS 4','$26','capsule_616x353.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 10: NARUTO SHIPPUDEN: STORM 4 -->
+            <div class="card" 
+                 data-category="anime" 
+                 data-price="12" 
+                 data-name="NARUTO SHIPPUDEN: Ultimate Ninja STORM 4"
+                 data-platform="PC / PS4 / Xbox One / Switch"
+                 data-year="2016"
+                 data-developer="CyberConnect2"
+                 data-esrb="T (Teen)"
+                 data-cpu="Intel Core i3"
+                 data-gpu="NVIDIA GeForce GTX 750 Ti"
+                 data-ram="4 GB RAM"
+                 data-storage="40 GB available space"
+                 data-desc="Experience the ultimate Ninja showdown! Features beautiful, highly fast anime arena fighting, a rich story mode chronicling the Fourth Great Ninja War, and an expansive roster of legendary Naruto ninjas.">
+                <div class="game-img-container">
+                    <img src="nar.jpg" class="game-img" alt="NARUTO SHIPPUDEN: Ultimate Ninja STORM 4">
+                </div>
+                <div class="card-content">
+                    <h2>NARUTO SHIPPUDEN: Ultimate Ninja STORM 4</h2>
+                    <p>Engage in dramatic, lightning-fast fighting match-ups from the Fourth Great Ninja War saga.</p>
+                    <div class="price">$12</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('NARUTO SHIPPUDEN: Ultimate Ninja STORM 4','$12','nar.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 11: DRAGON BALL: Sparking! ZERO -->
+            <div class="card" 
+                 data-category="anime" 
+                 data-price="64" 
+                 data-name="DRAGON BALL: Sparking! ZERO"
+                 data-platform="PC / PS5 / Xbox Series X"
+                 data-year="2024"
+                 data-developer="Spike Chunsoft"
+                 data-esrb="T (Teen)"
+                 data-cpu="Intel Core i5-9600K / AMD Ryzen 5 2600"
+                 data-gpu="NVIDIA GTX 980 / AMD RX 590"
+                 data-ram="8 GB RAM"
+                 data-storage="50 GB available space"
+                 data-desc="DRAGON BALL: Sparking! ZERO takes the legendary gameplay of the Budokai Tenkaichi series and elevates it to historic heights. Unleash earth-shattering power with a massive roster of Super Saiyans, villains, and gods.">
+                <div class="game-img-container">
+                    <img src="thumb-1920-1379692.jpg" class="game-img" alt="DRAGON BALL: Sparking! ZERO">
+                </div>
+                <div class="card-content">
+                    <h2>DRAGON BALL: Sparking! ZERO</h2>
+                    <p>Unleash planet-destroying power in epic anime arenas with the legendary Budokai Tenkaichi gameplay.</p>
+                    <div class="price">$64</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('DRAGON BALL: Sparking! ZERO','$64','thumb-1920-1379692.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 12: HITMAN World of Assassination -->
+            <div class="card" 
+                 data-category="action-rpg" 
+                 data-price="14" 
+                 data-name="HITMAN World of Assassination"
+                 data-platform="PC / PS5 / Xbox Series X"
+                 data-year="2021"
+                 data-developer="IO Interactive"
+                 data-esrb="M (Mature)"
+                 data-cpu="Intel Core i5-2500K / AMD Phenom II X4"
+                 data-gpu="NVIDIA GTX 660 / AMD Radeon HD 7870"
+                 data-ram="8 GB RAM"
+                 data-storage="80 GB available space"
+                 data-desc="Become Agent 47, the world's ultimate assassin. Travel to premium locations across the globe to eliminate high-profile targets with ultimate freedom, stealth, and tactical options.">
+                <div class="game-img-container">
+                    <img src="EGS_HITMANWorldofAssassinationDeluxeEdition_IOInteractiveAS_Bundles_S1_2560x1440-eaff0f09fcf41fb9c1092492e20339e7.jpg" class="game-img" alt="HITMAN World of Assassination">
+                </div>
+                <div class="card-content">
+                    <h2>HITMAN World of Assassination</h2>
+                    <p>Enter the ultimate stealth playground. Travel globally as Agent 47 to eliminate targets silently.</p>
+                    <div class="price">$14</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('HITMAN World of Assassination','$14','EGS_HITMANWorldofAssassinationDeluxeEdition_IOInteractiveAS_Bundles_S1_2560x1440-eaff0f09fcf41fb9c1092492e20339e7.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 13: Batman: Arkham Collection -->
+            <div class="card" 
+                 data-category="action-rpg" 
+                 data-price="59" 
+                 data-name="Batman: Arkham Collection"
+                 data-platform="PC / PS4 / Xbox One"
+                 data-year="2018"
+                 data-developer="Rocksteady Studios"
+                 data-esrb="M (Mature)"
+                 data-cpu="Intel Core i5-3570K"
+                 data-gpu="NVIDIA GeForce GTX 660"
+                 data-ram="8 GB RAM"
+                 data-storage="100 GB available space"
+                 data-desc="Experience Rocksteady's award-winning Arkham trilogy in its complete glory. Featuring deep, visceral combat, immersive gadget-driven investigations, and legendary voice acting with Mark Hamill as the Joker.">
+                <div class="game-img-container">
+                    <img src="batr.webp" class="game-img" alt="Batman: Arkham Collection">
+                </div>
+                <div class="card-content">
+                    <h2>Batman: Arkham Collection</h2>
+                    <p>Become the Dark Knight. Play through the complete acclaimed trilogy featuring fluid, free-flow combat.</p>
+                    <div class="price">$59</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('Batman: Arkham Collection','$59','batr.webp')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 14: Spider-Man Remastered -->
+            <div class="card" 
+                 data-category="action-rpg" 
+                 data-price="59" 
+                 data-name="Spider-Man Remastered"
+                 data-platform="PC / PS5"
+                 data-year="2022"
+                 data-developer="Insomniac Games"
+                 data-esrb="T (Teen)"
+                 data-cpu="Intel Core i3-4160 / AMD Ryzen 3 1200"
+                 data-gpu="NVIDIA GTX 950 / AMD RX 460"
+                 data-ram="8 GB RAM"
+                 data-storage="75 GB available space"
+                 data-desc="Play as Peter Parker and fight crime in a stunning, fully-realized Manhattan. Swing seamlessly between skyscrapers, use high-tech gadgets, and enjoy visual remaster enhancements with ray-tracing features.">
+                <div class="game-img-container">
+                    <img src="spider.avif" class="game-img" alt="Spider-Man Remastered">
+                </div>
+                <div class="card-content">
+                    <h2>Spider-Man Remastered</h2>
+                    <p>Swing through New York City as Peter Parker, battling notorious Marvel supervillains in high definition.</p>
+                    <div class="price">$59</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('Spider-Man Remastered','$59','spider.avif')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 15: Assassin's Creed Black Flag Resynced -->
+            <div class="card" 
+                 data-category="action-rpg" 
+                 data-price="47" 
+                 data-name="Assassin's Creed Black Flag Resynced"
+                 data-platform="PC / PS5 / Xbox Series X"
+                 data-year="2026"
+                 data-developer="Ubisoft"
+                 data-esrb="M (Mature)"
+                 data-cpu="Intel Core i5-11400 / AMD Ryzen 5 5600"
+                 data-gpu="NVIDIA RTX 3060 / AMD RX 6600"
+                 data-ram="16 GB RAM"
+                 data-storage="60 GB available space"
+                 data-desc="Command the Jackdaw and conquer the Caribbean seas. Live the life of pirate assassin Edward Kenway, now fully re-synced with next-generation engine lighting, realistic naval physics, and expanded stealth missions.">
+                <div class="game-img-container">
+                    <img src="ACBFR_KeyArt_StandardEdition_960x540_23.04.26_615PMCEST.avif" class="game-img" alt="Assassin's Creed Black Flag Resynced">
+                </div>
+                <div class="card-content">
+                    <h2>Assassin's Creed Black Flag Resynced</h2>
+                    <p>Sail the golden age of piracy as Edward Kenway, now modernized with breathtaking next-gen visuals.</p>
+                    <div class="price">$47</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('Assassin Creed Black Flag Resynced','$47','ACBFR_KeyArt_StandardEdition_960x540_23.04.26_615PMCEST.avif')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 16: Dying Light: The Beast -->
+            <div class="card" 
+                 data-category="horror" 
+                 data-price="56" 
+                 data-name="Dying Light: The Beast"
+                 data-platform="PC / PS5 / Xbox Series X"
+                 data-year="2025"
+                 data-developer="Techland"
+                 data-esrb="M (Mature)"
+                 data-cpu="Intel Core i5-12400 / AMD Ryzen 5 5600"
+                 data-gpu="NVIDIA RTX 3070 / AMD RX 6750 XT"
+                 data-ram="16 GB RAM"
+                 data-storage="70 GB available space"
+                 data-desc="Dying Light: The Beast is a thrilling zombie survival action game. Vault across decaying urban ruins with smooth parkour, craft unique weapons, and beware the horrors that hunt you when the sun sets.">
+                <div class="game-img-container">
+                    <img src="Dying-Light_-The-Beast-key-visual-ENG-ea4991b13af607f23ee6.jpg" class="game-img" alt="Dying Light: The Beast">
+                </div>
+                <div class="card-content">
+                    <h2>Dying Light: The Beast</h2>
+                    <p>Use high-speed parkour and savage weaponry to survive waves of aggressive infected monsters.</p>
+                    <div class="price">$56</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('Dying Light: The Beast','$56','Dying-Light_-The-Beast-key-visual-ENG-ea4991b13af607f23ee6.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 17: Devil May Cry HD Collection -->
+            <div class="card" 
+                 data-category="action-rpg" 
+                 data-price="22" 
+                 data-name="Devil May Cry HD Collection"
+                 data-platform="PC / PS4 / Xbox One"
+                 data-year="2018"
+                 data-developer="Capcom"
+                 data-esrb="M (Mature)"
+                 data-cpu="Intel Core i3"
+                 data-gpu="NVIDIA GeForce GTX 760"
+                 data-ram="4 GB RAM"
+                 data-storage="12 GB available space"
+                 data-desc="Command legendary half-demon hunter Dante in the definitive bundle. Features Dante's premier style-ranked battles through Devil May Cry 1, 2, and 3: Special Edition.">
+                <div class="game-img-container">
+                    <img src="DevilMayCryHDCollection-1024x768.jpg" class="game-img" alt="Devil May Cry HD Collection">
+                </div>
+                <div class="card-content">
+                    <h2>Devil May Cry HD Collection</h2>
+                    <p>Slay demonic hordes in ranked style with sword and guns in Dante's classic hack-and-slash adventures.</p>
+                    <div class="price">$22</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('Devil May Cry HD Collection','$22','DevilMayCryHDCollection-1024x768.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 18: NINJA GAIDEN 4 -->
+            <div class="card" 
+                 data-category="anime" 
+                 data-price="47" 
+                 data-name="NINJA GAIDEN 4"
+                 data-platform="PC / PS5 / Xbox Series X"
+                 data-year="2026"
+                 data-developer="Team Ninja"
+                 data-esrb="M (Mature)"
+                 data-cpu="Intel Core i5-11400 / AMD Ryzen 5 5600"
+                 data-gpu="NVIDIA RTX 3060 / AMD RX 6600"
+                 data-ram="16 GB RAM"
+                 data-storage="50 GB available space"
+                 data-desc="Step back into the shadow boots of Dragon Ninja Ryu Hayabusa. Engage in lightning-fast ninja combat, sever monstrous beasts with legendary weapons, and explore gorgeous historical cyber-arenas.">
+                <div class="game-img-container">
+                    <img src="NINJA GAIDEN 4.jpg" class="game-img" alt="NINJA GAIDEN 4">
+                </div>
+                <div class="card-content">
+                    <h2>NINJA GAIDEN 4</h2>
+                    <p>Slay hordes of fiends as legendary ninja Ryu Hayabusa in high-speed, hardcore action-combat.</p>
+                    <div class="price">$47</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('NINJA GAIDEN 4','$47','NINJA GAIDEN 4.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 19: Resident Evil 4 -->
+            <div class="card" 
+                 data-category="horror" 
+                 data-price="29" 
+                 data-name="Resident Evil 4"
+                 data-platform="PC / PS5 / Xbox Series X"
+                 data-year="2023"
+                 data-developer="Capcom"
+                 data-esrb="M (Mature)"
+                 data-cpu="Intel Core i5-7500 / AMD Ryzen 3 1200"
+                 data-gpu="NVIDIA GTX 1050 Ti / AMD RX 560"
+                 data-ram="8 GB RAM"
+                 data-storage="60 GB available space"
+                 data-desc="Survival is just the beginning. Special Agent Leon S. Kennedy travels to a secluded European village to rescue the President's kidnapped daughter, discovering a terrifying cult infected with local parasites.">
+                <div class="game-img-container">
+                    <img src="8929582.jpg" class="game-img" alt="Resident Evil 4">
+                </div>
+                <div class="card-content">
+                    <h2>Resident Evil 4</h2>
+                    <p>Guide Leon S. Kennedy through a terrifying, action-packed rescue mission in a parasite-infected European village.</p>
+                    <div class="price">$29</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('Resident Evil 4','$29','8929582.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 20: The Last of Us Part I -->
+            <div class="card" 
+                 data-category="horror" 
+                 data-price="59" 
+                 data-name="The Last of Us™ Part I"
+                 data-platform="PC / PS5"
+                 data-year="2022"
+                 data-developer="Naughty Dog"
+                 data-esrb="M (Mature)"
+                 data-cpu="Intel Core i7-4770K / AMD Ryzen 5 1500X"
+                 data-gpu="NVIDIA GTX 970 / AMD RX 470"
+                 data-ram="16 GB RAM"
+                 data-storage="100 GB available space"
+                 data-desc="Relive the emotional, acclaimed story of survival. In a ravaged civilization infested with fungal spores and hostile survivors, tired smuggler Joel is hired to escort 14-year-old Ellie across a post-apocalyptic United States.">
+                <div class="game-img-container">
+                    <img src="1295037.jpg" class="game-img" alt="The Last of Us™ Part I">
+                </div>
+                <div class="card-content">
+                    <h2>The Last of Us™ Part I</h2>
+                    <p>Accompany Joel and Ellie on a deeply emotional, dangerous journey across a post-apocalyptic world.</p>
+                    <div class="price">$59</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('The Last of Us™ Part I','$59','1295037.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 21: DEATH STRANDING 2: ON THE BEACH -->
+            <div class="card" 
+                 data-category="action-rpg" 
+                 data-price="70" 
+                 data-name="DEATH STRANDING 2: ON THE BEACH"
+                 data-platform="PC / PS5"
+                 data-year="2025"
+                 data-developer="Kojima Productions"
+                 data-esrb="M (Mature)"
+                 data-cpu="Intel Core i7-9700K / AMD Ryzen 7 3700X"
+                 data-gpu="NVIDIA RTX 2080 / AMD RX 6800"
+                 data-ram="16 GB RAM"
+                 data-storage="90 GB available space"
+                 data-desc="Embark on an inspiring next-generation journey of connections with Sam Porter Bridges and Fragile. Traverse cinematic post-apocalyptic landscapes, rebuild societal grids, and encounter stunning cosmic anomalies.">
+                <div class="game-img-container">
+                    <img src="4.jpg" class="game-img" alt="DEATH STRANDING 2: ON THE BEACH">
+                </div>
+                <div class="card-content">
+                    <h2>DEATH STRANDING 2: ON THE BEACH</h2>
+                    <p>Reconnect the world once more in Hideo Kojima's breathtaking sci-fi odyssey across alien plains.</p>
+                    <div class="price">$70</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('DEATH STRANDING 2: ON THE BEACH','$70','4.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 22: God of War Ragnarok -->
+            <div class="card" 
+                 data-category="action-rpg" 
+                 data-price="49" 
+                 data-name="God of War Ragnarök"
+                 data-platform="PC / PS5 / PS4"
+                 data-year="2022"
+                 data-developer="Santa Monica Studio"
+                 data-esrb="M (Mature)"
+                 data-cpu="Intel Core i5-4670K / AMD Ryzen 3 1200"
+                 data-gpu="NVIDIA GTX 1060 6GB / AMD RX 570"
+                 data-ram="8 GB RAM"
+                 data-storage="110 GB available space"
+                 data-desc="Join Kratos and Atreus on a legendary Norse journey through all Nine Realms as Asgardian forces prepare for the predicted end of the world. Wield the Leviathan Axe and Blades of Chaos in savage mythological warfare.">
+                <div class="game-img-container">
+                    <img src="god-of-war-ragnarok-store-art-01-10sep21$ru.webp" class="game-img" alt="God of War Ragnarök">
+                </div>
+                <div class="card-content">
+                    <h2>God of War Ragnarök</h2>
+                    <p>Confront mythological Asgardian armies with Kratos and Atreus as Ragnarok approaches.</p>
+                    <div class="price">$49</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('God of War Ragnarök','$49','god-of-war-ragnarok-store-art-01-10sep21$ru.webp')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 23: Black Myth Wukong -->
+            <div class="card" 
+                 data-category="action-rpg" 
+                 data-price="60" 
+                 data-name="Black Myth: Wukong"
+                 data-platform="PC / PS5 / Xbox Series X"
+                 data-year="2024"
+                 data-developer="Game Science"
+                 data-esrb="T (Teen)"
+                 data-cpu="Intel Core i5-8400 / AMD Ryzen 5 1600"
+                 data-gpu="NVIDIA GTX 1060 6GB / AMD RX 580"
+                 data-ram="16 GB RAM"
+                 data-storage="130 GB available space"
+                 data-desc="Embark on an action-RPG journey inspired by the classical Chinese epic 'Journey to the West'. Control the Destined One, master staff-fighting, cast mystical spells, and battle legendary mythological beasts.">
+                <div class="game-img-container">
+                    <img src="blackmyth-1723969364570.webp" class="game-img" alt="Black Myth: Wukong">
+                </div>
+                <div class="card-content">
+                    <h2>Black Myth: Wukong</h2>
+                    <p>Control the Destined One, unleashing mystical transformations and staff combat on legendary creatures.</p>
+                    <div class="price">$60</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('Black Myth: Wukong','$60','blackmyth-1723969364570.webp')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 24: Crimson Desert -->
+            <div class="card" 
+                 data-category="action-rpg" 
+                 data-price="71" 
+                 data-name="Crimson Desert"
+                 data-platform="PC / PS5 / Xbox Series X"
+                 data-year="2025"
+                 data-developer="Pearl Abyss"
+                 data-esrb="M (Mature)"
+                 data-cpu="Intel Core i7-8700K / AMD Ryzen 5 3600"
+                 data-gpu="NVIDIA RTX 2060 / AMD RX 5700"
+                 data-ram="16 GB RAM"
+                 data-storage="80 GB available space"
+                 data-desc="Fight to reclaim land in the brutal continent of Pywel. Guide a band of mercenaries through heavy sword-slashing battles, command fortresses, and experience a massive story of betrayal.">
+                <div class="game-img-container">
+                    <img src="cr.jpg" class="game-img" alt="Crimson Desert">
+                </div>
+                <div class="card-content">
+                    <h2>Crimson Desert</h2>
+                    <p>Guide a faction of battle-hardened mercenaries across Pywel continent in massive open wars.</p>
+                    <div class="price">$71</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('Crimson Desert','$71','cr.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 25: Cyberpunk 2077 -->
+            <div class="card" 
+                 data-category="action-rpg" 
+                 data-price="45" 
+                 data-name="Cyberpunk 2077"
+                 data-platform="PC / PS5 / Xbox Series X"
+                 data-year="2020"
+                 data-developer="CD Projekt Red"
+                 data-esrb="M (Mature)"
+                 data-cpu="Intel Core i7-6700 / AMD Ryzen 5 1600"
+                 data-gpu="NVIDIA GTX 1060 6GB / AMD RX 580"
+                 data-ram="12 GB RAM"
+                 data-storage="70 GB available space"
+                 data-desc="Become V, a cybernetically-enhanced outlaw merc in Night City. Wield customized high-tech chrome upgrades, explore immersive neon districts, and fight for a chip that holds the key to immortality.">
+                <div class="game-img-container">
+                    <img src="Untitled3177.jpg" class="game-img" alt="Cyberpunk 2077">
+                </div>
+                <div class="card-content">
+                    <h2>Cyberpunk 2077</h2>
+                    <p>Enter the sprawling, neon-soaked metropolis of Night City as cyber-enhanced mercenary outlaw V.</p>
+                    <div class="price">$45</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('Cyberpunk 2077','$45','Untitled3177.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 26: Starfield -->
+            <div class="card" 
+                 data-category="action-rpg" 
+                 data-price="35" 
+                 data-name="Starfield"
+                 data-platform="PC / Xbox Series X"
+                 data-year="2023"
+                 data-developer="Bethesda Game Studios"
+                 data-esrb="M (Mature)"
+                 data-cpu="Intel Core i7-6800K / AMD Ryzen 5 2600X"
+                 data-gpu="NVIDIA GTX 1070 Ti / AMD RX 5700"
+                 data-ram="16 GB RAM"
+                 data-storage="125 GB available space"
+                 data-desc="Starfield is the first new universe in over 25 years from Bethesda Game Studios. In this next-generation RPG set amongst the stars, create any character you want and explore with unparalleled freedom as you embark on an epic journey to answer humanity's greatest mystery.">
+                <div class="game-img-container">
+                    <img src="starfield_with_a_4k_trailer-23446.jpg" class="game-img" alt="Starfield">
+                </div>
+                <div class="card-content">
+                    <h2>Starfield</h2>
+                    <p>Explore over a thousand open planets, craft spaceships, and decode cosmic mysteries in this massive space RPG.</p>
+                    <div class="price">$35</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('Starfield','$35','starfield_with_a_4k_trailer-23446.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 27: STAR WARS Jedi: Survivor -->
+            <div class="card" 
+                 data-category="action-rpg" 
+                 data-price="70" 
+                 data-name="STAR WARS Jedi: Survivor™"
+                 data-platform="PC / PS5 / Xbox Series X"
+                 data-year="2023"
+                 data-developer="Respawn Entertainment"
+                 data-esrb="T (Teen)"
+                 data-cpu="Intel Core i7-7700 / AMD Ryzen 5 1400"
+                 data-gpu="NVIDIA GTX 1070 / AMD RX 580"
+                 data-ram="8 GB RAM"
+                 data-storage="155 GB available space"
+                 data-desc="The story of Cal Kestis continues in Star Wars Jedi: Survivor, a galaxy-spanning action-adventure game. Stand against the dark times of the Empire, mastering new lightsaber stances and force techniques.">
+                <div class="game-img-container">
+                    <img src="thRXewvyDTl9bI9h.jpg" class="game-img" alt="STAR WARS Jedi: Survivor™">
+                </div>
+                <div class="card-content">
+                    <h2>STAR WARS Jedi: Survivor™</h2>
+                    <p>Hone lightsaber techniques and unlock Jedi force maneuvers as Cal Kestis escapes imperial inquisition.</p>
+                    <div class="price">$70</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('STAR WARS Jedi: Survivor™','$70','thRXewvyDTl9bI9h.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 28: DARK SOULS III -->
+            <div class="card" 
+                 data-category="action-rpg" 
+                 data-price="40" 
+                 data-name="DARK SOULS™ III"
+                 data-platform="PC / PS4 / Xbox One"
+                 data-year="2016"
+                 data-developer="FromSoftware"
+                 data-esrb="M (Mature)"
+                 data-cpu="Intel Core i7-3770 / AMD FX-8350"
+                 data-gpu="NVIDIA GTX 970 / AMD Radeon R9 series"
+                 data-ram="8 GB RAM"
+                 data-storage="25 GB available space"
+                 data-desc="As fires fade and the world falls into ruin, journey into a universe filled with colossal bosses, dark environments, and fast-paced tactical sword action. Only the Ashen One can rekindle the dying flame.">
+                <div class="game-img-container">
+                    <img src="dark-souls-3-hd-wallpaper-wallpaper-preview.jpg" class="game-img" alt="DARK SOULS™ III">
+                </div>
+                <div class="card-content">
+                    <h2>DARK SOULS™ III</h2>
+                    <p>Rekindle the fading fire in a brutally beautiful dark universe packed with colossal, unforgiving boss battles.</p>
+                    <div class="price">$40</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('DARK SOULS™ III','$40','dark-souls-3-hd-wallpaper-wallpaper-preview.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 29: BLEACH Rebirth of Souls -->
+            <div class="card" 
+                 data-category="anime" 
+                 data-price="39" 
+                 data-name="BLEACH Rebirth of Souls"
+                 data-platform="PC / PS5 / Xbox Series X"
+                 data-year="2025"
+                 data-developer="Bandai Namco"
+                 data-esrb="T (Teen)"
+                 data-cpu="Intel Core i5-8400 / AMD Ryzen 5 2600"
+                 data-gpu="NVIDIA GTX 1060 / AMD RX 590"
+                 data-ram="8 GB RAM"
+                 data-storage="45 GB available space"
+                 data-desc="Awaken your inner Soul Reaper in BLEACH Rebirth of Souls! Engage in dramatic sword fighting arenas, unleash powerful bankai transformations, and challenge players in historic anime clashes.">
+                <div class="game-img-container">
+                    <img src="BLEACH-ROS-Wallpaper-Article.jpg" class="game-img" alt="BLEACH Rebirth of Souls">
+                </div>
+                <div class="card-content">
+                    <h2>BLEACH Rebirth of Souls</h2>
+                    <p>Awaken your inner Soul Reaper. Clash in thrilling sword fights and execute spectacular bankai skills.</p>
+                    <div class="price">$39</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('BLEACH Rebirth of Souls','$39','BLEACH-ROS-Wallpaper-Article.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 30: Solo Leveling: ARISE OVERDRIVE -->
+            <div class="card" 
+                 data-category="anime" 
+                 data-price="39" 
+                 data-name="Solo Leveling: ARISE OVERDRIVE"
+                 data-platform="PC / PS5"
+                 data-year="2025"
+                 data-developer="Netmarble"
+                 data-esrb="T (Teen)"
+                 data-cpu="Intel Core i7-8700 / AMD Ryzen 5 3600"
+                 data-gpu="NVIDIA RTX 2060 / AMD RX 5600"
+                 data-ram="16 GB RAM"
+                 data-storage="50 GB available space"
+                 data-desc="Level up from E-Rank shadow hunter to humanity's strongest Monarch. Slash through high-tier dungeon bosses, build a massive army of loyal shadow soldiers, and master intense stylish hack-and-slash chain combat.">
+                <div class="game-img-container">
+                    <img src="solo-leveling-arise-7680x4320-24734.jpg" class="game-img" alt="Solo Leveling: ARISE OVERDRIVE">
+                </div>
+                <div class="card-content">
+                    <h2>Solo Leveling: ARISE OVERDRIVE</h2>
+                    <p>Level up from E-rank hunter to humanity's strongest Monarch, raising a massive personal shadow army.</p>
+                    <div class="price">$39</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('Solo Leveling: ARISE OVERDRIVE','$39','solo-leveling-arise-7680x4320-24734.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 31: Demon Slayer 2 -->
+            <div class="card" 
+                 data-category="anime" 
+                 data-price="50" 
+                 data-name="Demon Slayer -Kimetsu no Yaiba- The Hinokami Chronicles 2"
+                 data-platform="PC / PS5 / Xbox Series X"
+                 data-year="2025"
+                 data-developer="CyberConnect2"
+                 data-esrb="T (Teen)"
+                 data-cpu="Intel Core i5-8400"
+                 data-gpu="NVIDIA GTX 1060"
+                 data-ram="8 GB RAM"
+                 data-storage="45 GB available space"
+                 data-desc="Master the water and sun breathing sword styles! Experience the acclaimed story of the Hashira Training and Infinity Castle arcs, fighting off high-tier demon monarchs with gorgeous cinematic battles.">
+                <div class="game-img-container">
+                    <img src="demon_slayer_the_hinokami_chronicles.webp" class="game-img" alt="Demon Slayer -Kimetsu no Yaiba- The Hinokami Chronicles 2">
+                </div>
+                <div class="card-content">
+                    <h2>Demon Slayer -Kimetsu no Yaiba- The Hinokami Chronicles 2</h2>
+                    <p>Master breathing styles to slash down powerful demon adversaries in breathtaking arena combat.</p>
+                    <div class="price">$50</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('Demon Slayer -Kimetsu no Yaiba- The Hinokami Chronicles 2','$50','demon_slayer_the_hinokami_chronicles.webp')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 32: TEKKEN 8 -->
+            <div class="card" 
+                 data-category="anime" 
+                 data-price="26" 
+                 data-name="TEKKEN 8"
+                 data-platform="PC / PS5 / Xbox Series X"
+                 data-year="2024"
+                 data-developer="Bandai Namco"
+                 data-esrb="T (Teen)"
+                 data-cpu="Intel Core i5-6600K / AMD Ryzen 5 1600"
+                 data-gpu="NVIDIA GTX 1060 / AMD RX 580"
+                 data-ram="8 GB RAM"
+                 data-storage="100 GB available space"
+                 data-desc="Fist Meets Fate in TEKKEN 8. Holding the Guinness World Record for the longest-running video game storyline, the series enters a massive next-generation chapter with aggressive Heat systems and dynamic destructible stages.">
+                <div class="game-img-container">
+                    <img src="tekken-8-4k-bandai-namco-entertainment-video-games-hd-wallpaper-preview.jpg" class="game-img" alt="TEKKEN 8">
+                </div>
+                <div class="card-content">
+                    <h2>TEKKEN 8</h2>
+                    <p>Clash in aggressive 3D combat with high-fidelity graphics, customizable fighters, and responsive mechanics.</p>
+                    <div class="price">$26</div>
+                    <div class="card-footer">
+                        <button class="details-btn" onclick="openDetailsModal(this.closest('.card'))">Details</button>
+                        <a href="cart.html" class="buy-btn" onclick="addToCart('TEKKEN 8','$26','tekken-8-4k-bandai-namco-entertainment-video-games-hd-wallpaper-preview.jpg')">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Game Details Modal HTML Overlay -->
+    <div id="detailsModal" class="modal-overlay" onclick="closeDetailsModal(event)">
+        <div class="modal-container">
+            <span class="modal-close" onclick="document.getElementById('detailsModal').classList.remove('active')">&times;</span>
+            
+            <div class="modal-header">
+                <img id="modalImg" src="" class="modal-header-img" alt="Game cover">
+                <div class="modal-header-info">
+                    <h2 id="modalTitle" class="modal-title">Game Title</h2>
+                    <div class="modal-meta-row">
+                        <span id="modalCategory" class="modal-tag">Category</span>
+                        <span id="modalPlatform" class="modal-tag platform">Platform</span>
+                        <span id="modalRating" class="modal-tag rating">★ 4.8</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="modal-desc-box">
+                    <h3>Description</h3>
+                    <p id="modalDesc">Full detailed description of the game will load here...</p>
+                </div>
                 
+                <div class="modal-specs-box">
+                    <h3>Holographic System Specs</h3>
+                    <div class="modal-specs-grid">
+                        <div class="spec-column">
+                            <h4>MINIMUM REQUIREMENT</h4>
+                            <p><strong>OS:</strong> Windows 10/11 (64-bit)</p>
+                            <p><strong>Processor:</strong> <span id="modalCpu">Processor info</span></p>
+                            <p><strong>Memory:</strong> <span id="modalRam">RAM info</span></p>
+                        </div>
+                        <div class="spec-column">
+                            <h4>GRAPHICS & COMPATIBILITY</h4>
+                            <p><strong>Video Card:</strong> <span id="modalGpu">Graphics info</span></p>
+                            <p><strong>Disk Space:</strong> <span id="modalStorage">Storage info</span></p>
+                            <p><strong>ESRB Rating:</strong> <span id="modalEsrb">ESRB rating</span></p>
+                        </div>
+                    </div>
+                </div>
 
-                <div class="price">$60</div>
+                <div class="modal-reviews-box">
+                    <h3>Player Reviews</h3>
+                    <div id="modalReviews">
+                        <!-- Custom styled review blocks injected here -->
+                    </div>
+                </div>
 
-                <a href="cart.html" class="buy-btn"
-                    onclick="addToCart('Red Dead Redemption II','$60','red-dead-redemption-2-full-hd-ih17xbavwjw7t2cy.jpg')">
-                    Buy Now
-                </a>
-
+                <div class="modal-buy-section">
+                    <div id="modalPrice" class="modal-price">$0</div>
+                    <button id="modalBuyBtn" class="btn">Add to Cart</button>
+                </div>
             </div>
-
         </div>
-        <!--Resident Evil Requiem-->
+    </div>
 
-        <div class="card">
+    <!-- Dynamic Cart Utility Script -->
+    <script>
+        function addToCart(name, price, image) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart.push({
+                name: name,
+                price: price,
+                image: image
+            });
+            localStorage.setItem("cart", JSON.stringify(cart));
+            
+            // Show custom floating notification toast instead of navigating or loading
+            showToast(`Added ${name} to your holographic Cart! 🚀`);
+        }
+    </script>
 
-            <img src="RE-R-Dec-2025.jpg" class="game-img">
+    <!-- Advanced Searching, Category Filtering, and Real-Time Sorting Scripts -->
+    <script>
+        let selectedCategory = "all";
 
-            <div class="card-content">
+        function setCategoryFilter(category, tabBtn) {
+            selectedCategory = category;
+            
+            // Toggle active classes on filter tabs
+            document.querySelectorAll(".filter-tab").forEach(tab => {
+                tab.classList.remove("active");
+            });
+            tabBtn.classList.add("active");
+            
+            filterAndSortGames();
+        }
 
-                <h2>Resident Evil Requiem</h2>
+        function filterAndSortGames() {
+            const searchInput = document.getElementById("searchInput").value.toLowerCase();
+            const sortVal = document.getElementById("sortSelect").value;
+            const grid = document.getElementById("gamesGrid");
+            const cards = Array.from(grid.querySelectorAll(".card"));
+            
+            let visibleCount = 0;
 
-           
-
-                <div class="price">$52</div>
-
-                <a href="cart.html" class="buy-btn"
-                    onclick="addToCart('Resident Evil Requiem','$52','RE-R-Dec-2025.jpg')">
-                    Buy Now
-                </a>
-
-            </div>
-
-        </div>
-
-        <!-- Hollow Knight -->
-
-        <div class="card">
-
-            <img src="HD-wallpaper-hollow-knight-hollow.jpg" class="game-img">
-
-            <div class="card-content">
-
-                <h2>Hollow Knight</h2>
-
-              
-
-                <div class="price">$6</div>
-
-                <a href="cart.html" class="buy-btn"
-                    onclick="addToCart('Hollow Knight','$6','HD-wallpaper-hollow-knight-hollow.jpg')">
-                    Buy Now
-                </a>
-
-            </div>
-
-        </div>
-
-        <!-- Mafia: The Old Country -->
-
-        <div class="card">
-
-            <img src="maf.jpg" class="game-img">
-
-            <div class="card-content">
-
-                <h2>Mafia: The Old Country</h2>
-
-       
-
-                <div class="price">$52</div>
-
-                <a href="cart.html" class="buy-btn" onclick="addToCart('Mafia: The Old Country','$52','maf.jpg')">
-                    Buy Now
-                </a>
-
-            </div>
-
-        </div>
-        <!--elding-->
-
-        <div class="card">
-
-            <img src="2651915.webp" class="game-img">
-
-            <div class="card-content">
-
-                <h2>Elding ring</h2>
-
-               
-
-                <div class="price">$34</div>
-
-                <a href="cart.html" class="buy-btn" onclick="addToCart('Elden Ring','$34','2651915.webp')">
-                    Buy Now
-                </a>
-
-            </div>
-
-        </div>
-        <!--Fifa-->
-        <div class="card">
-
-            <img src="Gn-1RxwW8AA-R4t.jpg" class="game-img">
-
-            <div class="card-content">
-
-                <h2>FC26</h2>
-
+            cards.forEach(card => {
+                const name = card.dataset.name.toLowerCase();
+                const category = card.dataset.category;
                 
-
-                <div class="price">$40</div>
-
-                <a href="cart.html" class="buy-btn" onclick="addToCart('FC26','$40','Gn-1RxwW8AA-R4t.jpg')">
-                    Buy Now
-                </a>
-
-            </div>
-
-        </div>
-        <!--call of duty -->
-        <div class="card">
-
-            <img src="2866271.jpg" class="game-img">
-
-            <div class="card-content">
-
-                <h2>Call of duty </h2>
-
-
-                <div class="price">$60</div>
-
-                <a href="cart.html" class="buy-btn" onclick="addToCart('Call of Duty','$60','2866271.jpg')">
-                    Buy Now
-                </a>
-
-            </div>
-
-        </div>
-
- <!-- GTA -->
-
-        <div class="card">
-
-            <img src="gta-v-hd-wallpaper-wallpaper-preview.jpg" class="game-img">
-
-            <div class="card-content">
-
-                <h2>Grand Theft Auto V Enhanced</h2>
-
-              
-
-                <div class="price">$30</div>
-
-                <a href="cart.html" class="buy-btn"
-                    onclick="addToCart('Grand Theft Auto V Enhanced','$30','gta-v-hd-wallpaper-wallpaper-preview.jpg')">
-                    Buy Now
-                </a>
-
-            </div>
-
-
-
-        </div>
-
-<!-----------one piece---------------> 
-  <div class="card">
-
-    <img src="capsule_616x353.jpg" class="game-img">
-
-    <div class="card-content">
-
-        <h2>ONE PIECE: PIRATE WARRIORS 4</h2>
-
-  
-
-        <div class="price">$26</div>
-
-        <a href="cart.html" class="buy-btn"
-            onclick="addToCart('ONE PIECE: PIRATE WARRIORS 4','$26','capsule_616x353.jpg')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-  </div>
-<!------------------------------->
-
-<!-----------naruto--------------->
-<div class="card">
-
-    <img src="nar.jpg" class="game-img">
-
-    <div class="card-content">
-
-        <h2>NARUTO SHIPPUDEN: Ultimate Ninja STORM 4</h2>
-
-      
-
-        <div class="price">$12</div>
-
-        <a href="cart.html" class="buy-btn" onclick="addToCart('NARUTO SHIPPUDEN: Ultimate Ninja STORM 4','$12','nar.jpg')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-</div>
-<!------------------------------->
-
-<!-----------DRAGON BALL: Sparking! ZERO--------------->
-<div class="card">
-
-    <img src="thumb-1920-1379692.jpg" class="game-img">
-
-    <div class="card-content">
-
-        <h2>DRAGON BALL: Sparking! ZERO</h2>
-
-
-        <div class="price">$64</div>
-
-        <a href="cart.html" class="buy-btn" onclick="addToCart('DRAGON BALL: Sparking! ZERO','$64','thumb-1920-1379692.jpg')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-</div>
-<!------------------------------->
-
-<!---HITMAN World of Assassination----------------------->
-
-<div class="card">
-
-    <img src="EGS_HITMANWorldofAssassinationDeluxeEdition_IOInteractiveAS_Bundles_S1_2560x1440-eaff0f09fcf41fb9c1092492e20339e7.jpg" class="game-img">
-
-    <div class="card-content">
-
-        <h2>HITMAN World of Assassination</h2>
-
-
-        <div class="price">$14</div>
-
-        <a href="cart.html" class="buy-btn" onclick="addToCart('HITMAN World of Assassination','$14','EGS_HITMANWorldofAssassinationDeluxeEdition_IOInteractiveAS_Bundles_S1_2560x1440-eaff0f09fcf41fb9c1092492e20339e7.jpg')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-</div>
-<!-------------batman------------------>
-<div class="card">
-
-    <img src="batr.webp" class="game-img">
-
-    <div class="card-content">
-
-        <h2>Batman: Arkham Collection</h2>
-
-
-
-        <div class="price">$59</div>
-
-        <a href="cart.html" class="buy-btn" onclick="addToCart('Batman: Arkham Collection','$59','batr.webp')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-</div>
-<!----------------Spider-Man Remastered--------------------------->
-<div class="card">
-
-    <img src="spider.avif" class="game-img">
-
-    <div class="card-content">
-
-        <h2>Spider-Man Remastered</h2>
-
-
-
-        <div class="price">$59</div>
-
-        <a href="cart.html" class="buy-btn" onclick="addToCart('Spider-Man Remastered','$59','spider.avif')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-</div>
-<!--------------------------Assassin's Creed Black Flag Resynced------------------------------------------------------------------->
-<div class="card">
-
-    <img src="ACBFR_KeyArt_StandardEdition_960x540_23.04.26_615PMCEST.avif" class="game-img">
-
-    <div class="card-content">
-
-        <h2>Assassin's Creed Black Flag Resynced</h2>
-
-
-
-        <div class="price">$47</div>
-
-        <a href="cart.html" class="buy-btn" onclick="addToCart('Assassin Creed Black Flag Resynced','$47','ACBFR_KeyArt_StandardEdition_960x540_23.04.26_615PMCEST.avif')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-</div>
-<!------------------------Dying Light: The Beast-------------------------------------------------------------------->
-<div class="card">
-
-    <img src="Dying-Light_-The-Beast-key-visual-ENG-ea4991b13af607f23ee6.jpg" class="game-img">
-
-    <div class="card-content">
-
-        <h2>Dying Light: The Beast</h2>
-
-
-
-        <div class="price">$56</div>
-
-        <a href="cart.html" class="buy-btn" onclick="addToCart('Dying Light: The Beast','$56','Dying-Light_-The-Beast-key-visual-ENG-ea4991b13af607f23ee6.jpg')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-</div>
-<!-------------------------Devil May Cry HD Collection----------------------------------------------------->
-<div class="card">
-
-    <img src="DevilMayCryHDCollection-1024x768.jpg" class="game-img">
-
-    <div class="card-content">
-
-        <h2>Devil May Cry HD Collection</h2>
-
-
-
-        <div class="price">$22</div>
-
-        <a href="cart.html" class="buy-btn" onclick="addToCart('Devil May Cry HD Collection','$22','DevilMayCryHDCollection-1024x768.jpg')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-</div>
-<!------------------------NINJA GAIDEN 4---------------------------------------------------->
-<div class="card">
-
-    <img src="NINJA GAIDEN 4.jpg" class="game-img">
-
-    <div class="card-content">
-
-        <h2>NINJA GAIDEN 4</h2>
-
-
-
-        <div class="price">$47</div>
-
-        <a href="cart.html" class="buy-btn" onclick="addToCart('NINJA GAIDEN 4','$47','NINJA GAIDEN 4.jpg')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-</div>
-<!------------------------Resident Evil 4------------------------------------------------------->
-<div class="card">
-
-    <img src="8929582.jpg" class="game-img">
-
-    <div class="card-content">
-
-        <h2>Resident Evil 4</h2>
-
-
-
-        <div class="price">$29</div>
-
-        <a href="cart.html" class="buy-btn" onclick="addToCart('Resident Evil 4','$29','8929582.jpg')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-</div>
-<!-------------------The Last of Us™ Part I------------------------------------------------------------->
-<div class="card">
-
-    <img src="1295037.jpg" class="game-img">
-
-    <div class="card-content">
-
-        <h2>The Last of Us™ Part I</h2>
-
-
-        <div class="price">$59</div>
-
-        <a href="cart.html" class="buy-btn" onclick="addToCart('The Last of Us™ Part I','$59','1295037.jpg')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-</div>
-<!------------------------DEATH STRANDING 2: ON THE BEACH----------------------------------------------------->
-<div class="card">
-
-    <img src="4.jpg" class="game-img">
-
-    <div class="card-content">
-
-        <h2>DEATH STRANDING 2: ON THE BEACH</h2>
-
-
-
-        <div class="price">$70</div>
-
-        <a href="cart.html" class="buy-btn" onclick="addToCart('DEATH STRANDING 2: ON THE BEACH','$70','4.jpg')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-</div>
-<!--------------------------God of War Ragnarök-------------------------------------------------->
-<div class="card">
-
-    <img src="god-of-war-ragnarok-store-art-01-10sep21$ru.webp" class="game-img">
-
-    <div class="card-content">
-
-        <h2>God of War Ragnarök</h2>
-
-
-
-        <div class="price">$49</div>
-
-        <a href="cart.html" class="buy-btn" onclick="addToCart('God of War Ragnarök','$49','god-of-war-ragnarok-store-art-01-10sep21$ru.webp')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-</div>
-<!----------------Black Myth: Wukong--------------------------->
-<div class="card">
-
-    <img src="blackmyth-1723969364570.webp" class="game-img">
-
-    <div class="card-content">
-
-        <h2>Black Myth: Wukong</h2>
-
-
-
-        <div class="price">$60</div>
-
-        <a href="cart.html" class="buy-btn" onclick="addToCart('Black Myth: Wukong','$60','blackmyth-1723969364570.webp')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-</div>
-<!-------------------Crimson Desert----------------------------->
-<div class="card">
-
-    <img src="cr.jpg" class="game-img">
-
-    <div class="card-content">
-
-        <h2>Crimson Desert</h2>
-
-
-
-        <div class="price">$71</div>
-
-        <a href="cart.html" class="buy-btn" onclick="addToCart('Crimson Desert','$71','cr.jpg')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-</div>
-<!-----------------Cyberpunk 2077----------------------->
-<div class="card">
-
-    <img src="Untitled3177.jpg" class="game-img">
-
-    <div class="card-content">
-
-        <h2>Cyberpunk 2077</h2>
-
-
-
-        <div class="price">$45</div>
-
-        <a href="cart.html" class="buy-btn" onclick="addToCart('Cyberpunk 2077','$45','Untitled3177.jpg')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-</div>
-<!------------------------Starfield------------------------------>
-<div class="card">
-
-    <img src="starfield_with_a_4k_trailer-23446.jpg" class="game-img">
-
-    <div class="card-content">
-
-        <h2>Starfield</h2>
-
-
-
-        <div class="price">$35</div>
-
-        <a href="cart.html" class="buy-btn" onclick="addToCart('Starfield','$35','starfield_with_a_4k_trailer-23446.jpg')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-</div>
-<!---------------STAR WARS Jedi: Survivor™-------------------->
-<div class="card">
-
-    <img src="thRXewvyDTl9bI9h.jpg" class="game-img">
-
-    <div class="card-content">
-
-        <h2>STAR WARS Jedi: Survivor™</h2>
-
-
-
-        <div class="price">$70</div>
-
-        <a href="cart.html" class="buy-btn" onclick="addToCart('STAR WARS Jedi: Survivor™','$70','thRXewvyDTl9bI9h.jpg')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-</div>
-<!--------------------DARK SOULS™ III------------------------->
-<div class="card">
-
-    <img src="dark-souls-3-hd-wallpaper-wallpaper-preview.jpg" class="game-img">
-
-    <div class="card-content">
-
-        <h2>DARK SOULS™ III</h2>
-
-
-
-        <div class="price">$40</div>
-
-        <a href="cart.html" class="buy-btn" onclick="addToCart('DARK SOULS™ III','$40','dark-souls-3-hd-wallpaper-wallpaper-preview.jpg')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-</div>
-<!-------------------------BLEACH Rebirth of Souls--------------------------------------------------------->
-<div class="card">
-
-    <img src="BLEACH-ROS-Wallpaper-Article.jpg" class="game-img">
-
-    <div class="card-content">
-
-        <h2>BLEACH Rebirth of Souls</h2>
-
-
-
-        <div class="price">$39</div>
-
-        <a href="cart.html" class="buy-btn" onclick="addToCart('BLEACH Rebirth of Souls','$39','BLEACH-ROS-Wallpaper-Article.jpg')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-</div>
-<!----------------------Solo Leveling: ARISE OVERDRIVE-------------------------------------->
-<div class="card">
-
-    <img src="solo-leveling-arise-7680x4320-24734.jpg" class="game-img">
-
-    <div class="card-content">
-
-        <h2>Solo Leveling: ARISE OVERDRIVE</h2>
-
-
-
-        <div class="price">$39</div>
-
-        <a href="cart.html" class="buy-btn" onclick="addToCart('Solo Leveling: ARISE OVERDRIVE','$39','solo-leveling-arise-7680x4320-24734.jpg')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-</div>
-<!-----Demon Slayer -Kimetsu no Yaiba- The Hinokami Chronicles 2----->
-<div class="card">
-
-    <img src="demon_slayer_the_hinokami_chronicles.webp" class="game-img">
-
-    <div class="card-content">
-
-        <h2>Demon Slayer -Kimetsu no Yaiba- The Hinokami Chronicles 2</h2>
-
-
-
-        <div class="price">$50</div>
-
-        <a href="cart.html" class="buy-btn" onclick="addToCart('Demon Slayer -Kimetsu no Yaiba- The Hinokami Chronicles 2','$50','demon_slayer_the_hinokami_chronicles.webp')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-</div>
-<!--------TEKKEN 8-------->
-<div class="card">
-
-    <img src="tekken-8-4k-bandai-namco-entertainment-video-games-hd-wallpaper-preview.jpg" class="game-img">
-
-    <div class="card-content">
-
-        <h2>TEKKEN 8</h2>
-
-
-
-        <div class="price">$26</div>
-
-        <a href="cart.html" class="buy-btn" onclick="addToCart('TEKKEN 8','$26','tekken-8-4k-bandai-namco-entertainment-video-games-hd-wallpaper-preview.jpg')">
-            Buy Now
-        </a>
-
-    </div>
-
-
-
-</div>
-<!-------------------------->
-
-</section>
-   
+                const matchesSearch = name.includes(searchInput);
+                const matchesCategory = selectedCategory === "all" || category === selectedCategory;
+
+                if (matchesSearch && matchesCategory) {
+                    card.style.display = "";
+                    visibleCount++;
+                } else {
+                    card.style.display = "none";
+                }
+            });
+
+            // Update visible catalog status count
+            document.getElementById("catalogCount").innerText = `Showing ${visibleCount} of 32 games`;
+
+            // Handle sorting elements on DOM list
+            if (sortVal !== "featured") {
+                cards.sort((a, b) => {
+                    const nameA = a.dataset.name.toLowerCase();
+                    const nameB = b.dataset.name.toLowerCase();
+                    const priceA = parseFloat(a.dataset.price);
+                    const priceB = parseFloat(b.dataset.price);
+
+                    if (sortVal === "price-low") return priceA - priceB;
+                    if (sortVal === "price-high") return priceB - priceA;
+                    if (sortVal === "name-az") return nameA.localeCompare(nameB);
+                    if (sortVal === "name-za") return nameB.localeCompare(nameA);
+                });
+
+                // Re-append sorted cards in order to the DOM
+                cards.forEach(card => grid.appendChild(card));
+            }
+        }
+    </script>
+
+    <!-- Interactive Game Details Modal Script -->
+    <script>
+        // Modal detail rendering
+        function openDetailsModal(card) {
+            const name = card.dataset.name;
+            const price = card.dataset.price;
+            const desc = card.dataset.desc;
+            const cpu = card.dataset.cpu;
+            const gpu = card.dataset.gpu;
+            const ram = card.dataset.ram;
+            const storage = card.dataset.storage;
+            const esrb = card.dataset.esrb;
+            const year = card.dataset.year;
+            const dev = card.dataset.developer;
+            const platform = card.dataset.platform;
+            const category = card.dataset.category.toUpperCase().replace("-", " ");
+            
+            // Gather original image src
+            const imgElement = card.querySelector("img");
+            let imgUrl = "";
+            if (imgElement) {
+                imgUrl = imgElement.getAttribute("src");
+            }
+
+            // Fill modal components
+            document.getElementById("modalTitle").innerText = name;
+            document.getElementById("modalPrice").innerText = "$" + price;
+            document.getElementById("modalDesc").innerText = desc;
+            document.getElementById("modalCpu").innerText = cpu;
+            document.getElementById("modalGpu").innerText = gpu;
+            document.getElementById("modalRam").innerText = ram;
+            document.getElementById("modalStorage").innerText = storage;
+            document.getElementById("modalEsrb").innerText = esrb;
+            document.getElementById("modalCategory").innerText = category;
+            document.getElementById("modalPlatform").innerText = platform;
+            
+            // Random ratings between 4.4 and 4.9
+            const rating = (4.4 + Math.random() * 0.5).toFixed(1);
+            document.getElementById("modalRating").innerText = "★ " + rating;
+
+            // Handle image load or replacement cards
+            const modalImg = document.getElementById("modalImg");
+            if (imgUrl) {
+                modalImg.src = imgUrl;
+                modalImg.style.display = "block";
+            } else {
+                modalImg.style.display = "none";
+            }
+
+            // Generate customized dynamic holographic review comments
+            const reviewComments = [
+                { user: "NeonKnight99", text: "Visually stunning. Plays exceptionally well on ultra configurations! A masterpiece." },
+                { user: "GlitchHunter", text: "Highly immersive mechanics. The soundtrack is fantastic, definitely worth the credit points." }
+            ];
+            
+            const reviewContainer = document.getElementById("modalReviews");
+            reviewContainer.innerHTML = "";
+            reviewComments.forEach(r => {
+                reviewContainer.innerHTML += `
+                    <div class="review-item">
+                        <div class="review-user">
+                            <span>${r.user}</span>
+                            <span style="color: var(--neon-cyan)">★ Verified Gamer</span>
+                        </div>
+                        <div class="review-text">"${r.text}"</div>
+                    </div>
+                `;
+            });
+
+            // Bind Add to Cart action directly inside the modal buy button
+            const modalBuyBtn = document.getElementById("modalBuyBtn");
+            modalBuyBtn.onclick = () => {
+                addToCart(name, "$" + price, imgUrl);
+                document.getElementById("detailsModal").classList.remove("active");
+            };
+
+            // Display active modal
+            document.getElementById("detailsModal").classList.add("active");
+        }
+
+        // Close details modal on overlay background click
+        function closeDetailsModal(event) {
+            if (event.target.id === "detailsModal") {
+                document.getElementById("detailsModal").classList.remove("active");
+            }
+        }
+    </script>
+    
     <footer>
         © 2026 Grandline Gaming — All Rights Reserved
     </footer>

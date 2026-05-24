@@ -1,78 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <link href="newwww.png" type="image/x-icon" rel="icon">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta name="keywords" content="Grandline Gaming,GRANDLINE,Grandline,randline gaming ">
     <meta name="author" content="Mohammed">
     <meta name="description" content="Grandline Gaming - Buy Games, Accounts and Gift Cards">
-    <title>Grandline Gaming</title>
+    <title>Grandline Gaming - Contact Us</title>
     <link rel="stylesheet" href="c.css">
+    <script src="shared.js"></script>
 </head>
-
 <body>
 
-    <nav>
-
-        <div class="logo">
-            GRANDL GAMING   
-        </div>
-
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="games.html">Games</a></li>
-            <li><a href="cart.html">Cart</a></li>
-            <li><a href="checkout.html">Card</a></li>
-            <li><a href="cn.html">Contact us</a></li>
-        </ul>
-
-    </nav>
-
-    <!------------------------------------------>
+    <!-- NAVBAR dynamically injected by shared.js -->
+    <nav></nav>
 
     <div class="contact-page">
+        
+        <div class="contact-layout">
+            
+            <!-- Left Column: Form -->
+            <div class="contact-box">
+                <h1>Contact Us</h1>
+                <p class="contact-text">Need help or have questions? Send a direct transmission to our crew.</p>
+                
+                <form id="contactForm" onsubmit="handleContactSubmit(event)">
+                    <input type="text" placeholder="Full Name" required>
+                    <input type="email" placeholder="Email Address" required>
+                    <input type="tel" placeholder="Phone Number" required>
+                    <textarea placeholder="Write your message..." rows="6" required></textarea>
+                    
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
 
-        <div class="contact-box">
+            <!-- Right Column: Support Badges -->
+            <div class="contact-info-panel">
+                
+                <!-- Channel 1: Discord -->
+                <div class="contact-card-channel discord">
+                    <div class="channel-icon">💬</div>
+                    <h3>Discord Starfleet</h3>
+                    <p>Join our interactive community server to chat with other pilots, trade accounts, and get instant community feedback.</p>
+                    <a href="https://discord.gg/mocklink" target="_blank" class="channel-action">Join Server</a>
+                </div>
 
-            <h1>Contact Us</h1>
+                <!-- Channel 2: Email -->
+                <div class="contact-card-channel">
+                    <div class="channel-icon">📧</div>
+                    <h3>Galactic Support</h3>
+                    <p>For order disputes, wholesale agreements, or key issues. Send us an email and we'll reply within 24 hours.</p>
+                    <a href="#" onclick="copyEmail(event)" class="channel-action" id="emailBtn">Copy Email</a>
+                </div>
 
-            <p class="contact-text">
-                Need help or have questions? Send us a message.
-            </p>
+                <!-- Channel 3: Live Core -->
+                <div class="contact-card-channel">
+                    <div class="channel-icon" style="display:flex; align-items:center; gap:8px;">
+                        <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10b981; box-shadow:0 0 8px #10b981; animation: pulse 2s infinite;"></span>
+                        <span>🔴</span>
+                    </div>
+                    <h3>Live Support Terminal</h3>
+                    <p>Live chat support is currently online and active. Connect directly to a support specialist in real time.</p>
+                    <a href="#" onclick="openLiveChat(event)" class="channel-action">Initiate Chat</a>
+                </div>
 
-            <form>
-
-                <input  type="text"
-                placeholder="Full Name"
-                required>
-
-                <input type="email"
-                placeholder="Email Address"
-                required>
-
-                <input type="tel"
-                placeholder="Phone Number"
-                required>
-
-                <textarea
-                placeholder="Write your message..."
-                rows="6"
-                required></textarea>
-
-                <button type="submit">
-                    Send Message
-                </button>
-
-            </form>
+            </div>
 
         </div>
 
     </div>
+
+    <!-- CONTACT LOGIC -->
+    <script>
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            
+            // Clear inputs
+            document.getElementById("contactForm").reset();
+
+            // Fire global shared.js toast success popup
+            showToast("Transmission successfully beamed! Our crew will respond shortly. ⚡");
+        }
+
+        function copyEmail(event) {
+            event.preventDefault();
+            const email = "support@grandlinegaming.space";
+            
+            // Clipboard copy API
+            navigator.clipboard.writeText(email).then(() => {
+                showToast("Email address copied to clipboard!");
+                const btn = document.getElementById("emailBtn");
+                btn.innerText = "Copied!";
+                setTimeout(() => {
+                    btn.innerText = "Copy Email";
+                }, 2000);
+            }).catch(() => {
+                showToast("Unable to copy email.", "error");
+            });
+        }
+
+        function openLiveChat(event) {
+            event.preventDefault();
+            showToast("Connecting to Galactic Support Specialist... Please standby! 📡");
+        }
+    </script>
+
     <footer>
         © 2026 Grandline Gaming — All Rights Reserved
     </footer>
 
 </body>
-
 </html>

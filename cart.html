@@ -1,153 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <link href="newwww.png" type="image/x-icon" rel="icon">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta name="keywords" content="Grandline Gaming,GRANDLINE,Grandline,randline gaming ">
     <meta name="author" content="Mohammed">
     <meta name="description" content="Grandline Gaming - Buy Games, Accounts and Gift Cards">
-    <title>Grandline Gaming</title>
+    <title>Grandline Gaming - Cart</title>
     <link rel="stylesheet" href="c.css">
+    <script src="shared.js"></script>
 </head>
-
 <body>
 
-    <nav>
-
-        <div class="logo">
-            GRANDL GAMING
-        </div>
-
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="games.html">Games</a></li>
-            <li><a href="cart.html">Cart</a></li>
-            <li><a href="checkout.html">Card</a></li>
-            <li><a href="cn.html">Contact us</a></li>
-        </ul>
-
-    </nav>
-
-    <!------------------------------------------------------------->
+    <!-- NAVBAR dynamically injected by shared.js -->
+    <nav></nav>
 
     <div class="cart-page">
-
         <h1>Your Cart</h1>
-
         <div id="cartContainer"></div>
-
     </div>
 
-    <!------------------------------------------------------------->
-
     <script>
-
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        let coinsApplied = 0;
+        let discountApplied = 0;
 
-        let container = document.getElementById("cartContainer");
-
-        if (cart.length === 0) {
-
-            container.innerHTML = `
-
-            <div class="empty-cart">
-
-                <h2>Your cart is empty</h2>
-
-                <p>
-                    Looks like you haven't added any games yet.
-                </p>
-
-                <a href="games.html" class="browse-btn">
-                    Browse Games
-                </a>
-
-            </div>
-
-            `;
-
-        } else {
-
-            let total = 0;
-
-            let gamesHTML = "";
-
-            cart.forEach((game, index) => {
-
-                total += Number(game.price.replace("$", ""));
-
-                gamesHTML += `
-
-                <div class="cart-card">
-
-                    <img src="${game.image}" class="game-img">
-
-                    <div class="game-info">
-                        <h2>${game.name}</h2>
-                        <p class="price">${game.price}</p>
+        function renderCart() {
+            let container = document.getElementById("cartContainer");
+            
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-cart">
+                        <h2>Your cart is empty</h2>
+                        <p>Looks like you haven't added any games yet.</p>
+                        <a href="games.html" class="browse-btn">Browse Games</a>
                     </div>
-
-                    <button class="remove-btn"
-                    onclick="removeGame(${index})">
-                        Remove
-                    </button>
-
-                </div>
-
                 `;
-            });
+            } else {
+                let total = 0;
+                let gamesHTML = "";
 
-            container.innerHTML = `
+                cart.forEach((game, index) => {
+                    total += Number(game.price.replace("$", ""));
+                    
+                    gamesHTML += `
+                        <div class="cart-card" id="cartCard-${index}">
+                            <div class="game-img-container">
+                                <img src="${game.image}" class="game-img" alt="${game.name}">
+                            </div>
+                            <div class="game-info">
+                                <h2>${game.name}</h2>
+                                <p class="price">${game.price}</p>
+                            </div>
+                            <button class="remove-btn" onclick="animateRemove(${index})">
+                                Remove
+                            </button>
+                        </div>
+                    `;
+                });
 
-            <div class="cart-content"
-            style="margin:50px">
+                // Calculate maximum coins they can redeem (100 coins = $1, up to the total price)
+                let userCoins = getGLC();
+                let maxRedeemableCoins = Math.min(userCoins, Math.floor(total * 100));
 
-                <div class="cart-items">
+                container.innerHTML = `
+                    <div class="cart-content">
+                        <div class="cart-items">
+                            ${gamesHTML}
+                        </div>
+                        
+                        <div class="summary-box">
+                            <h2>Order Summary</h2>
+                            
+                            <!-- Dynamic Loyalty points redemption -->
+                            <div class="loyalty-discount-section">
+                                <div class="loyalty-header">
+                                    <span>🪙 LOYALTY DISCOUNT</span>
+                                </div>
+                                <div class="loyalty-body">
+                                    <div class="loyalty-coins-available">
+                                        Wallet: <span style="color: var(--neon-orange); font-weight:700;">${userCoins} GLC</span>
+                                    </div>
+                                    <div class="loyalty-redeem-controls">
+                                        <div class="loyalty-input-container">
+                                            <input type="number" id="coinRedeemInput" min="0" max="${maxRedeemableCoins}" 
+                                                   value="${coinsApplied}" placeholder="Redeem Coins (100 = $1)" oninput="validateCoinRedeem(this, ${total})">
+                                        </div>
+                                        <button class="loyalty-apply-btn" onclick="applyLoyaltyCoins(${total})">Apply</button>
+                                    </div>
+                                    <div style="font-size:0.75rem; color:var(--text-muted);">
+                                        Max redeemable: ${maxRedeemableCoins} GLC (-$${(maxRedeemableCoins/100).toFixed(2)})
+                                    </div>
+                                </div>
+                            </div>
 
-                    ${gamesHTML}
+                            <div class="summary-line">
+                                <span>Subtotal</span>
+                                <span>$${total.toFixed(2)}</span>
+                            </div>
+                            
+                            <div class="summary-line discount" id="discountSummaryLine" style="display: none;">
+                                <span>GLC Discount</span>
+                                <span id="discountValueSummary">-$0.00</span>
+                            </div>
 
-                </div>
+                            <div class="summary-line total">
+                                <span>Total</span>
+                                <span id="cartTotalSummary">$${total.toFixed(2)}</span>
+                            </div>
 
-                <div class="summary-box">
-
-                    <h2>Order Summary</h2>
-
-                    <div class="summary-line">
-                        <span>Total</span>
-                        <span>$${total}</span>
+                            <a href="#" onclick="proceedToCheckout(event)" class="checkout-btn">
+                                Proceed to Checkout
+                            </a>
+                        </div>
                     </div>
+                `;
+                
+                // Run image fallback triggers in case new elements rendered in DOM
+                setupImageFallbacks();
+                
+                // Keep values if they had already applied coins previously in this session
+                let prevCoins = sessionStorage.getItem("coinsApplied");
+                if (prevCoins) {
+                    document.getElementById("coinRedeemInput").value = prevCoins;
+                    applyLoyaltyCoins(total);
+                }
+            }
+        }
 
-                    <a href="checkout.html" class="checkout-btn">
-                           Checkout
-                     </a>
+        // Real-time boundary input adjustments
+        function validateCoinRedeem(input, total) {
+            let userCoins = getGLC();
+            let maxRedeem = Math.min(userCoins, Math.floor(total * 100));
+            let val = parseInt(input.value) || 0;
+            if (val < 0) input.value = 0;
+            if (val > maxRedeem) input.value = maxRedeem;
+        }
 
-                </div>
+        // Apply dynamic deduction Math
+        function applyLoyaltyCoins(total) {
+            let input = document.getElementById("coinRedeemInput");
+            if (!input) return;
+            
+            let val = parseInt(input.value) || 0;
+            let userCoins = getGLC();
+            let maxRedeem = Math.min(userCoins, Math.floor(total * 100));
+            
+            if (val > maxRedeem) val = maxRedeem;
+            
+            coinsApplied = val;
+            discountApplied = coinsApplied / 100;
+            
+            // Store applied values inside SessionStorage so checkout can inherit them
+            sessionStorage.setItem("coinsApplied", coinsApplied.toString());
+            sessionStorage.setItem("discountApplied", discountApplied.toString());
 
-            </div>
+            // Re-render UI calculation values
+            let finalPrice = total - discountApplied;
+            
+            let discountLine = document.getElementById("discountSummaryLine");
+            let discountValSpan = document.getElementById("discountValueSummary");
+            let cartTotalSpan = document.getElementById("cartTotalSummary");
 
-            `;
+            if (discountApplied > 0) {
+                discountLine.style.display = "flex";
+                discountValSpan.innerText = `-$${discountApplied.toFixed(2)}`;
+                showToast(`Applied ${coinsApplied} GLC discount! Saved $${discountApplied.toFixed(2)} 🪙`);
+            } else {
+                discountLine.style.display = "none";
+            }
+            
+            cartTotalSpan.innerText = `$${finalPrice.toFixed(2)}`;
+        }
+
+        // Custom validation on Proceed
+        function proceedToCheckout(event) {
+            event.preventDefault();
+            if (cart.length === 0) {
+                showToast("Your cart is empty! Browse catalog to shop.", "error");
+                return;
+            }
+            // Navigate directly to card checkout screen
+            location.href = "checkout.html";
+        }
+
+        // Custom smooth card removal keyframes
+        function animateRemove(index) {
+            let card = document.getElementById(`cartCard-${index}`);
+            if (card) {
+                card.classList.add("removing");
+                
+                // Wait for the slide-out animation to complete (500ms) before splicing state
+                setTimeout(() => {
+                    removeGame(index);
+                }, 500);
+            }
         }
 
         function removeGame(index) {
-
             cart.splice(index, 1);
-
             localStorage.setItem("cart", JSON.stringify(cart));
-
-            location.reload();
+            
+            // If cart becomes empty, clean up session loyalty discounts
+            if (cart.length === 0) {
+                sessionStorage.removeItem("coinsApplied");
+                sessionStorage.removeItem("discountApplied");
+            }
+            
+            showToast("Item deleted from cart.");
+            renderCart();
         }
 
+        // Render initially
+        renderCart();
     </script>
-    <br>
-    <br>
-    <br><br><br><br><br><br>
-    <br><br><br><br>
 
     <footer>
         © 2026 Grandline Gaming — All Rights Reserved
     </footer>
 
 </body>
-
 </html>

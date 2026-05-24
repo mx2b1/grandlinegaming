@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="newwww.png" type="image/x-icon" rel="icon">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="keywords" content="Grandline Gaming,GRANDLINE,Grandline,login">
+    <meta name="author" content="Mohammed">
+    <meta name="description" content="Grandline Gaming - Login or Register to access your account">
+    <title>Grandline Gaming — Login</title>
+    <link rel="stylesheet" href="c.css">
+    <style>
+        /* ======================================================
+           LOGIN PAGE — Ultra-Dark Overlay System
+           ====================================================== */
+
+        html, body {
+            background: #000000 !important;
+            background-image: none !important;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Floating particle canvas backdrop */
+        #loginCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Central glass portal card */
+        .login-portal {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 30px 20px;
+        }
+
+        /* Brand header above card */
+        .login-brand {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 2rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #d4af37, #f6e0a4, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .login-brand-sub {
+            font-size: 0.75rem;
+            color: #5c4c2d;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            background: rgba(6, 5, 3, 0.92);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 16px;
+            padding: 40px 36px;
+            box-shadow:
+                0 0 0 1px rgba(212, 175, 55, 0.05),
+                0 20px 60px rgba(0, 0, 0, 0.9),
+                0 0 40px rgba(212, 175, 55, 0.06),
+                inset 0 1px 0 rgba(212, 175, 55, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle inner glow trace */
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 10%;
+            width: 80%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.4), transparent);
+        }
+
+        /* === Tabs === */
+        .auth-tabs {
+            display: flex;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+            margin-bottom: 36px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 12px 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #5c4c2d;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .auth-tab::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, #d4af37, #f6e0a4);
+            transition: width 0.35s ease;
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
+        }
+
+        .auth-tab.active {
+            color: #f6e0a4;
+        }
+
+        .auth-tab.active::after {
+            width: 70%;
+        }
+
+        /* === Form panels === */
+        .auth-panels {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-panel {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+            animation: panelFadeIn 0.4s ease forwards;
+        }
+
+        .auth-panel.active {
+            display: flex;
+        }
+
+        @keyframes panelFadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* === Input Groups === */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: relative;
+        }
+
+        .input-group label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #8a7355;
+            padding-left: 4px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 13px 16px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(212, 175, 55, 0.12);
+            border-radius: 8px;
+            color: #eae0c8;
+            font-size: 0.95rem;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input::placeholder {
+            color: #3a3020;
+        }
+
+        .input-group input:focus {
+            border-color: rgba(212, 175, 55, 0.5);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.07), 0 0 12px rgba(212, 175, 55, 0.15);
+            background: rgba(10, 9, 5, 0.9);
+            outline: none;
+        }
+
+        /* === Submit buttons === */
+        .auth-btn {
+            width: 100%;
+            padding: 14px 20px;
+            margin-top: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #000;
+            background: linear-gradient(135deg, #d4af37, #f6e0a4, #d4af37);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3), 0 0 40px rgba(212, 175, 55, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .auth-btn:hover::before {
+            left: 100%;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.5);
+        }
+
+        .auth-btn:active {
+            transform: translateY(0);
+        }
+
+        /* === Error / hint text === */
+        .auth-error {
+            display: none;
+            padding: 10px 14px;
+            background: rgba(200, 50, 50, 0.08);
+            border: 1px solid rgba(200, 50, 50, 0.25);
+            border-radius: 6px;
+            color: #f87171;
+            font-size: 0.82rem;
+            text-align: center;
+        }
+
+        .auth-error.visible {
+            display: block;
+        }
+
+        .auth-hint {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #5c4c2d;
+            margin-top: 6px;
+        }
+
+        .auth-hint span {
+            color: #d4af37;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .auth-hint span:hover {
+            color: #f6e0a4;
+        }
+
+        /* === Divider === */
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #3a3020;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(212, 175, 55, 0.08);
+        }
+
+        /* === Protected info notice === */
+        .auth-notice {
+            margin-top: 28px;
+            padding: 12px 16px;
+            background: rgba(212, 175, 55, 0.03);
+            border: 1px solid rgba(212, 175, 55, 0.08);
+            border-radius: 8px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            font-size: 0.78rem;
+            color: #6b5f40;
+            line-height: 1.5;
+        }
+
+        .auth-notice-icon {
+            color: #d4af37;
+            font-size: 1rem;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* === Skip guest link === */
+        .guest-link {
+            margin-top: 22px;
+            font-size: 0.75rem;
+            color: #3a3020;
+            text-align: center;
+        }
+
+        .guest-link a {
+            color: #5c4c2d;
+            border-bottom: 1px solid rgba(92, 76, 45, 0.3);
+            transition: color 0.2s;
+        }
+
+        .guest-link a:hover {
+            color: #8a7355;
+        }
+
+        /* === Floating particle styles are handled by canvas === */
+    </style>
+</head>
+<body>
+
+    <!-- Particle Canvas Background -->
+    <canvas id="loginCanvas"></canvas>
+
+    <!-- Login Portal -->
+    <div class="login-portal">
+
+        <div class="login-brand">GRANDLINE</div>
+        <div class="login-brand-sub">Gaming Hub · Secure Portal</div>
+
+        <div class="login-card">
+
+            <!-- Tabs -->
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Login</button>
+                <button class="auth-tab" id="tabRegister" onclick="switchTab('register')">Register</button>
+            </div>
+
+            <!-- Login Panel -->
+            <div class="auth-panel active" id="panelLogin">
+                <div class="input-group">
+                    <label for="loginUser">Username</label>
+                    <input type="text" id="loginUser" placeholder="Enter your username" autocomplete="username">
+                </div>
+                <div class="input-group">
+                    <label for="loginPass">Password</label>
+                    <input type="password" id="loginPass" placeholder="Enter your password" autocomplete="current-password">
+                </div>
+                <div class="auth-error" id="loginError">Incorrect username or password. Try again.</div>
+                <button class="auth-btn" onclick="handleLogin()">Enter the Hub</button>
+                <div class="auth-hint">
+                    No account? <span onclick="switchTab('register')">Create one free →</span>
+                </div>
+            </div>
+
+            <!-- Register Panel -->
+            <div class="auth-panel" id="panelRegister">
+                <div class="input-group">
+                    <label for="regUser">Username</label>
+                    <input type="text" id="regUser" placeholder="Choose a username" autocomplete="username">
+                </div>
+                <div class="input-group">
+                    <label for="regEmail">Email</label>
+                    <input type="email" id="regEmail" placeholder="your@email.com" autocomplete="email">
+                </div>
+                <div class="input-group">
+                    <label for="regPass">Password</label>
+                    <input type="password" id="regPass" placeholder="Create a strong password" autocomplete="new-password">
+                </div>
+                <div class="input-group">
+                    <label for="regConfirm">Confirm Password</label>
+                    <input type="password" id="regConfirm" placeholder="Repeat your password" autocomplete="new-password">
+                </div>
+                <div class="auth-error" id="registerError">Passwords do not match.</div>
+                <button class="auth-btn" onclick="handleRegister()">Create Account</button>
+                <div class="auth-hint">
+                    Already have an account? <span onclick="switchTab('login')">← Login here</span>
+                </div>
+            </div>
+
+            <!-- Protected notice -->
+            <div class="auth-notice">
+                <div class="auth-notice-icon">🔐</div>
+                <div>Login is required to access the <strong style="color:#c5a880;">Arcade</strong>, <strong style="color:#c5a880;">Cart</strong>, and <strong style="color:#c5a880;">Checkout</strong>. Your GLC coins and cart data are saved to your session.</div>
+            </div>
+
+        </div>
+
+        <!-- Guest-only access link -->
+        <div class="guest-link">
+            Just browsing? <a href="index.html">Continue as guest →</a>
+        </div>
+
+    </div>
+
+    <script>
+        // ----------------------------------------------------------------
+        // TAB SWITCHING
+        // ----------------------------------------------------------------
+        function switchTab(tab) {
+            const loginPanel    = document.getElementById('panelLogin');
+            const registerPanel = document.getElementById('panelRegister');
+            const tabLogin      = document.getElementById('tabLogin');
+            const tabRegister   = document.getElementById('tabRegister');
+
+            document.getElementById('loginError').classList.remove('visible');
+            document.getElementById('registerError').classList.remove('visible');
+
+            if (tab === 'login') {
+                loginPanel.classList.add('active');
+                registerPanel.classList.remove('active');
+                tabLogin.classList.add('active');
+                tabRegister.classList.remove('active');
+            } else {
+                registerPanel.classList.add('active');
+                loginPanel.classList.remove('active');
+                tabRegister.classList.add('active');
+                tabLogin.classList.remove('active');
+            }
+        }
+
+        // ----------------------------------------------------------------
+        // LOGIN HANDLER
+        // ----------------------------------------------------------------
+        function handleLogin() {
+            const username = document.getElementById('loginUser').value.trim();
+            const password = document.getElementById('loginPass').value;
+            const errBox   = document.getElementById('loginError');
+            
+            if (!username || !password) {
+                errBox.innerText = 'Please fill in all fields.';
+                errBox.classList.add('visible');
+                return;
+            }
+
+            // Load stored users
+            const users = JSON.parse(localStorage.getItem('gl_users') || '{}');
+
+            if (!users[username] || users[username].password !== password) {
+                errBox.innerText = 'Incorrect username or password. Try again.';
+                errBox.classList.add('visible');
+                shakeCard();
+                return;
+            }
+
+            // Successful login
+            errBox.classList.remove('visible');
+            localStorage.setItem('userLoggedIn', 'true');
+            localStorage.setItem('currentUser', username);
+
+            // Redirect back to original target or homepage
+            const params   = new URLSearchParams(window.location.search);
+            const redirect = params.get('redirect') || 'index.html';
+            window.location.href = redirect;
+        }
+
+        // ----------------------------------------------------------------
+        // REGISTER HANDLER
+        // ----------------------------------------------------------------
+        function handleRegister() {
+            const username = document.getElementById('regUser').value.trim();
+            const email    = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPass').value;
+            const confirm  = document.getElementById('regConfirm').value;
+            const errBox   = document.getElementById('registerError');
+
+            if (!username || !email || !password || !confirm) {
+                errBox.innerText = 'Please fill in all fields.';
+                errBox.classList.add('visible');
+                return;
+            }
+
+            if (password !== confirm) {
+                errBox.innerText = 'Passwords do not match. Try again.';
+                errBox.classList.add('visible');
+                shakeCard();
+                return;
+            }
+
+            if (password.length < 4) {
+                errBox.innerText = 'Password must be at least 4 characters.';
+                errBox.classList.add('visible');
+                return;
+            }
+
+            // Save new user
+            const users = JSON.parse(localStorage.getItem('gl_users') || '{}');
+            
+            if (users[username]) {
+                errBox.innerText = 'That username is already taken. Choose another.';
+                errBox.classList.add('visible');
+                return;
+            }
+
+            users[username] = { password, email };
+            localStorage.setItem('gl_users', JSON.stringify(users));
+
+            // Auto-login immediately
+            localStorage.setItem('userLoggedIn', 'true');
+            localStorage.setItem('currentUser', username);
+
+            // Notify and redirect
+            const params   = new URLSearchParams(window.location.search);
+            const redirect = params.get('redirect') || 'index.html';
+
+            // Small visual success before redirect
+            errBox.style.background = 'rgba(16, 185, 129, 0.08)';
+            errBox.style.borderColor = 'rgba(16, 185, 129, 0.25)';
+            errBox.style.color = '#10b981';
+            errBox.innerText = `Welcome, ${username}! Accessing the Hub...`;
+            errBox.classList.add('visible');
+
+            setTimeout(() => {
+                window.location.href = redirect;
+            }, 900);
+        }
+
+        // ----------------------------------------------------------------
+        // SHAKE animation for login card on error
+        // ----------------------------------------------------------------
+        function shakeCard() {
+            const card = document.querySelector('.login-card');
+            card.style.animation = 'none';
+            card.offsetHeight; // force reflow
+            card.style.animation = 'shakeCard 0.4s ease';
+        }
+
+        // Allow Enter key to submit forms
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const loginPanel    = document.getElementById('panelLogin');
+                const registerPanel = document.getElementById('panelRegister');
+                if (loginPanel.classList.contains('active')) handleLogin();
+                else if (registerPanel.classList.contains('active')) handleRegister();
+            }
+        });
+
+        // ----------------------------------------------------------------
+        // FLOATING PARTICLES CANVAS BACKGROUND
+        // ----------------------------------------------------------------
+        const canvas = document.getElementById('loginCanvas');
+        const ctx    = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width  = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Generate initial particles
+        function createParticles(count) {
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 1.5 + 0.3,
+                    alpha: Math.random() * 0.4 + 0.05,
+                    vx: (Math.random() - 0.5) * 0.18,
+                    vy: (Math.random() - 0.5) * 0.18,
+                    pulse: Math.random() * Math.PI * 2,
+                    pulseSpeed: Math.random() * 0.015 + 0.005
+                });
+            }
+        }
+        createParticles(100);
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Subtle vignette
+            const vignette = ctx.createRadialGradient(
+                canvas.width / 2, canvas.height / 2, canvas.width * 0.15,
+                canvas.width / 2, canvas.height / 2, canvas.width * 0.75
+            );
+            vignette.addColorStop(0, 'rgba(0,0,0,0)');
+            vignette.addColorStop(1, 'rgba(0,0,0,0.65)');
+            ctx.fillStyle = vignette;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Floating gold dust particles
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.pulse += p.pulseSpeed;
+
+                // Wrap edges
+                if (p.x < 0) p.x = canvas.width;
+                if (p.x > canvas.width) p.x = 0;
+                if (p.y < 0) p.y = canvas.height;
+                if (p.y > canvas.height) p.y = 0;
+
+                const pulsedAlpha = p.alpha * (0.5 + 0.5 * Math.sin(p.pulse));
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(212, 175, 55, ${pulsedAlpha})`;
+                ctx.fill();
+            });
+
+            // Thin horizontal gold line sweeping effect
+            const sweepY = (Date.now() / 30) % canvas.height;
+            const sweepGrad = ctx.createLinearGradient(0, sweepY - 40, 0, sweepY + 40);
+            sweepGrad.addColorStop(0, 'rgba(212, 175, 55, 0)');
+            sweepGrad.addColorStop(0.5, 'rgba(212, 175, 55, 0.03)');
+            sweepGrad.addColorStop(1, 'rgba(212, 175, 55, 0)');
+            ctx.fillStyle = sweepGrad;
+            ctx.fillRect(0, sweepY - 40, canvas.width, 80);
+
+            requestAnimationFrame(drawParticles);
+        }
+        drawParticles();
+    </script>
+
+    <style>
+        @keyframes shakeCard {
+            0%  { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+            100%{ transform: translateX(0); }
+        }
+    </style>
+
+</body>
+</html>

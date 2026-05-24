@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="newwww.png" type="image/x-icon" rel="icon">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="keywords" content="Grandline Gaming,GRANDLINE,Grandline,randline gaming ">
+    <meta name="author" content="Mohammed">
+    <meta name="description" content="Grandline Gaming - Play Games, Earn Coins, Buy Games!">
+    <title>Grandline Arcade</title>
+    <link rel="stylesheet" href="c.css">
+    <script src="shared.js"></script>
+</head>
+<body>
+
+    <!-- NAVBAR dynamically updated by shared.js -->
+    <nav></nav>
+
+    <div class="arcade-container">
+        
+        <!-- Arcade Hero Section -->
+        <div class="arcade-hero" id="arcadeHero">
+            <h1>GRANDLINE ARCADE</h1>
+            <p>Play our retro mini-games, earn Grandline Coins (GLC), and redeem them for exclusive discounts in our store! 🪙</p>
+        </div>
+
+        <!-- Arcade Lobby Screen -->
+        <div class="arcade-lobby" id="arcadeLobby">
+            
+            <!-- Game 1: Cyber Snake -->
+            <div class="arcade-game-card snake">
+                <div class="game-card-banner">
+                    <div class="game-card-banner-fallback">🐍</div>
+                </div>
+                <div class="game-card-body">
+                    <h2>Cyber Snake</h2>
+                    <p>Navigate the neon grid, consume energy core fragments to grow, and avoid crashing into the power walls. Retro classic revamped!</p>
+                    <div class="game-payout-tag">🪙 Payout: 1 GLC per 10 points</div>
+                    <button class="play-game-btn" onclick="startArcadeGame('snake')">Play Cyber Snake</button>
+                </div>
+            </div>
+
+            <!-- Game 2: Space Defender -->
+            <div class="arcade-game-card defender">
+                <div class="game-card-banner">
+                    <div class="game-card-banner-fallback">🚀</div>
+                </div>
+                <div class="game-card-body">
+                    <h2>Space Defender</h2>
+                    <p>Take control of the Grandline starfighter! Shoot down falling meteorites and space anomalies to defend the gaming realm.</p>
+                    <div class="game-payout-tag">🪙 Payout: 5 GLC per kill</div>
+                    <button class="play-game-btn" onclick="startArcadeGame('defender')">Play Space Defender</button>
+                </div>
+            </div>
+
+            <!-- Game 3: Memory Match -->
+            <div class="arcade-game-card memory">
+                <div class="game-card-banner">
+                    <div class="game-card-banner-fallback">🃏</div>
+                </div>
+                <div class="game-card-body">
+                    <h2>Memory Match</h2>
+                    <p>Test your brain! Match game titles like Elden Ring, Wukong, and GTA V in a 4x4 holographic grid before time runs out.</p>
+                    <div class="game-payout-tag">🪙 Payout: 50 GLC on clear</div>
+                    <button class="play-game-btn" onclick="startArcadeGame('memory')">Play Memory Match</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Active Game Screen (Hidden initially) -->
+        <div class="arcade-active-screen" id="activeGameScreen" style="display: none;">
+            
+            <div class="active-game-header">
+                <h2 id="activeGameTitle">Game Screen</h2>
+                <button class="back-lobby-btn" onclick="exitToLobby()">Quit to Lobby</button>
+            </div>
+
+            <div class="game-viewport-container" id="viewportContainer">
+                
+                <!-- Game Canvas -->
+                <canvas id="gameCanvas" width="480" height="400" class="game-canvas"></canvas>
+                
+                <!-- Memory Game HTML Grid -->
+                <div id="memoryGrid" class="memory-grid" style="display: none;"></div>
+
+                <!-- Overlays (Start, Game Over, Success) -->
+                <div class="active-game-overlay" id="gameOverlay">
+                    <div class="overlay-title" id="overlayTitle">Ready?</div>
+                    <div class="overlay-subtitle" id="overlaySubtitle">Press the button below to start!</div>
+                    <div class="overlay-reward" id="overlayReward" style="display: none;">Earned: 0 GLC</div>
+                    <button class="start-game-btn" id="overlayBtn" onclick="runSelectedGame()">Start Mission</button>
+                </div>
+
+            </div>
+
+            <div class="game-hud" id="gameHud">
+                <div class="hud-item" id="hudItem1">Score: <span id="hudVal1">0</span></div>
+                <div class="hud-item" id="hudItem2">High Score: <span id="hudVal2">0</span></div>
+                <div class="hud-item" id="hudItem3">Coins Earned: <span id="hudVal3">0</span></div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <footer>
+        © 2026 Grandline Gaming — All Rights Reserved
+    </footer>
+
+    <!-- ARCADE SCRIPT SYSTEM -->
+    <script>
+        let currentGame = "";
+        let canvas = document.getElementById("gameCanvas");
+        let ctx = canvas.getContext("2d");
+        
+        let score = 0;
+        let coinsEarned = 0;
+        let isPlaying = false;
+        let gameLoopId = null;
+
+        // Keys State
+        let keys = {};
+        window.addEventListener("keydown", e => {
+            keys[e.code] = true;
+            // Prevent scrolling on space and arrows when playing in viewport
+            if (isPlaying && ["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.code)) {
+                e.preventDefault();
+            }
+        });
+        window.addEventListener("keyup", e => keys[e.code] = false);
+
+        // Main Lobby routing
+        function startArcadeGame(gameType) {
+            currentGame = gameType;
+            document.getElementById("arcadeLobby").style.display = "none";
+            document.getElementById("arcadeHero").style.display = "none";
+            document.getElementById("activeGameScreen").style.display = "flex";
+            
+            // Set HUD titles and overlay initial state
+            const title = document.getElementById("activeGameTitle");
+            const oTitle = document.getElementById("overlayTitle");
+            const oSubtitle = document.getElementById("overlaySubtitle");
+            const oReward = document.getElementById("overlayReward");
+            const oBtn = document.getElementById("overlayBtn");
+            const canvasEl = document.getElementById("gameCanvas");
+            const memGrid = document.getElementById("memoryGrid");
+            
+            canvasEl.style.display = "block";
+            memGrid.style.display = "none";
+            oReward.style.display = "none";
+            document.getElementById("gameOverlay").style.display = "flex";
+            
+            if (gameType === "snake") {
+                title.innerText = "Cyber Snake";
+                oTitle.innerText = "Cyber Snake";
+                oSubtitle.innerText = "Control the neon snake with Arrow Keys or WASD. Eat cells to grow!";
+                oBtn.innerText = "Initialize Core";
+                resetHUDLabels("Score", "High Score", "GLC Earned");
+                updateHUD(0, localStorage.getItem("snake_high") || 0, 0);
+            } else if (gameType === "defender") {
+                title.innerText = "Space Defender";
+                oTitle.innerText = "Space Defender";
+                oSubtitle.innerText = "Move left/right with A/D or Arrow Keys. Shoot lasers using SPACEBAR!";
+                oBtn.innerText = "Launch Starfighter";
+                resetHUDLabels("Score", "Lives Left", "GLC Earned");
+                updateHUD(0, 3, 0);
+            } else if (gameType === "memory") {
+                title.innerText = "Memory Match";
+                oTitle.innerText = "Memory Match";
+                oSubtitle.innerText = "Match all holographic cards within 60 seconds to claim the jackpot!";
+                oBtn.innerText = "Engage Matrix";
+                canvasEl.style.display = "none";
+                memGrid.style.display = "grid";
+                resetHUDLabels("Matches", "Timer", "GLC Earned");
+                updateHUD("0/8", "60s", 0);
+                setupMemoryGridHTML();
+            }
+        }
+
+        function exitToLobby() {
+            stopGameLoops();
+            document.getElementById("activeGameScreen").style.display = "none";
+            document.getElementById("arcadeLobby").style.display = "grid";
+            document.getElementById("arcadeHero").style.display = "block";
+        }
+
+        function stopGameLoops() {
+            isPlaying = false;
+            if (gameLoopId) {
+                cancelAnimationFrame(gameLoopId);
+                gameLoopId = null;
+            }
+            if (memoryTimerInterval) {
+                clearInterval(memoryTimerInterval);
+                memoryTimerInterval = null;
+            }
+        }
+
+        function resetHUDLabels(label1, label2, label3) {
+            document.getElementById("hudItem1").innerHTML = `${label1}: <span id="hudVal1">0</span>`;
+            document.getElementById("hudItem2").innerHTML = `${label2}: <span id="hudVal2">0</span>`;
+            document.getElementById("hudItem3").innerHTML = `${label3}: <span id="hudVal3">0</span>`;
+        }
+
+        function updateHUD(val1, val2, val3) {
+            document.getElementById("hudVal1").innerText = val1;
+            document.getElementById("hudVal2").innerText = val2;
+            document.getElementById("hudVal3").innerText = val3;
+        }
+
+        function runSelectedGame() {
+            document.getElementById("gameOverlay").style.display = "none";
+            isPlaying = true;
+            score = 0;
+            coinsEarned = 0;
+            
+            if (currentGame === "snake") {
+                initSnakeGame();
+            } else if (currentGame === "defender") {
+                initDefenderGame();
+            } else if (currentGame === "memory") {
+                initMemoryGame();
+            }
+        }
+
+        // ==========================================================================
+        // CYBER SNAKE GAME PROGRAMMING
+        // ==========================================================================
+        let snake = [];
+        let snakeDir = { x: 0, y: 0 };
+        let nextDir = { x: 0, y: 0 };
+        let snakeGridSize = 20;
+        let food = { x: 0, y: 0 };
+        let snakeSpeed = 100; // ms per step
+        let lastSnakeTick = 0;
+        let snakeParticles = [];
+
+        function initSnakeGame() {
+            snake = [
+                { x: 10 * snakeGridSize, y: 10 * snakeGridSize },
+                { x: 9 * snakeGridSize, y: 10 * snakeGridSize },
+                { x: 8 * snakeGridSize, y: 10 * snakeGridSize }
+            ];
+            snakeDir = { x: snakeGridSize, y: 0 };
+            nextDir = { x: snakeGridSize, y: 0 };
+            score = 0;
+            coinsEarned = 0;
+            snakeParticles = [];
+            spawnSnakeFood();
+            
+            lastSnakeTick = performance.now();
+            updateHUD(0, localStorage.getItem("snake_high") || 0, 0);
+            
+            gameLoopId = requestAnimationFrame(snakeGameLoop);
+        }
+
+        function spawnSnakeFood() {
+            food = {
+                x: Math.floor(Math.random() * (canvas.width / snakeGridSize)) * snakeGridSize,
+                y: Math.floor(Math.random() * (canvas.height / snakeGridSize)) * snakeGridSize
+            };
+            // Prevent spawning on snake body
+            for (let cell of snake) {
+                if (cell.x === food.x && cell.y === food.y) {
+                    spawnSnakeFood();
+                    break;
+                }
+            }
+        }
+
+        function snakeGameLoop(timestamp) {
+            if (!isPlaying) return;
+            gameLoopId = requestAnimationFrame(snakeGameLoop);
+            
+            // Handle snake input keys immediately to avoid input delay
+            if ((keys["ArrowUp"] || keys["KeyW"]) && snakeDir.y === 0) nextDir = { x: 0, y: -snakeGridSize };
+            if ((keys["ArrowDown"] || keys["KeyS"]) && snakeDir.y === 0) nextDir = { x: 0, y: snakeGridSize };
+            if ((keys["ArrowLeft"] || keys["KeyA"]) && snakeDir.x === 0) nextDir = { x: -snakeGridSize, y: 0 };
+            if ((keys["ArrowRight"] || keys["KeyD"]) && snakeDir.x === 0) nextDir = { x: snakeGridSize, y: 0 };
+
+            // Clear Screen
+            ctx.fillStyle = "#020205";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw Grid lines subtle cyber effect
+            ctx.strokeStyle = "rgba(212, 175, 55, 0.04)";
+            ctx.lineWidth = 1;
+            for (let i = 0; i < canvas.width; i += snakeGridSize) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i, canvas.height);
+                ctx.stroke();
+            }
+            for (let i = 0; i < canvas.height; i += snakeGridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, i);
+                ctx.lineTo(canvas.width, i);
+                ctx.stroke();
+            }
+
+            // Update snake movement based on speed interval
+            let elapsed = timestamp - lastSnakeTick;
+            if (elapsed > snakeSpeed) {
+                lastSnakeTick = timestamp - (elapsed % snakeSpeed);
+                snakeDir = nextDir;
+                
+                // Head calculation
+                const head = { x: snake[0].x + snakeDir.x, y: snake[0].y + snakeDir.y };
+                
+                // Collision checks
+                if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height || checkSnakeSelfCollision(head)) {
+                    triggerGameOver("snake");
+                    return;
+                }
+                
+                snake.unshift(head);
+                
+                // Food eating check
+                if (head.x === food.x && head.y === food.y) {
+                    score += 10;
+                    coinsEarned = Math.floor(score / 10);
+                    
+                    // Create particles on eat
+                    createSnakeParticles(food.x + snakeGridSize/2, food.y + snakeGridSize/2);
+                    
+                    spawnSnakeFood();
+                    // Accelerate slightly
+                    snakeSpeed = Math.max(50, 100 - score * 0.25);
+                    
+                    // Update HUD high scores
+                    let high = localStorage.getItem("snake_high") || 0;
+                    if (score > high) {
+                        high = score;
+                        localStorage.setItem("snake_high", high.toString());
+                    }
+                    updateHUD(score, high, coinsEarned);
+                } else {
+                    snake.pop();
+                }
+            }
+
+            // Draw particles
+            drawSnakeParticles();
+
+            // Draw Food (Glowing gold core)
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = "#f6e0a4";
+            ctx.fillStyle = "#d4af37";
+            ctx.beginPath();
+            ctx.arc(food.x + snakeGridSize/2, food.y + snakeGridSize/2, snakeGridSize/2.5, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Draw Snake (Glowing cyber gold)
+            ctx.shadowColor = "#d4af37";
+            ctx.shadowBlur = 12;
+            snake.forEach((cell, index) => {
+                // Gradient styling for snake body
+                let gradRatio = 1 - (index / snake.length);
+                ctx.fillStyle = index === 0 ? "#ffffff" : `rgba(212, 175, 55, ${gradRatio})`;
+                ctx.fillRect(cell.x + 1, cell.y + 1, snakeGridSize - 2, snakeGridSize - 2);
+            });
+            ctx.shadowBlur = 0; // reset shadow
+        }
+
+        function checkSnakeSelfCollision(head) {
+            for (let i = 0; i < snake.length; i++) {
+                if (snake[i].x === head.x && snake[i].y === head.y) return true;
+            }
+            return false;
+        }
+
+        function createSnakeParticles(x, y) {
+            for (let i = 0; i < 15; i++) {
+                snakeParticles.push({
+                    x: x,
+                    y: y,
+                    vx: (Math.random() - 0.5) * 6,
+                    vy: (Math.random() - 0.5) * 6,
+                    alpha: 1,
+                    size: Math.random() * 3 + 1,
+                    color: Math.random() > 0.5 ? "#f6e0a4" : "#d4af37"
+                });
+            }
+        }
+
+        function drawSnakeParticles() {
+            snakeParticles.forEach((p, idx) => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.alpha -= 0.04;
+                if (p.alpha <= 0) {
+                    snakeParticles.splice(idx, 1);
+                } else {
+                    ctx.fillStyle = p.color;
+                    ctx.globalAlpha = p.alpha;
+                    ctx.fillRect(p.x, p.y, p.size, p.size);
+                }
+            });
+            ctx.globalAlpha = 1.0; // reset
+        }
+
+
+        // ==========================================================================
+        // SPACE DEFENDER GAME PROGRAMMING
+        // ==========================================================================
+        let playerShip = { x: 0, y: 0, width: 32, height: 24, speed: 6 };
+        let playerLasers = [];
+        let defenderEnemies = [];
+        let defenderLives = 3;
+        let lastLaserTime = 0;
+        let stars = [];
+        let defenderExplosions = [];
+
+        function initDefenderGame() {
+            playerShip.x = canvas.width / 2 - playerShip.width / 2;
+            playerShip.y = canvas.height - playerShip.height - 15;
+            playerLasers = [];
+            defenderEnemies = [];
+            defenderExplosions = [];
+            defenderLives = 3;
+            score = 0;
+            coinsEarned = 0;
+            
+            // Build random moving background stars
+            stars = [];
+            for (let i = 0; i < 50; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    speed: Math.random() * 2 + 1,
+                    size: Math.random() * 1.5 + 0.5
+                });
+            }
+
+            updateHUD(score, defenderLives, coinsEarned);
+            gameLoopId = requestAnimationFrame(defenderGameLoop);
+        }
+
+        function defenderGameLoop(timestamp) {
+            if (!isPlaying) return;
+            gameLoopId = requestAnimationFrame(defenderGameLoop);
+
+            // Clear Screen
+            ctx.fillStyle = "#020205";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw and Update Space Stars
+            ctx.fillStyle = "#ffffff";
+            stars.forEach(star => {
+                star.y += star.speed;
+                if (star.y > canvas.height) {
+                    star.y = 0;
+                    star.x = Math.random() * canvas.width;
+                }
+                ctx.fillRect(star.x, star.y, star.size, star.size);
+            });
+
+            // Player movement keys A/D/Arrows
+            if (keys["ArrowLeft"] || keys["KeyA"]) {
+                playerShip.x = Math.max(0, playerShip.x - playerShip.speed);
+            }
+            if (keys["ArrowRight"] || keys["KeyD"]) {
+                playerShip.x = Math.min(canvas.width - playerShip.width, playerShip.x + playerShip.speed);
+            }
+            
+            // Laser shooting with spacebar (cooldown 250ms)
+            if (keys["Space"] && timestamp - lastLaserTime > 250) {
+                playerLasers.push({
+                    x: playerShip.x + playerShip.width / 2 - 2,
+                    y: playerShip.y - 6,
+                    width: 4,
+                    height: 12,
+                    speed: 8
+                });
+                lastLaserTime = timestamp;
+            }
+
+            // Laser Updates
+            playerLasers.forEach((laser, idx) => {
+                laser.y -= laser.speed;
+                if (laser.y < -20) {
+                    playerLasers.splice(idx, 1);
+                } else {
+                    ctx.shadowColor = "#f6e0a4";
+                    ctx.shadowBlur = 8;
+                    ctx.fillStyle = "#d4af37";
+                    ctx.fillRect(laser.x, laser.y, laser.width, laser.height);
+                    ctx.shadowBlur = 0;
+                }
+            });
+
+            // Enemy Spawns (Asteroids and Alien drones drifting downwards)
+            let spawnRate = Math.max(0.01, 0.015 + (score * 0.0001)); // gets harder
+            if (Math.random() < spawnRate && defenderEnemies.length < 8) {
+                defenderEnemies.push({
+                    x: Math.random() * (canvas.width - 30),
+                    y: -30,
+                    width: 25 + Math.random() * 15,
+                    height: 25 + Math.random() * 15,
+                    speed: 1.5 + Math.random() * 2 + (score * 0.01),
+                    color: Math.random() > 0.6 ? "#aa7c11" : "#5c4c2d"
+                });
+            }
+
+            // Enemy Updates
+            defenderEnemies.forEach((enemy, eIdx) => {
+                enemy.y += enemy.speed;
+                
+                // Check if out of bounds
+                if (enemy.y > canvas.height + 20) {
+                    defenderEnemies.splice(eIdx, 1);
+                    // Slight penalty or none
+                } else {
+                    // Draw Asteroid
+                    ctx.fillStyle = enemy.color;
+                    ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
+                    ctx.lineWidth = 1;
+                    
+                    ctx.beginPath();
+                    ctx.arc(enemy.x + enemy.width/2, enemy.y + enemy.height/2, enemy.width/2, 0, Math.PI*2);
+                    ctx.fill();
+                    ctx.stroke();
+
+                    // Collision check: Lasers vs Enemy
+                    playerLasers.forEach((laser, lIdx) => {
+                        if (checkRectOverlap(laser, enemy)) {
+                            playerLasers.splice(lIdx, 1);
+                            defenderEnemies.splice(eIdx, 1);
+                            createDefenderExplosion(enemy.x + enemy.width/2, enemy.y + enemy.height/2, enemy.color);
+                            
+                            score += 20;
+                            coinsEarned = Math.floor(score / 4); // 5 GLC per kill (each kill is 20 score)
+                            
+                            updateHUD(score, defenderLives, coinsEarned);
+                        }
+                    });
+
+                    // Collision check: Player vs Enemy
+                    if (checkRectOverlap(playerShip, enemy)) {
+                        defenderEnemies.splice(eIdx, 1);
+                        createDefenderExplosion(enemy.x + enemy.width/2, enemy.y + enemy.height/2, "#d4af37");
+                        defenderLives--;
+                        
+                        updateHUD(score, defenderLives, coinsEarned);
+                        
+                        if (defenderLives <= 0) {
+                            triggerGameOver("defender");
+                        }
+                    }
+                }
+            });
+
+            // Explosion Updates
+            defenderExplosions.forEach((exp, idx) => {
+                exp.particles.forEach((p, pIdx) => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.life -= 0.05;
+                    if (p.life <= 0) {
+                        exp.particles.splice(pIdx, 1);
+                    } else {
+                        ctx.fillStyle = exp.color;
+                        ctx.globalAlpha = p.life;
+                        ctx.fillRect(p.x, p.y, p.size, p.size);
+                    }
+                });
+                if (exp.particles.length === 0) {
+                    defenderExplosions.splice(idx, 1);
+                }
+            });
+            ctx.globalAlpha = 1.0; // Reset alpha
+
+            // Draw player Spaceship (Glowing Neon Violet Cyber-fighter)
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = "#d4af37";
+            ctx.fillStyle = "#ffffff";
+            ctx.beginPath();
+            ctx.moveTo(playerShip.x + playerShip.width / 2, playerShip.y);
+            ctx.lineTo(playerShip.x, playerShip.y + playerShip.height);
+            ctx.lineTo(playerShip.x + playerShip.width, playerShip.y + playerShip.height);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Draw thruster fire
+            ctx.fillStyle = "#f6e0a4";
+            ctx.fillRect(playerShip.x + playerShip.width/2 - 4, playerShip.y + playerShip.height, 8, 4 + Math.random()*8);
+            ctx.shadowBlur = 0;
+        }
+
+        function checkRectOverlap(rect1, rect2) {
+            return rect1.x < rect2.x + rect2.width &&
+                   rect1.x + rect1.width > rect2.x &&
+                   rect1.y < rect2.y + rect2.height &&
+                   rect1.y + rect1.height > rect2.y;
+        }
+
+        function createDefenderExplosion(x, y, color) {
+            let particles = [];
+            for (let i = 0; i < 20; i++) {
+                particles.push({
+                    x: x,
+                    y: y,
+                    vx: (Math.random() - 0.5) * 8,
+                    vy: (Math.random() - 0.5) * 8,
+                    size: Math.random() * 4 + 1.5,
+                    life: 1.0
+                });
+            }
+            defenderExplosions.push({ particles, color });
+        }
+
+
+        // ==========================================================================
+        // MEMORY MATCH GAME PROGRAMMING (DOM-BASED HOLOGRAPHIC GRID)
+        // ==========================================================================
+        let memoryTitles = ["Elden Ring", "FC26", "Wukong", "GTA V", "Zelda", "One Piece", "Bleach", "Hollow Knight"];
+        let memoryDeck = [];
+        let memoryFlippedCards = [];
+        let memoryMatchedPairsCount = 0;
+        let memoryTimeRemaining = 60;
+        let memoryTimerInterval = null;
+
+        function setupMemoryGridHTML() {
+            const grid = document.getElementById("memoryGrid");
+            grid.innerHTML = "";
+            
+            // Double titles and shuffle
+            memoryDeck = [...memoryTitles, ...memoryTitles];
+            shuffleArray(memoryDeck);
+            
+            memoryDeck.forEach((title, index) => {
+                const card = document.createElement("div");
+                card.className = "memory-tile";
+                card.dataset.index = index;
+                card.dataset.title = title;
+                
+                card.innerHTML = `
+                    <div class="memory-tile-inner">
+                        <div class="memory-tile-face memory-tile-front"></div>
+                        <div class="memory-tile-face memory-tile-back">${title}</div>
+                    </div>
+                `;
+                
+                card.addEventListener("click", () => handleMemoryCardClick(card));
+                grid.appendChild(card);
+            });
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function initMemoryGame() {
+            memoryFlippedCards = [];
+            memoryMatchedPairsCount = 0;
+            memoryTimeRemaining = 60;
+            score = 0;
+            coinsEarned = 0;
+            
+            setupMemoryGridHTML();
+            
+            updateHUD("0/8", "60s", 0);
+            
+            if (memoryTimerInterval) clearInterval(memoryTimerInterval);
+            memoryTimerInterval = setInterval(() => {
+                memoryTimeRemaining--;
+                
+                if (memoryTimeRemaining <= 0) {
+                    clearInterval(memoryTimerInterval);
+                    triggerGameOver("memory");
+                } else {
+                    updateHUD(`${memoryMatchedPairsCount}/8`, `${memoryTimeRemaining}s`, coinsEarned);
+                }
+            }, 1000);
+        }
+
+        function handleMemoryCardClick(card) {
+            if (!isPlaying) return;
+            // Prevent flipping matched or already flipped card
+            if (card.classList.contains("flipped") || card.classList.contains("matched") || memoryFlippedCards.length >= 2) {
+                return;
+            }
+            
+            card.classList.add("flipped");
+            memoryFlippedCards.push(card);
+            
+            if (memoryFlippedCards.length === 2) {
+                score++; // Increment attempt score
+                
+                const card1 = memoryFlippedCards[0];
+                const card2 = memoryFlippedCards[1];
+                
+                if (card1.dataset.title === card2.dataset.title) {
+                    // Match found!
+                    setTimeout(() => {
+                        card1.classList.add("matched");
+                        card2.classList.add("matched");
+                        memoryFlippedCards = [];
+                        memoryMatchedPairsCount++;
+                        
+                        updateHUD(`${memoryMatchedPairsCount}/8`, `${memoryTimeRemaining}s`, coinsEarned);
+                        
+                        if (memoryMatchedPairsCount === 8) {
+                            clearInterval(memoryTimerInterval);
+                            coinsEarned = 50; // Clear jackpot!
+                            updateHUD("8/8", `${memoryTimeRemaining}s`, coinsEarned);
+                            triggerGameSuccess("memory");
+                        }
+                    }, 400);
+                } else {
+                    // No match, flip back
+                    setTimeout(() => {
+                        card1.classList.remove("flipped");
+                        card2.classList.remove("flipped");
+                        memoryFlippedCards = [];
+                    }, 1000);
+                }
+            }
+        }
+
+
+        // ==========================================================================
+        // DYNAMIC STATE SYSTEM & GAME OVER WRAP-UPS
+        // ==========================================================================
+        function triggerGameOver(gameType) {
+            stopGameLoops();
+            
+            // Add earned GLC to global wallet
+            if (coinsEarned > 0) {
+                updateGLC(coinsEarned);
+                showToast(`Mission Terminated! Credited ${coinsEarned} GLC to wallet.`, "success");
+            } else {
+                showToast(`Mission Terminated! No coins earned this round.`, "error");
+            }
+
+            document.getElementById("overlayTitle").innerText = "MISSION FAILED";
+            document.getElementById("overlaySubtitle").innerText = `Systems overloaded. You completed this attempt with a score of ${score}.`;
+            
+            const rewardBox = document.getElementById("overlayReward");
+            rewardBox.style.display = "block";
+            rewardBox.innerText = `Reward Credited: ${coinsEarned} GLC`;
+            rewardBox.style.color = "var(--neon-orange)";
+            
+            document.getElementById("overlayBtn").innerText = "Reboot Simulator";
+            document.getElementById("gameOverlay").style.display = "flex";
+        }
+
+        function triggerGameSuccess(gameType) {
+            stopGameLoops();
+            
+            // Crediting large jackpot rewards
+            updateGLC(coinsEarned);
+            showToast(`COMPLETED! Earned ${coinsEarned} GLC Jackpot!`, "success");
+
+            document.getElementById("overlayTitle").innerText = "MISSION COMPLETED";
+            document.getElementById("overlaySubtitle").innerText = `Congratulations! You cracked the mainframe with ${memoryTimeRemaining} seconds remaining.`;
+            
+            const rewardBox = document.getElementById("overlayReward");
+            rewardBox.style.display = "block";
+            rewardBox.innerText = `GLC Payout: +${coinsEarned} COINS`;
+            rewardBox.style.color = "var(--neon-green)";
+            
+            document.getElementById("overlayBtn").innerText = "Enter Arena Again";
+            document.getElementById("gameOverlay").style.display = "flex";
+        }
+    </script>
+
+</body>
+</html>
