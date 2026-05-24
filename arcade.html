@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link href="newwww.png" type="image/x-icon" rel="icon">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -10,22 +11,24 @@
     <link rel="stylesheet" href="c.css">
     <script src="shared.js"></script>
 </head>
+
 <body>
 
     <!-- NAVBAR dynamically updated by shared.js -->
     <nav></nav>
 
     <div class="arcade-container">
-        
+
         <!-- Arcade Hero Section -->
         <div class="arcade-hero" id="arcadeHero">
             <h1>GRANDLINE ARCADE</h1>
-            <p>Play our retro mini-games, earn Grandline Coins (GLC), and redeem them for exclusive discounts in our store! 🪙</p>
+            <p>Play our retro mini-games, earn Grandline Coins (GLC), and redeem them for exclusive discounts in our
+                store! 🪙</p>
         </div>
 
         <!-- Arcade Lobby Screen -->
         <div class="arcade-lobby" id="arcadeLobby">
-            
+
             <!-- Game 1: Cyber Snake -->
             <div class="arcade-game-card snake">
                 <div class="game-card-banner">
@@ -33,7 +36,8 @@
                 </div>
                 <div class="game-card-body">
                     <h2>Cyber Snake</h2>
-                    <p>Navigate the neon grid, consume energy core fragments to grow, and avoid crashing into the power walls. Retro classic revamped!</p>
+                    <p>Navigate the neon grid, consume energy core fragments to grow, and avoid crashing into the power
+                        walls. Retro classic revamped!</p>
                     <div class="game-payout-tag">🪙 Payout: 1 GLC per 10 points</div>
                     <button class="play-game-btn" onclick="startArcadeGame('snake')">Play Cyber Snake</button>
                 </div>
@@ -46,7 +50,8 @@
                 </div>
                 <div class="game-card-body">
                     <h2>Space Defender</h2>
-                    <p>Take control of the Grandline starfighter! Shoot down falling meteorites and space anomalies to defend the gaming realm.</p>
+                    <p>Take control of the Grandline starfighter! Shoot down falling meteorites and space anomalies to
+                        defend the gaming realm.</p>
                     <div class="game-payout-tag">🪙 Payout: 5 GLC per kill</div>
                     <button class="play-game-btn" onclick="startArcadeGame('defender')">Play Space Defender</button>
                 </div>
@@ -59,7 +64,8 @@
                 </div>
                 <div class="game-card-body">
                     <h2>Memory Match</h2>
-                    <p>Test your brain! Match game titles like Elden Ring, Wukong, and GTA V in a 4x4 holographic grid before time runs out.</p>
+                    <p>Test your brain! Match game titles like Elden Ring, Wukong, and GTA V in a 4x4 holographic grid
+                        before time runs out.</p>
                     <div class="game-payout-tag">🪙 Payout: 50 GLC on clear</div>
                     <button class="play-game-btn" onclick="startArcadeGame('memory')">Play Memory Match</button>
                 </div>
@@ -69,17 +75,17 @@
 
         <!-- Active Game Screen (Hidden initially) -->
         <div class="arcade-active-screen" id="activeGameScreen" style="display: none;">
-            
+
             <div class="active-game-header">
                 <h2 id="activeGameTitle">Game Screen</h2>
                 <button class="back-lobby-btn" onclick="exitToLobby()">Quit to Lobby</button>
             </div>
 
             <div class="game-viewport-container" id="viewportContainer">
-                
+
                 <!-- Game Canvas -->
                 <canvas id="gameCanvas" width="480" height="400" class="game-canvas"></canvas>
-                
+
                 <!-- Memory Game HTML Grid -->
                 <div id="memoryGrid" class="memory-grid" style="display: none;"></div>
 
@@ -112,7 +118,7 @@
         let currentGame = "";
         let canvas = document.getElementById("gameCanvas");
         let ctx = canvas.getContext("2d");
-        
+
         let score = 0;
         let coinsEarned = 0;
         let isPlaying = false;
@@ -135,7 +141,7 @@
             document.getElementById("arcadeLobby").style.display = "none";
             document.getElementById("arcadeHero").style.display = "none";
             document.getElementById("activeGameScreen").style.display = "flex";
-            
+
             // Set HUD titles and overlay initial state
             const title = document.getElementById("activeGameTitle");
             const oTitle = document.getElementById("overlayTitle");
@@ -144,12 +150,12 @@
             const oBtn = document.getElementById("overlayBtn");
             const canvasEl = document.getElementById("gameCanvas");
             const memGrid = document.getElementById("memoryGrid");
-            
+
             canvasEl.style.display = "block";
             memGrid.style.display = "none";
             oReward.style.display = "none";
             document.getElementById("gameOverlay").style.display = "flex";
-            
+
             if (gameType === "snake") {
                 title.innerText = "Cyber Snake";
                 oTitle.innerText = "Cyber Snake";
@@ -213,7 +219,7 @@
             isPlaying = true;
             score = 0;
             coinsEarned = 0;
-            
+
             if (currentGame === "snake") {
                 initSnakeGame();
             } else if (currentGame === "defender") {
@@ -247,10 +253,10 @@
             coinsEarned = 0;
             snakeParticles = [];
             spawnSnakeFood();
-            
+
             lastSnakeTick = performance.now();
             updateHUD(0, localStorage.getItem("snake_high") || 0, 0);
-            
+
             gameLoopId = requestAnimationFrame(snakeGameLoop);
         }
 
@@ -271,7 +277,7 @@
         function snakeGameLoop(timestamp) {
             if (!isPlaying) return;
             gameLoopId = requestAnimationFrame(snakeGameLoop);
-            
+
             // Handle snake input keys immediately to avoid input delay
             if ((keys["ArrowUp"] || keys["KeyW"]) && snakeDir.y === 0) nextDir = { x: 0, y: -snakeGridSize };
             if ((keys["ArrowDown"] || keys["KeyS"]) && snakeDir.y === 0) nextDir = { x: 0, y: snakeGridSize };
@@ -281,7 +287,7 @@
             // Clear Screen
             ctx.fillStyle = "#020205";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
+
             // Draw Grid lines subtle cyber effect
             ctx.strokeStyle = "rgba(212, 175, 55, 0.04)";
             ctx.lineWidth = 1;
@@ -303,30 +309,30 @@
             if (elapsed > snakeSpeed) {
                 lastSnakeTick = timestamp - (elapsed % snakeSpeed);
                 snakeDir = nextDir;
-                
+
                 // Head calculation
                 const head = { x: snake[0].x + snakeDir.x, y: snake[0].y + snakeDir.y };
-                
+
                 // Collision checks
                 if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height || checkSnakeSelfCollision(head)) {
                     triggerGameOver("snake");
                     return;
                 }
-                
+
                 snake.unshift(head);
-                
+
                 // Food eating check
                 if (head.x === food.x && head.y === food.y) {
                     score += 10;
                     coinsEarned = Math.floor(score / 10);
-                    
+
                     // Create particles on eat
-                    createSnakeParticles(food.x + snakeGridSize/2, food.y + snakeGridSize/2);
-                    
+                    createSnakeParticles(food.x + snakeGridSize / 2, food.y + snakeGridSize / 2);
+
                     spawnSnakeFood();
                     // Accelerate slightly
                     snakeSpeed = Math.max(50, 100 - score * 0.25);
-                    
+
                     // Update HUD high scores
                     let high = localStorage.getItem("snake_high") || 0;
                     if (score > high) {
@@ -347,9 +353,9 @@
             ctx.shadowColor = "#f6e0a4";
             ctx.fillStyle = "#d4af37";
             ctx.beginPath();
-            ctx.arc(food.x + snakeGridSize/2, food.y + snakeGridSize/2, snakeGridSize/2.5, 0, Math.PI * 2);
+            ctx.arc(food.x + snakeGridSize / 2, food.y + snakeGridSize / 2, snakeGridSize / 2.5, 0, Math.PI * 2);
             ctx.fill();
-            
+
             // Draw Snake (Glowing cyber gold)
             ctx.shadowColor = "#d4af37";
             ctx.shadowBlur = 12;
@@ -420,7 +426,7 @@
             defenderLives = 3;
             score = 0;
             coinsEarned = 0;
-            
+
             // Build random moving background stars
             stars = [];
             for (let i = 0; i < 50; i++) {
@@ -462,7 +468,7 @@
             if (keys["ArrowRight"] || keys["KeyD"]) {
                 playerShip.x = Math.min(canvas.width - playerShip.width, playerShip.x + playerShip.speed);
             }
-            
+
             // Laser shooting with spacebar (cooldown 250ms)
             if (keys["Space"] && timestamp - lastLaserTime > 250) {
                 playerLasers.push({
@@ -505,7 +511,7 @@
             // Enemy Updates
             defenderEnemies.forEach((enemy, eIdx) => {
                 enemy.y += enemy.speed;
-                
+
                 // Check if out of bounds
                 if (enemy.y > canvas.height + 20) {
                     defenderEnemies.splice(eIdx, 1);
@@ -515,9 +521,9 @@
                     ctx.fillStyle = enemy.color;
                     ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
                     ctx.lineWidth = 1;
-                    
+
                     ctx.beginPath();
-                    ctx.arc(enemy.x + enemy.width/2, enemy.y + enemy.height/2, enemy.width/2, 0, Math.PI*2);
+                    ctx.arc(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, enemy.width / 2, 0, Math.PI * 2);
                     ctx.fill();
                     ctx.stroke();
 
@@ -526,11 +532,11 @@
                         if (checkRectOverlap(laser, enemy)) {
                             playerLasers.splice(lIdx, 1);
                             defenderEnemies.splice(eIdx, 1);
-                            createDefenderExplosion(enemy.x + enemy.width/2, enemy.y + enemy.height/2, enemy.color);
-                            
+                            createDefenderExplosion(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, enemy.color);
+
                             score += 20;
                             coinsEarned = Math.floor(score / 4); // 5 GLC per kill (each kill is 20 score)
-                            
+
                             updateHUD(score, defenderLives, coinsEarned);
                         }
                     });
@@ -538,11 +544,11 @@
                     // Collision check: Player vs Enemy
                     if (checkRectOverlap(playerShip, enemy)) {
                         defenderEnemies.splice(eIdx, 1);
-                        createDefenderExplosion(enemy.x + enemy.width/2, enemy.y + enemy.height/2, "#d4af37");
+                        createDefenderExplosion(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, "#d4af37");
                         defenderLives--;
-                        
+
                         updateHUD(score, defenderLives, coinsEarned);
-                        
+
                         if (defenderLives <= 0) {
                             triggerGameOver("defender");
                         }
@@ -580,18 +586,18 @@
             ctx.lineTo(playerShip.x + playerShip.width, playerShip.y + playerShip.height);
             ctx.closePath();
             ctx.fill();
-            
+
             // Draw thruster fire
             ctx.fillStyle = "#f6e0a4";
-            ctx.fillRect(playerShip.x + playerShip.width/2 - 4, playerShip.y + playerShip.height, 8, 4 + Math.random()*8);
+            ctx.fillRect(playerShip.x + playerShip.width / 2 - 4, playerShip.y + playerShip.height, 8, 4 + Math.random() * 8);
             ctx.shadowBlur = 0;
         }
 
         function checkRectOverlap(rect1, rect2) {
             return rect1.x < rect2.x + rect2.width &&
-                   rect1.x + rect1.width > rect2.x &&
-                   rect1.y < rect2.y + rect2.height &&
-                   rect1.y + rect1.height > rect2.y;
+                rect1.x + rect1.width > rect2.x &&
+                rect1.y < rect2.y + rect2.height &&
+                rect1.y + rect1.height > rect2.y;
         }
 
         function createDefenderExplosion(x, y, color) {
@@ -623,24 +629,24 @@
         function setupMemoryGridHTML() {
             const grid = document.getElementById("memoryGrid");
             grid.innerHTML = "";
-            
+
             // Double titles and shuffle
             memoryDeck = [...memoryTitles, ...memoryTitles];
             shuffleArray(memoryDeck);
-            
+
             memoryDeck.forEach((title, index) => {
                 const card = document.createElement("div");
                 card.className = "memory-tile";
                 card.dataset.index = index;
                 card.dataset.title = title;
-                
+
                 card.innerHTML = `
                     <div class="memory-tile-inner">
                         <div class="memory-tile-face memory-tile-front"></div>
                         <div class="memory-tile-face memory-tile-back">${title}</div>
                     </div>
                 `;
-                
+
                 card.addEventListener("click", () => handleMemoryCardClick(card));
                 grid.appendChild(card);
             });
@@ -659,15 +665,15 @@
             memoryTimeRemaining = 60;
             score = 0;
             coinsEarned = 0;
-            
+
             setupMemoryGridHTML();
-            
+
             updateHUD("0/8", "60s", 0);
-            
+
             if (memoryTimerInterval) clearInterval(memoryTimerInterval);
             memoryTimerInterval = setInterval(() => {
                 memoryTimeRemaining--;
-                
+
                 if (memoryTimeRemaining <= 0) {
                     clearInterval(memoryTimerInterval);
                     triggerGameOver("memory");
@@ -683,16 +689,16 @@
             if (card.classList.contains("flipped") || card.classList.contains("matched") || memoryFlippedCards.length >= 2) {
                 return;
             }
-            
+
             card.classList.add("flipped");
             memoryFlippedCards.push(card);
-            
+
             if (memoryFlippedCards.length === 2) {
                 score++; // Increment attempt score
-                
+
                 const card1 = memoryFlippedCards[0];
                 const card2 = memoryFlippedCards[1];
-                
+
                 if (card1.dataset.title === card2.dataset.title) {
                     // Match found!
                     setTimeout(() => {
@@ -700,9 +706,9 @@
                         card2.classList.add("matched");
                         memoryFlippedCards = [];
                         memoryMatchedPairsCount++;
-                        
+
                         updateHUD(`${memoryMatchedPairsCount}/8`, `${memoryTimeRemaining}s`, coinsEarned);
-                        
+
                         if (memoryMatchedPairsCount === 8) {
                             clearInterval(memoryTimerInterval);
                             coinsEarned = 50; // Clear jackpot!
@@ -727,7 +733,7 @@
         // ==========================================================================
         function triggerGameOver(gameType) {
             stopGameLoops();
-            
+
             // Add earned GLC to global wallet
             if (coinsEarned > 0) {
                 updateGLC(coinsEarned);
@@ -738,35 +744,36 @@
 
             document.getElementById("overlayTitle").innerText = "MISSION FAILED";
             document.getElementById("overlaySubtitle").innerText = `Systems overloaded. You completed this attempt with a score of ${score}.`;
-            
+
             const rewardBox = document.getElementById("overlayReward");
             rewardBox.style.display = "block";
             rewardBox.innerText = `Reward Credited: ${coinsEarned} GLC`;
             rewardBox.style.color = "var(--neon-orange)";
-            
+
             document.getElementById("overlayBtn").innerText = "Reboot Simulator";
             document.getElementById("gameOverlay").style.display = "flex";
         }
 
         function triggerGameSuccess(gameType) {
             stopGameLoops();
-            
+
             // Crediting large jackpot rewards
             updateGLC(coinsEarned);
             showToast(`COMPLETED! Earned ${coinsEarned} GLC Jackpot!`, "success");
 
             document.getElementById("overlayTitle").innerText = "MISSION COMPLETED";
             document.getElementById("overlaySubtitle").innerText = `Congratulations! You cracked the mainframe with ${memoryTimeRemaining} seconds remaining.`;
-            
+
             const rewardBox = document.getElementById("overlayReward");
             rewardBox.style.display = "block";
             rewardBox.innerText = `GLC Payout: +${coinsEarned} COINS`;
             rewardBox.style.color = "var(--neon-green)";
-            
+
             document.getElementById("overlayBtn").innerText = "Enter Arena Again";
             document.getElementById("gameOverlay").style.display = "flex";
         }
     </script>
 
 </body>
+
 </html>

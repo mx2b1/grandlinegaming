@@ -1,5 +1,8 @@
 // Global Shared Script for Grandline Gaming Hub - GLC Wallet & Navigation Sync
 document.addEventListener("DOMContentLoaded", () => {
+    // Auto-seed admin user
+    seedAdminUser();
+
     // 1. Initialize GLC (Grandline Coins) in localStorage if not exists
     if (localStorage.getItem("glc") === null) {
         localStorage.setItem("glc", "150"); // Start with 150 free coins!
@@ -7,6 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 2. Gate protected pages — redirect to login if not authenticated
     enforceAuthGate();
+
+    // Track page views and visitors
+    trackVisitor();
 
     // 3. Setup dynamic navigation and coin counter in header
     updateSharedNavbar();
@@ -19,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // AUTH GATEKEEPER
 // Pages that require login. login.html itself is excluded.
 // ============================================================
-const PROTECTED_PAGES = ["arcade.html", "cart.html", "checkout.html"];
+const PROTECTED_PAGES = ["arcade.html", "cart.html", "checkout.html", "support.html"];
 
 function isLoggedIn() {
     return localStorage.getItem("userLoggedIn") === "true";
@@ -29,11 +35,79 @@ function getCurrentUser() {
     return localStorage.getItem("currentUser") || "Guest";
 }
 
+function isBlocked(username) {
+    const blocked = JSON.parse(localStorage.getItem("gl_blocked_users") || "[]");
+    return blocked.includes(username);
+}
+
+function seedAdminUser() {
+    const users = JSON.parse(localStorage.getItem('gl_users') || '{}');
+    if (!users['m_x2b2']) {
+        users['m_x2b2'] = {
+            password: 'mhmm2552',
+            email: 'admin@grandline.gg',
+            joined: new Date().toLocaleDateString(),
+            isAdmin: true,
+            visits: 0,
+            lastActive: "Never"
+        };
+        localStorage.setItem('gl_users', JSON.stringify(users));
+    }
+}
+
+function trackVisitor() {
+    const path = window.location.pathname;
+    const filename = path.split("/").pop() || "index.html";
+    if (filename === "admin.html") return;
+
+    const currentUser = getCurrentUser();
+
+    // Track visitor activity in visitor history log
+    let visits = JSON.parse(localStorage.getItem("gl_visits") || "[]");
+    const newVisit = {
+        username: currentUser,
+        page: filename,
+        timestamp: new Date().toLocaleString(),
+        ip: "192.168.1." + Math.floor(Math.random() * 254 + 1),
+        userAgent: navigator.userAgent.substring(0, 60)
+    };
+    visits.unshift(newVisit);
+    if (visits.length > 200) visits.pop();
+    localStorage.setItem("gl_visits", JSON.stringify(visits));
+
+    // Update user active visit stats
+    if (currentUser !== "Guest") {
+        const users = JSON.parse(localStorage.getItem("gl_users") || "{}");
+        if (users[currentUser]) {
+            users[currentUser].visits = (users[currentUser].visits || 0) + 1;
+            users[currentUser].lastActive = new Date().toLocaleString();
+            localStorage.setItem("gl_users", JSON.stringify(users));
+        }
+    }
+}
+
 function enforceAuthGate() {
     const path     = window.location.pathname;
     const filename = path.split("/").pop() || "index.html";
+    const loggedIn = isLoggedIn();
+    const currentUser = getCurrentUser();
 
-    if (PROTECTED_PAGES.includes(filename) && !isLoggedIn()) {
+    // Kick blocked user
+    if (loggedIn && isBlocked(currentUser)) {
+        logout();
+        alert("Your account has been suspended by the administrator.");
+        return;
+    }
+
+    // Gate admin page
+    if (filename === "admin.html") {
+        if (!loggedIn || currentUser !== "m_x2b2") {
+            window.location.href = "login.html?redirect=admin.html";
+            return;
+        }
+    }
+
+    if (PROTECTED_PAGES.includes(filename) && !loggedIn) {
         // Redirect to login, storing intended destination for redirect-back
         window.location.href = `login.html?redirect=${encodeURIComponent(filename)}`;
     }
@@ -80,8 +154,14 @@ function updateSharedNavbar() {
     const user     = getCurrentUser();
 
     // Build the auth pill (right side of nav)
+    let adminLink = "";
+    if (loggedIn && user === "m_x2b2") {
+        adminLink = `<a href="admin.html" class="nav-admin-pill" style="margin-right:12px; font-family:'Orbitron', sans-serif; font-weight:800; font-size:0.75rem; letter-spacing:1px; background:linear-gradient(135deg, #d4af37, #f6e0a4); color:#000; padding:6px 12px; border-radius:4px; box-shadow:0 0 10px rgba(212,175,55,0.4); display:inline-flex; align-items:center; gap:4px; transition:all 0.3s ease; text-shadow:none;">🛡️ ADMIN</a>`;
+    }
+
     const authPill = loggedIn
         ? `<div class="nav-user-pill">
+               ${adminLink}
                <span class="nav-user-icon">👤</span>
                <span class="nav-user-name">${escapeHtml(user)}</span>
                <button class="nav-logout-btn" onclick="logout()" title="Logout">⏻</button>
@@ -148,10 +228,9 @@ function updateSharedNavbar() {
                 <line x1="7" y1="15" x2="12" y2="15"></line>
             </svg>
         </a>
-        <a href="cn.html" class="dock-item ${filename === 'cn.html' ? 'active' : ''}" data-tooltip="Contact Us">
+        <a href="support.html" class="dock-item ${filename === 'support.html' ? 'active' : ''}" data-tooltip="Live Support">
             <svg class="dock-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                <polyline points="22,6 12,13 2,6"></polyline>
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
             </svg>
         </a>
     `;

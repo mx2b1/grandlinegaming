@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link href="newwww.png" type="image/x-icon" rel="icon">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -13,7 +14,8 @@
            LOGIN PAGE — Ultra-Dark Overlay System
            ====================================================== */
 
-        html, body {
+        html,
+        body {
             background: #000000 !important;
             background-image: none !important;
             margin: 0;
@@ -162,8 +164,15 @@
         }
 
         @keyframes panelFadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to   { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* === Input Groups === */
@@ -234,7 +243,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
             transition: left 0.5s ease;
         }
 
@@ -345,6 +354,7 @@
         /* === Floating particle styles are handled by canvas === */
     </style>
 </head>
+
 <body>
 
     <!-- Particle Canvas Background -->
@@ -372,7 +382,8 @@
                 </div>
                 <div class="input-group">
                     <label for="loginPass">Password</label>
-                    <input type="password" id="loginPass" placeholder="Enter your password" autocomplete="current-password">
+                    <input type="password" id="loginPass" placeholder="Enter your password"
+                        autocomplete="current-password">
                 </div>
                 <div class="auth-error" id="loginError">Incorrect username or password. Try again.</div>
                 <button class="auth-btn" onclick="handleLogin()">Enter the Hub</button>
@@ -393,11 +404,13 @@
                 </div>
                 <div class="input-group">
                     <label for="regPass">Password</label>
-                    <input type="password" id="regPass" placeholder="Create a strong password" autocomplete="new-password">
+                    <input type="password" id="regPass" placeholder="Create a strong password"
+                        autocomplete="new-password">
                 </div>
                 <div class="input-group">
                     <label for="regConfirm">Confirm Password</label>
-                    <input type="password" id="regConfirm" placeholder="Repeat your password" autocomplete="new-password">
+                    <input type="password" id="regConfirm" placeholder="Repeat your password"
+                        autocomplete="new-password">
                 </div>
                 <div class="auth-error" id="registerError">Passwords do not match.</div>
                 <button class="auth-btn" onclick="handleRegister()">Create Account</button>
@@ -409,7 +422,9 @@
             <!-- Protected notice -->
             <div class="auth-notice">
                 <div class="auth-notice-icon">🔐</div>
-                <div>Login is required to access the <strong style="color:#c5a880;">Arcade</strong>, <strong style="color:#c5a880;">Cart</strong>, and <strong style="color:#c5a880;">Checkout</strong>. Your GLC coins and cart data are saved to your session.</div>
+                <div>Login is required to access the <strong style="color:#c5a880;">Arcade</strong>, <strong
+                        style="color:#c5a880;">Cart</strong>, and <strong style="color:#c5a880;">Checkout</strong>. Your
+                    GLC coins and cart data are saved to your session.</div>
             </div>
 
         </div>
@@ -426,10 +441,10 @@
         // TAB SWITCHING
         // ----------------------------------------------------------------
         function switchTab(tab) {
-            const loginPanel    = document.getElementById('panelLogin');
+            const loginPanel = document.getElementById('panelLogin');
             const registerPanel = document.getElementById('panelRegister');
-            const tabLogin      = document.getElementById('tabLogin');
-            const tabRegister   = document.getElementById('tabRegister');
+            const tabLogin = document.getElementById('tabLogin');
+            const tabRegister = document.getElementById('tabRegister');
 
             document.getElementById('loginError').classList.remove('visible');
             document.getElementById('registerError').classList.remove('visible');
@@ -453,8 +468,8 @@
         function handleLogin() {
             const username = document.getElementById('loginUser').value.trim();
             const password = document.getElementById('loginPass').value;
-            const errBox   = document.getElementById('loginError');
-            
+            const errBox = document.getElementById('loginError');
+
             if (!username || !password) {
                 errBox.innerText = 'Please fill in all fields.';
                 errBox.classList.add('visible');
@@ -471,13 +486,22 @@
                 return;
             }
 
+            // Check if blocked
+            const blockedList = JSON.parse(localStorage.getItem("gl_blocked_users") || "[]");
+            if (blockedList.includes(username) || users[username].blocked === true) {
+                errBox.innerText = 'This account has been suspended by the Administrator.';
+                errBox.classList.add('visible');
+                shakeCard();
+                return;
+            }
+
             // Successful login
             errBox.classList.remove('visible');
             localStorage.setItem('userLoggedIn', 'true');
             localStorage.setItem('currentUser', username);
 
             // Redirect back to original target or homepage
-            const params   = new URLSearchParams(window.location.search);
+            const params = new URLSearchParams(window.location.search);
             const redirect = params.get('redirect') || 'index.html';
             window.location.href = redirect;
         }
@@ -487,10 +511,10 @@
         // ----------------------------------------------------------------
         function handleRegister() {
             const username = document.getElementById('regUser').value.trim();
-            const email    = document.getElementById('regEmail').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
             const password = document.getElementById('regPass').value;
-            const confirm  = document.getElementById('regConfirm').value;
-            const errBox   = document.getElementById('registerError');
+            const confirm = document.getElementById('regConfirm').value;
+            const errBox = document.getElementById('registerError');
 
             if (!username || !email || !password || !confirm) {
                 errBox.innerText = 'Please fill in all fields.';
@@ -513,14 +537,22 @@
 
             // Save new user
             const users = JSON.parse(localStorage.getItem('gl_users') || '{}');
-            
+
             if (users[username]) {
                 errBox.innerText = 'That username is already taken. Choose another.';
                 errBox.classList.add('visible');
                 return;
             }
 
-            users[username] = { password, email };
+            users[username] = { 
+                password, 
+                email,
+                joined: new Date().toLocaleDateString(),
+                isAdmin: false,
+                visits: 1,
+                lastActive: new Date().toLocaleString(),
+                blocked: false
+            };
             localStorage.setItem('gl_users', JSON.stringify(users));
 
             // Auto-login immediately
@@ -528,7 +560,7 @@
             localStorage.setItem('currentUser', username);
 
             // Notify and redirect
-            const params   = new URLSearchParams(window.location.search);
+            const params = new URLSearchParams(window.location.search);
             const redirect = params.get('redirect') || 'index.html';
 
             // Small visual success before redirect
@@ -556,7 +588,7 @@
         // Allow Enter key to submit forms
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
-                const loginPanel    = document.getElementById('panelLogin');
+                const loginPanel = document.getElementById('panelLogin');
                 const registerPanel = document.getElementById('panelRegister');
                 if (loginPanel.classList.contains('active')) handleLogin();
                 else if (registerPanel.classList.contains('active')) handleRegister();
@@ -567,11 +599,11 @@
         // FLOATING PARTICLES CANVAS BACKGROUND
         // ----------------------------------------------------------------
         const canvas = document.getElementById('loginCanvas');
-        const ctx    = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d');
         let particles = [];
 
         function resizeCanvas() {
-            canvas.width  = window.innerWidth;
+            canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         }
         resizeCanvas();
@@ -643,14 +675,32 @@
 
     <style>
         @keyframes shakeCard {
-            0%  { transform: translateX(0); }
-            20% { transform: translateX(-8px); }
-            40% { transform: translateX(8px); }
-            60% { transform: translateX(-5px); }
-            80% { transform: translateX(5px); }
-            100%{ transform: translateX(0); }
+            0% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-8px);
+            }
+
+            40% {
+                transform: translateX(8px);
+            }
+
+            60% {
+                transform: translateX(-5px);
+            }
+
+            80% {
+                transform: translateX(5px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
         }
     </style>
 
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link href="newwww.png" type="image/x-icon" rel="icon">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -10,24 +11,25 @@
     <link rel="stylesheet" href="c.css">
     <script src="shared.js"></script>
 </head>
+
 <body>
 
     <!-- NAVBAR dynamically injected by shared.js -->
     <nav></nav>
 
     <div class="contact-page">
-        
+
         <!-- Center Box: Form -->
         <div class="contact-box">
             <h1>Contact Us</h1>
             <p class="contact-text">Need help or have questions? Send a direct transmission to our crew.</p>
-            
+
             <form id="contactForm" onsubmit="handleContactSubmit(event)">
                 <input type="text" placeholder="Full Name" required>
                 <input type="tel" placeholder="Phone Number" required>
                 <input type="email" placeholder="Email Address" required>
                 <textarea placeholder="Write your message..." rows="6" required></textarea>
-                
+
                 <button type="submit">Send Message</button>
             </form>
         </div>
@@ -38,7 +40,7 @@
     <script>
         function handleContactSubmit(event) {
             event.preventDefault();
-            
+
             // Clear inputs
             document.getElementById("contactForm").reset();
 
@@ -52,4 +54,5 @@
     </footer>
 
 </body>
+
 </html>

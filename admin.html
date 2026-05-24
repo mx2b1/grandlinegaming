@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="newwww.png" type="image/x-icon" rel="icon">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="keywords" content="Grandline Gaming,GRANDLINE,Grandline,admin">
+    <meta name="author" content="Mohammed">
+    <meta name="description" content="Grandline Gaming Hub — Secure System Administration Panel">
+    <title>Grandline Gaming — Command Center</title>
+    <link rel="stylesheet" href="c.css">
+    <script src="shared.js"></script>
+    <style>
+        /* ==========================================================================
+           ADMIN PANEL SPECIFIC ULTRA-PREMIUM CYBERPUNK STYLES
+           ========================================================================== */
+        
+        .admin-container {
+            max-width: var(--max-width);
+            margin: 40px auto 80px auto;
+            padding: 0 20px;
+            width: 100%;
+            flex-grow: 1;
+        }
+
+        .admin-header {
+            text-align: left;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+        }
+
+        .admin-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: var(--glow-cyan);
+            margin-bottom: 6px;
+        }
+
+        .admin-header p {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+
+        /* --- STATS KPI ROW --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius);
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all var(--transition-speed) ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--neon-cyan), var(--neon-purple));
+            opacity: 0.8;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-cyan);
+            box-shadow: var(--glow-cyan);
+        }
+
+        .stat-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .stat-val {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(246, 224, 164, 0.25);
+        }
+
+        .stat-trend {
+            font-size: 0.8rem;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-trend.up {
+            color: var(--neon-green);
+        }
+
+        .stat-trend.neutral {
+            color: var(--text-muted);
+        }
+
+        /* --- TABS SYSTEM --- */
+        .admin-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 1px;
+            flex-wrap: wrap;
+        }
+
+        .admin-tab-btn {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: none;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 1.5px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .admin-tab-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .admin-tab-btn.active {
+            color: #000;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+            border-color: transparent;
+            box-shadow: 0 -4px 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .tab-panel {
+            display: none;
+            animation: panelFade 0.4s ease forwards;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        @keyframes panelFade {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- CONTROLS BAR (SEARCH & ACTIONS) --- */
+        .controls-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .admin-search-wrapper {
+            position: relative;
+            flex-grow: 1;
+            max-width: 450px;
+        }
+
+        .admin-search-input {
+            width: 100%;
+            padding: 12px 20px 12px 42px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 30px;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            transition: all var(--transition-speed);
+        }
+
+        .admin-search-input:focus {
+            border-color: var(--neon-cyan);
+            box-shadow: var(--glow-cyan);
+            background: rgba(20, 18, 14, 0.9);
+        }
+
+        .admin-search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .action-pill-btn {
+            padding: 10px 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .action-pill-btn.danger {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #ef4444;
+        }
+
+        .action-pill-btn.danger:hover {
+            background: rgba(239, 68, 68, 0.25);
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+        }
+
+        /* --- DATA TABLES --- */
+        .table-container {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius);
+            overflow-x: auto;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .admin-table th {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.02);
+            padding: 18px 24px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+        }
+
+        .admin-table td {
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .admin-table tr {
+            transition: background var(--transition-speed);
+        }
+
+        .admin-table tr:hover {
+            background: rgba(212, 175, 55, 0.03);
+        }
+
+        /* User badge badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.active {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #10b981;
+        }
+
+        .status-badge.blocked {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+            box-shadow: 0 0 8px rgba(239, 68, 68, 0.2);
+        }
+
+        .status-badge.admin {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            color: var(--neon-cyan);
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.15);
+        }
+
+        /* Block button styles */
+        .block-btn {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            font-size: 0.72rem;
+            letter-spacing: 1px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+        }
+
+        .block-btn.block {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #ef4444;
+        }
+
+        .block-btn.block:hover {
+            background: #ef4444;
+            color: #000;
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .block-btn.unblock {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #10b981;
+        }
+
+        .block-btn.unblock:hover {
+            background: #10b981;
+            color: #000;
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+            transform: translateY(-1px);
+        }
+
+        /* Purchase specification container inside ledger row */
+        .ledger-items {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .ledger-item-pill {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            width: fit-content;
+        }
+
+        /* Custom empty state style */
+        .empty-table-state {
+            text-align: center;
+            padding: 60px 40px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        
+        .empty-table-state div {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+
+        /* Scrollbar aesthetics matching system */
+        .table-container::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+        .table-container::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+        }
+        .table-container::-webkit-scrollbar-thumb {
+            background: var(--border-glass);
+            border-radius: 3px;
+        }
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: var(--neon-cyan);
+        }
+
+        /* --- MESSAGING CLIENT PORTAL --- */
+        .chat-user-pill {
+            padding: 12px 14px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-user-pill:hover {
+            background: rgba(212, 175, 55, 0.04);
+            border-color: rgba(212, 175, 55, 0.15);
+        }
+
+        .chat-user-pill.active {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 10px rgba(212,175,55,0.15);
+        }
+
+        .chat-user-name-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .chat-unread-badge {
+            background: var(--neon-cyan);
+            color: #000;
+            font-size: 0.65rem;
+            font-weight: 800;
+            font-family: 'Orbitron', sans-serif;
+            padding: 2px 8px;
+            border-radius: 10px;
+            box-shadow: var(--glow-cyan);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR injected automatically by shared.js -->
+    <nav></nav>
+
+    <div class="admin-container">
+
+        <!-- Header -->
+        <header class="admin-header">
+            <h1>COMMAND CENTER</h1>
+            <p>Grandline Security & System Analytics Console</p>
+        </header>
+
+        <!-- KPI widgets row -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">System Page Traffic</div>
+                <div class="stat-val" id="kpiVisits">0</div>
+                <div class="stat-trend up">🟢 Real-Time Tracking</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Registered Officers</div>
+                <div class="stat-val" id="kpiUsers">0</div>
+                <div class="stat-trend up">👤 Active Directory</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Secure Invoices</div>
+                <div class="stat-val" id="kpiSalesCount">0</div>
+                <div class="stat-trend up">⚡ Authenticated</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Revenues</div>
+                <div class="stat-val" id="kpiRevenues">$0.00</div>
+                <div class="stat-trend up">🪙 GLC Multiplier Enabled</div>
+            </div>
+        </div>
+
+        <!-- System Navigation Tabs -->
+        <div class="admin-tabs">
+            <button class="admin-tab-btn active" onclick="switchAdminTab('users')">👥 User Accounts</button>
+            <button class="admin-tab-btn" onclick="switchAdminTab('sales')">💰 Sales Ledger</button>
+            <button class="admin-tab-btn" onclick="switchAdminTab('visits')">📡 Traffic & Visitors</button>
+            <button class="admin-tab-btn" onclick="switchAdminTab('messages')">💬 Customer Messages</button>
+        </div>
+
+        <!-- PANEL 1: USER ACCOUNTS DIRECTORY -->
+        <div class="tab-panel active" id="panel-users">
+            <div class="controls-bar">
+                <div class="admin-search-wrapper">
+                    <span class="admin-search-icon">🔍</span>
+                    <input type="text" class="admin-search-input" id="searchUsersInput" onkeyup="filterUsers()" placeholder="Filter users by username or email...">
+                </div>
+                <button class="action-pill-btn danger" onclick="purgeBlockedList()">⚠️ Purge Blocked List</button>
+            </div>
+
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Email Address</th>
+                            <th>Registration Date</th>
+                            <th>Visits</th>
+                            <th>Wallet Coin (GLC)</th>
+                            <th>Spent Total</th>
+                            <th>Security Status</th>
+                            <th>Moderation</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- PANEL 2: SALES LEDGER -->
+        <div class="tab-panel" id="panel-sales">
+            <div class="controls-bar">
+                <div class="admin-search-wrapper">
+                    <span class="admin-search-icon">🔍</span>
+                    <input type="text" class="admin-search-input" id="searchSalesInput" onkeyup="filterSales()" placeholder="Search transactions by reference or buyer name...">
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Buyer Name</th>
+                            <th>Items Purchased</th>
+                            <th>Timestamp</th>
+                            <th>Total Purchase</th>
+                        </tr>
+                    </thead>
+                    <tbody id="salesTableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- PANEL 3: TELEMETRY / VISITORS LOG -->
+        <div class="tab-panel" id="panel-visits">
+            <div class="controls-bar">
+                <div class="admin-search-wrapper">
+                    <span class="admin-search-icon">🔍</span>
+                    <input type="text" class="admin-search-input" id="searchVisitsInput" onkeyup="filterVisits()" placeholder="Filter logs by username, page path or IP...">
+                </div>
+                <button class="action-pill-btn danger" style="opacity: 0.8;" onclick="clearVisitLogs()">💥 Clear Telemetry History</button>
+            </div>
+
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>User Context</th>
+                            <th>Holographic IP Address</th>
+                            <th>Target Page</th>
+                            <th>Access Date/Time</th>
+                            <th>Browser Profile Code</th>
+                        </tr>
+                    </thead>
+                    <tbody id="visitsTableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- PANEL 4: CUSTOMER SUPPORT MESSAGES -->
+        <div class="tab-panel" id="panel-messages">
+            <div style="display: grid; grid-template-columns: 280px 1fr; gap: 20px; height: 500px; margin-bottom: 20px;">
+                <!-- Sidebar: Conversational threads -->
+                <div class="table-container" style="padding: 16px; display: flex; flex-direction: column; gap: 10px; overflow: hidden; height: 100%;">
+                    <h4 style="font-family:'Orbitron', sans-serif; font-size:0.75rem; letter-spacing:1px; color:var(--text-secondary); margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid rgba(255,255,255,0.05); text-transform:uppercase;">Conversations</h4>
+                    <div id="adminChatUserList" style="flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
+                        <!-- Dynamic list of user threads -->
+                    </div>
+                </div>
+
+                <!-- Active Chat Portal Viewport -->
+                <div class="table-container" style="display: flex; flex-direction: column; height: 100%; justify-content: space-between; overflow: hidden; background: rgba(0, 0, 0, 0.2); padding: 0;">
+                    <!-- Active chat user status headers -->
+                    <div style="background: rgba(255, 255, 255, 0.02); border-bottom: 1px solid rgba(212, 175, 55, 0.15); padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-shrink:0;">
+                        <div style="font-family:'Orbitron', sans-serif; font-size:0.8rem; font-weight:700; color:var(--neon-cyan);" id="activeChatUserName">SELECT A CONVERSATION</div>
+                        <div style="font-size:0.72rem; color:var(--text-muted);" id="activeChatUserStatus">No Dialogue Link</div>
+                    </div>
+
+                    <!-- Conversation bubble viewer -->
+                    <div style="flex-grow: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px;" id="adminChatViewport">
+                        <div class="chat-empty-state" style="margin: auto; text-align: center; color: var(--text-muted);">
+                            <div style="font-size: 2.5rem; margin-bottom: 10px;">💬</div>
+                            <p style="font-family:'Orbitron'; font-size:0.75rem; font-weight:600;">TRANSMITTER STANDBY</p>
+                            <p style="font-size:0.7rem; max-width: 250px; margin: 4px auto 0 auto;">Select an active user session from the sidebar to establish a secure holographic link.</p>
+                        </div>
+                    </div>
+
+                    <!-- Chat Message Input Drawer -->
+                    <div style="border-top:1px solid rgba(255,255,255,0.05); padding: 12px 16px; background: rgba(0, 0, 0, 0.4); display: flex; gap: 10px; align-items: center; flex-shrink:0;">
+                        <input type="text" class="chat-text-input" id="adminMessageInput" onkeydown="handleAdminKeyPress(event)" placeholder="Type responsive transmission..." style="border-radius: 6px; padding: 10px 14px; font-size:0.85rem;" disabled>
+                        <button class="chat-send-btn" id="adminSendBtn" onclick="sendAdminReply()" style="border-radius: 6px; padding: 10px 18px; font-size:0.8rem;" disabled>🚀 SEND</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SCRIPT FOR SYSTEM ADMINISTRATION OPERATIONS -->
+    <script>
+        // Tab switching controller
+        function switchAdminTab(tabName) {
+            const panels = document.querySelectorAll('.tab-panel');
+            const buttons = document.querySelectorAll('.admin-tab-btn');
+            
+            panels.forEach(p => p.classList.remove('active'));
+            buttons.forEach(b => b.classList.remove('active'));
+
+            document.getElementById(`panel-${tabName}`).classList.add('active');
+            
+            // Highlight matching button
+            event.currentTarget.classList.add('active');
+            
+            // Refresh data
+            loadDashboardData();
+        }
+
+        // Initialize dynamic and fallback simulation data on startup to ensure a premium visual demonstration
+        function checkAndSeedSimulationData() {
+            const users = JSON.parse(localStorage.getItem("gl_users") || "{}");
+            const visits = JSON.parse(localStorage.getItem("gl_visits") || "[]");
+            const purchases = JSON.parse(localStorage.getItem("gl_purchases") || "[]");
+
+            // Seed some dummy users for premium visual display if none are present
+            if (Object.keys(users).length <= 1) { // Only m_x2b2 exists
+                users["cloud_strife"] = {
+                    password: "pass",
+                    email: "cloud@soldier.shinra",
+                    joined: "2026-05-20",
+                    visits: 34,
+                    lastActive: new Date(Date.now() - 3600000).toLocaleString(),
+                    totalSpent: 124.00,
+                    blocked: false
+                };
+                users["luffy_gear5"] = {
+                    password: "pass",
+                    email: "luffy@pirates.grandline",
+                    joined: "2026-05-22",
+                    visits: 128,
+                    lastActive: new Date().toLocaleString(),
+                    totalSpent: 396.00,
+                    blocked: false
+                };
+                users["tifa_lockhart"] = {
+                    password: "pass",
+                    email: "tifa@seventhheaven.org",
+                    joined: "2026-05-23",
+                    visits: 15,
+                    lastActive: new Date(Date.now() - 7200000).toLocaleString(),
+                    totalSpent: 0.00,
+                    blocked: false
+                };
+                localStorage.setItem("gl_users", JSON.stringify(users));
+            }
+
+            // Seed simulated purchase ledger if empty
+            if (purchases.length === 0) {
+                const samplePurchases = [
+                    {
+                        id: "GL-883719",
+                        username: "luffy_gear5",
+                        items: [
+                            { name: "DRAGON BALL: Sparking! ZERO", price: "$64" },
+                            { name: "ONE PIECE: PIRATE WARRIORS 4", price: "$26" }
+                        ],
+                        total: 90.00,
+                        timestamp: new Date(Date.now() - 15000000).toLocaleString()
+                    },
+                    {
+                        id: "GL-245108",
+                        username: "cloud_strife",
+                        items: [
+                            { name: "Black Myth: Wukong", price: "$60" },
+                            { name: "DEATH STRANDING 2: ON THE BEACH", price: "$70" }
+                        ],
+                        total: 130.00,
+                        timestamp: new Date(Date.now() - 86400000).toLocaleString()
+                    },
+                    {
+                        id: "GL-491102",
+                        username: "luffy_gear5",
+                        items: [
+                            { name: "FC26", price: "$40" },
+                            { name: "Call of Duty", price: "$60" },
+                            { name: "Resident Evil Requiem", price: "$52" }
+                        ],
+                        total: 152.00,
+                        timestamp: new Date(Date.now() - 40000000).toLocaleString()
+                    }
+                ];
+                localStorage.setItem("gl_purchases", JSON.stringify(samplePurchases));
+                
+                // Recalculate user spend sums
+                const updatedUsers = JSON.parse(localStorage.getItem("gl_users") || "{}");
+                if (updatedUsers["luffy_gear5"]) updatedUsers["luffy_gear5"].totalSpent = 242.00;
+                if (updatedUsers["cloud_strife"]) updatedUsers["cloud_strife"].totalSpent = 130.00;
+                localStorage.setItem("gl_users", JSON.stringify(updatedUsers));
+            }
+
+            // Seed telemetry visits log if empty
+            if (visits.length <= 1) {
+                const mockVisits = [
+                    { username: "luffy_gear5", page: "arcade.html", timestamp: new Date().toLocaleString(), ip: "192.168.1.44", userAgent: navigator.userAgent.substring(0, 50) },
+                    { username: "luffy_gear5", page: "cart.html", timestamp: new Date(Date.now() - 60000).toLocaleString(), ip: "192.168.1.44", userAgent: navigator.userAgent.substring(0, 50) },
+                    { username: "cloud_strife", page: "games.html", timestamp: new Date(Date.now() - 120000).toLocaleString(), ip: "192.168.1.18", userAgent: navigator.userAgent.substring(0, 50) },
+                    { username: "Guest", page: "index.html", timestamp: new Date(Date.now() - 180000).toLocaleString(), ip: "192.168.1.201", userAgent: navigator.userAgent.substring(0, 50) },
+                    { username: "tifa_lockhart", page: "login.html", timestamp: new Date(Date.now() - 300000).toLocaleString(), ip: "192.168.1.92", userAgent: navigator.userAgent.substring(0, 50) }
+                ];
+                localStorage.setItem("gl_visits", JSON.stringify(mockVisits));
+            }
+
+            // Seed simulated dialogue chat sessions if empty
+            const messages = JSON.parse(localStorage.getItem("gl_messages") || "[]");
+            if (messages.length === 0) {
+                const sampleMessages = [
+                    {
+                        id: "MSG-1",
+                        from: "cloud_strife",
+                        to: "m_x2b2",
+                        content: "Hello support, I have a quick question. Can I play FC26 on the PC and PS5 simultaneously with a single holographic key?",
+                        timestamp: new Date(Date.now() - 3600000 * 2).toISOString(),
+                        read: true
+                    },
+                    {
+                        id: "MSG-2",
+                        from: "m_x2b2",
+                        to: "cloud_strife",
+                        content: "Greetings Soldier Cloud! Each key is linked to a single galaxy-wide platform account, so simultaneous access on both systems would require separate authorization keys.",
+                        timestamp: new Date(Date.now() - 3600000 * 1.9).toISOString(),
+                        read: true
+                    },
+                    {
+                        id: "MSG-3",
+                        from: "cloud_strife",
+                        to: "m_x2b2",
+                        content: "Understood. I will proceed with the checkout for separate PC and PS5 copies. Thanks for the swift support!",
+                        timestamp: new Date(Date.now() - 3600000 * 1.8).toISOString(),
+                        read: false
+                    },
+                    {
+                        id: "MSG-4",
+                        from: "luffy_gear5",
+                        to: "m_x2b2",
+                        content: "Support crew! I redeemed 150 GLC coins but the discount wasn't visible in the cart? Help!",
+                        timestamp: new Date(Date.now() - 1800000).toISOString(),
+                        read: false
+                    }
+                ];
+                localStorage.setItem("gl_messages", JSON.stringify(sampleMessages));
+            }
+        }
+
+        // Master controller to load dashboard metrics and statistics
+        function loadDashboardData() {
+            // Seed first
+            checkAndSeedSimulationData();
+
+            const users = JSON.parse(localStorage.getItem("gl_users") || "{}");
+            const visits = JSON.parse(localStorage.getItem("gl_visits") || "[]");
+            const purchases = JSON.parse(localStorage.getItem("gl_purchases") || "[]");
+            const blockedList = JSON.parse(localStorage.getItem("gl_blocked_users") || "[]");
+
+            // Calculate metrics totals
+            const totalVisits = visits.length;
+            const totalUsers = Object.keys(users).length;
+            const salesCount = purchases.length;
+            
+            let grossSales = 0;
+            purchases.forEach(p => {
+                grossSales += Number(p.total) || 0;
+            });
+
+            // Bind metrics display
+            document.getElementById("kpiVisits").innerText = totalVisits;
+            document.getElementById("kpiUsers").innerText = totalUsers;
+            document.getElementById("kpiSalesCount").innerText = salesCount;
+            document.getElementById("kpiRevenues").innerText = "$" + grossSales.toFixed(2);
+
+            // Populate current views
+            renderUsersTable(users, blockedList);
+            renderSalesTable(purchases);
+            renderVisitsTable(visits);
+            renderChatWorkspace();
+        }
+
+        // Render Panel 1: Users Directory
+        function renderUsersTable(users, blockedList) {
+            const tbody = document.getElementById("usersTableBody");
+            tbody.innerHTML = "";
+
+            if (Object.keys(users).length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="empty-table-state"><div>👤</div>No registered officers found.</td></tr>`;
+                return;
+            }
+
+            for (const username in users) {
+                const user = users[username];
+                const email = user.email || "N/A";
+                const joined = user.joined || "N/A";
+                const visits = user.visits || 0;
+                
+                // Retrieve coins (we default to 150 for logged-in or store custom balance)
+                const coinBalance = (username === getCurrentUser()) ? getGLC() : 150;
+                
+                const totalSpent = Number(user.totalSpent || 0).toFixed(2);
+                
+                // Status badge logic
+                let statusBadge = `<span class="status-badge active">🟢 Active</span>`;
+                let blockBtnClass = "block";
+                let blockBtnText = "🛡️ Block";
+
+                if (username === "m_x2b2") {
+                    statusBadge = `<span class="status-badge admin">👑 Admin</span>`;
+                } else if (blockedList.includes(username) || user.blocked === true) {
+                    statusBadge = `<span class="status-badge blocked">🔴 Suspended</span>`;
+                    blockBtnClass = "unblock";
+                    blockBtnText = "🔑 Unblock";
+                }
+
+                // Hide block options for self-moderation (admin can't block themselves)
+                const actionCell = (username === "m_x2b2") 
+                    ? `<span style="color:var(--text-muted); font-size:0.8rem; font-style:italic;">Protected Account</span>` 
+                    : `<button class="block-btn ${blockBtnClass}" onclick="toggleUserBlock('${username}')">${blockBtnText}</button>`;
+
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td style="font-weight: 700; color: var(--neon-cyan);">${escapeHtml(username)}</td>
+                    <td>${escapeHtml(email)}</td>
+                    <td>${joined}</td>
+                    <td>${visits}</td>
+                    <td style="color: var(--neon-orange); font-family: 'Orbitron'; font-weight:600;">🪙 ${coinBalance} GLC</td>
+                    <td style="font-weight: 600;">$${totalSpent}</td>
+                    <td>${statusBadge}</td>
+                    <td>${actionCell}</td>
+                `;
+                tbody.appendChild(tr);
+            }
+        }
+
+        // Render Panel 2: Sales Ledger
+        function renderSalesTable(purchases) {
+            const tbody = document.getElementById("salesTableBody");
+            tbody.innerHTML = "";
+
+            if (purchases.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="empty-table-state"><div>💰</div>No invoice logs recorded.</td></tr>`;
+                return;
+            }
+
+            purchases.forEach(sale => {
+                let itemsListHTML = '<div class="ledger-items">';
+                if (Array.isArray(sale.items)) {
+                    sale.items.forEach(it => {
+                        itemsListHTML += `<span class="ledger-item-pill">${escapeHtml(it.name)} (${escapeHtml(it.price)})</span>`;
+                    });
+                } else {
+                    itemsListHTML += `<span class="ledger-item-pill">Digital Game Code</span>`;
+                }
+                itemsListHTML += '</div>';
+
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td style="font-family:'Orbitron'; font-weight:600; color:var(--text-secondary);">${sale.id}</td>
+                    <td style="font-weight: 600;">${escapeHtml(sale.username)}</td>
+                    <td>${itemsListHTML}</td>
+                    <td>${sale.timestamp}</td>
+                    <td style="font-weight:800; font-family:'Orbitron'; font-size:1rem; color:var(--neon-cyan);">$${Number(sale.total).toFixed(2)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Render Panel 3: Visitor logs
+        function renderVisitsTable(visits) {
+            const tbody = document.getElementById("visitsTableBody");
+            tbody.innerHTML = "";
+
+            if (visits.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="empty-table-state"><div>📡</div>No visitor logs recorded.</td></tr>`;
+                return;
+            }
+
+            visits.forEach(log => {
+                const nameStyle = (log.username === "Guest") ? 'color:var(--text-muted); font-style:italic;' : 'font-weight:700; color:var(--neon-cyan);';
+                
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td><span style="${nameStyle}">${escapeHtml(log.username)}</span></td>
+                    <td style="font-family:'Orbitron'; font-size:0.85rem; color:var(--text-secondary);">${log.ip}</td>
+                    <td><span class="ledger-item-pill" style="background:rgba(212,175,55,0.06); border-color:var(--border-glass); font-weight:600;">${escapeHtml(log.page)}</span></td>
+                    <td>${log.timestamp}</td>
+                    <td style="font-size:0.75rem; color:var(--text-muted); max-width:250px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHtml(log.userAgent)}">${escapeHtml(log.userAgent)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Moderation: Toggle user block status
+        function toggleUserBlock(username) {
+            if (username === "m_x2b2") return; // Self protect
+
+            let blockedList = JSON.parse(localStorage.getItem("gl_blocked_users") || "[]");
+            let users = JSON.parse(localStorage.getItem("gl_users") || "{}");
+            
+            const index = blockedList.indexOf(username);
+            
+            if (index > -1) {
+                // Unblock user
+                blockedList.splice(index, 1);
+                if (users[username]) {
+                    users[username].blocked = false;
+                }
+                showToast(`Success! User [${username}] has been fully unblocked.`, "success");
+            } else {
+                // Block user
+                blockedList.push(username);
+                if (users[username]) {
+                    users[username].blocked = true;
+                }
+                showToast(`Security Alert! User [${username}] has been suspended.`, "error");
+            }
+
+            localStorage.setItem("gl_blocked_users", JSON.stringify(blockedList));
+            localStorage.setItem("gl_users", JSON.stringify(users));
+
+            // Force refresh UI data
+            loadDashboardData();
+        }
+
+        // Moderation action: Purge block lists
+        function purgeBlockedList() {
+            if (confirm("🚨 WARNING: Are you sure you want to restore access and unblock ALL users?")) {
+                localStorage.setItem("gl_blocked_users", "[]");
+                
+                let users = JSON.parse(localStorage.getItem("gl_users") || "{}");
+                for (const u in users) {
+                    users[u].blocked = false;
+                }
+                localStorage.setItem("gl_users", JSON.stringify(users));
+
+                showToast("System Purge Completed! All officers have been restored.", "success");
+                loadDashboardData();
+            }
+        }
+
+        // Moderation action: Clear visit logs
+        function clearVisitLogs() {
+            if (confirm("🚨 Are you sure you want to wipe telemetry visitation records?")) {
+                localStorage.setItem("gl_visits", "[]");
+                showToast("System Logs Cleaned Successfully.", "success");
+                loadDashboardData();
+            }
+        }
+
+        // Interactive filtering engines
+        function filterUsers() {
+            const query = document.getElementById("searchUsersInput").value.toLowerCase();
+            const rows = document.querySelectorAll("#usersTableBody tr");
+            
+            rows.forEach(row => {
+                const usernameCell = row.cells[0]?.innerText.toLowerCase() || "";
+                const emailCell = row.cells[1]?.innerText.toLowerCase() || "";
+                if (usernameCell.includes(query) || emailCell.includes(query)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+
+        function filterSales() {
+            const query = document.getElementById("searchSalesInput").value.toLowerCase();
+            const rows = document.querySelectorAll("#salesTableBody tr");
+            
+            rows.forEach(row => {
+                const orderCell = row.cells[0]?.innerText.toLowerCase() || "";
+                const buyerCell = row.cells[1]?.innerText.toLowerCase() || "";
+                const itemsCell = row.cells[2]?.innerText.toLowerCase() || "";
+                if (orderCell.includes(query) || buyerCell.includes(query) || itemsCell.includes(query)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+
+        function filterVisits() {
+            const query = document.getElementById("searchVisitsInput").value.toLowerCase();
+            const rows = document.querySelectorAll("#visitsTableBody tr");
+            
+            rows.forEach(row => {
+                const userCell = row.cells[0]?.innerText.toLowerCase() || "";
+                const ipCell = row.cells[1]?.innerText.toLowerCase() || "";
+                const pageCell = row.cells[2]?.innerText.toLowerCase() || "";
+                if (userCell.includes(query) || ipCell.includes(query) || pageCell.includes(query)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+
+        // -------------------------------------------------------------
+        // CUSTOMER MESSAGES WORKSPACE LOGIC
+        // -------------------------------------------------------------
+        let activeSelectedUser = null;
+
+        function renderChatWorkspace() {
+            const allMessages = JSON.parse(localStorage.getItem("gl_messages") || "[]");
+            const users = JSON.parse(localStorage.getItem("gl_users") || "{}");
+            const sidebar = document.getElementById("adminChatUserList");
+
+            if (!sidebar) return;
+
+            // Filter out distinct usernames who sent/received messages to/from admin (excluding m_x2b2 itself)
+            let talkersSet = new Set();
+            allMessages.forEach(msg => {
+                if (msg.from !== "m_x2b2") talkersSet.add(msg.from);
+                if (msg.to !== "m_x2b2") talkersSet.add(msg.to);
+            });
+            talkersSet.delete("m_x2b2");
+
+            const talkers = Array.from(talkersSet);
+
+            if (talkers.length === 0) {
+                sidebar.innerHTML = `<span style="font-size:0.75rem; color:var(--text-muted); font-style:italic; padding: 10px;">No dialogue threads initiated.</span>`;
+                return;
+            }
+
+            sidebar.innerHTML = "";
+
+            talkers.forEach(username => {
+                // Calculate unread count (messages sent by this user to admin where read is false)
+                const unreadCount = allMessages.filter(msg => msg.from === username && msg.to === "m_x2b2" && !msg.read).length;
+                
+                const pill = document.createElement("div");
+                pill.className = `chat-user-pill ${activeSelectedUser === username ? 'active' : ''}`;
+                pill.onclick = () => selectAdminChatUser(username);
+
+                const unreadBadge = unreadCount > 0 
+                    ? `<span class="chat-unread-badge">${unreadCount} NEW</span>` 
+                    : "";
+
+                pill.innerHTML = `
+                    <div style="display:flex; flex-direction:column; gap:2px; text-align:left;">
+                        <span class="chat-user-name-label">${escapeHtml(username)}</span>
+                        <span style="font-size:0.65rem; color:var(--text-muted);">${users[username]?.email || "Customer"}</span>
+                    </div>
+                    ${unreadBadge}
+                `;
+                sidebar.appendChild(pill);
+            });
+
+            // If we have an active user selected, re-render the viewport chat bubbles
+            if (activeSelectedUser) {
+                renderAdminChatViewport(activeSelectedUser);
+            }
+        }
+
+        function selectAdminChatUser(username) {
+            activeSelectedUser = username;
+
+            // Mark all messages from this user to admin as read
+            let allMessages = JSON.parse(localStorage.getItem("gl_messages") || "[]");
+            allMessages.forEach(msg => {
+                if (msg.from === username && msg.to === "m_x2b2") {
+                    msg.read = true;
+                }
+            });
+            localStorage.setItem("gl_messages", JSON.stringify(allMessages));
+
+            // Enable text inputs
+            document.getElementById("adminMessageInput").disabled = false;
+            document.getElementById("adminSendBtn").disabled = false;
+
+            // Redraw sidebar and viewport bubbles
+            renderChatWorkspace();
+        }
+
+        function renderAdminChatViewport(username) {
+            const allMessages = JSON.parse(localStorage.getItem("gl_messages") || "[]");
+            const viewport = document.getElementById("adminChatViewport");
+            
+            if (!viewport) return;
+
+            // Render active header context
+            document.getElementById("activeChatUserName").innerText = `SECURE LINK: ${username.toUpperCase()}`;
+            document.getElementById("activeChatUserStatus").innerHTML = `🟢 LINK ESTABLISHED`;
+
+            // Filter dialogue between user and admin
+            const dialogue = allMessages.filter(msg => 
+                (msg.from === username && msg.to === "m_x2b2") || 
+                (msg.from === "m_x2b2" && msg.to === username)
+            );
+
+            // Sort chronological
+            dialogue.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+            viewport.innerHTML = "";
+
+            dialogue.forEach(msg => {
+                const isAdminOutgoing = (msg.from === "m_x2b2");
+                const bubbleWrapper = document.createElement("div");
+                bubbleWrapper.className = `msg-bubble-wrapper ${isAdminOutgoing ? 'outgoing' : 'incoming'}`;
+                bubbleWrapper.style.maxWidth = "75%";
+                bubbleWrapper.style.width = "fit-content";
+                bubbleWrapper.style.display = "flex";
+                bubbleWrapper.style.flexDirection = "column";
+                bubbleWrapper.style.margin = "4px 0";
+
+                if (isAdminOutgoing) {
+                    bubbleWrapper.style.alignSelf = "flex-end";
+                    bubbleWrapper.style.alignItems = "flex-end";
+                } else {
+                    bubbleWrapper.style.alignSelf = "flex-start";
+                    bubbleWrapper.style.alignItems = "flex-start";
+                }
+
+                const bubble = document.createElement("div");
+                bubble.className = "msg-bubble";
+                bubble.innerText = msg.content;
+                
+                // Style bubble borders and coloring
+                if (isAdminOutgoing) {
+                    bubble.style.background = "linear-gradient(135deg, rgba(212, 175, 55, 0.12), rgba(170, 124, 17, 0.05))";
+                    bubble.style.border = "1px solid rgba(212, 175, 55, 0.35)";
+                    bubble.style.color = "var(--text-primary)";
+                    bubble.style.borderBottomRightRadius = "2px";
+                    bubble.style.padding = "10px 14px";
+                    bubble.style.borderRadius = "10px";
+                } else {
+                    bubble.style.background = "rgba(255, 255, 255, 0.03)";
+                    bubble.style.border = "1px solid rgba(255, 255, 255, 0.1)";
+                    bubble.style.color = "var(--text-primary)";
+                    bubble.style.borderBottomLeftRadius = "2px";
+                    bubble.style.padding = "10px 14px";
+                    bubble.style.borderRadius = "10px";
+                }
+
+                const meta = document.createElement("div");
+                meta.className = "msg-meta";
+                const label = isAdminOutgoing ? "CREW RESPONSE" : username.toUpperCase();
+                meta.innerText = `${label} • ${new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
+
+                bubbleWrapper.appendChild(bubble);
+                bubbleWrapper.appendChild(meta);
+                viewport.appendChild(bubbleWrapper);
+            });
+
+            // Scroll down
+            viewport.scrollTop = viewport.scrollHeight;
+        }
+
+        function sendAdminReply() {
+            const input = document.getElementById("adminMessageInput");
+            const text = input.value.trim();
+            if (!text || !activeSelectedUser) return;
+
+            let allMessages = JSON.parse(localStorage.getItem("gl_messages") || "[]");
+            allMessages.push({
+                id: "MSG-" + Date.now(),
+                from: "m_x2b2",
+                to: activeSelectedUser,
+                content: text,
+                timestamp: new Date().toISOString(),
+                read: true
+            });
+
+            localStorage.setItem("gl_messages", JSON.stringify(allMessages));
+            input.value = "";
+            
+            // Reload
+            renderChatWorkspace();
+        }
+
+        function handleAdminKeyPress(e) {
+            if (e.key === "Enter") {
+                sendAdminReply();
+            }
+        }
+
+        // Trigger bootstrap loads
+        document.addEventListener("DOMContentLoaded", () => {
+            loadDashboardData();
+            
+            // Periodically refresh message feeds
+            setInterval(renderChatWorkspace, 3000);
+        });
+    </script>
+
+    <!-- FOOTER -->
+    <footer>
+        © 2026 Grandline Gaming — All Rights Reserved
+    </footer>
+
+</body>
+</html>

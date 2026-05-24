@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link href="newwww.png" type="image/x-icon" rel="icon">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -10,6 +11,7 @@
     <link rel="stylesheet" href="c.css">
     <script src="shared.js"></script>
 </head>
+
 <body>
 
     <!-- NAVBAR dynamically injected by shared.js -->
@@ -27,7 +29,7 @@
 
         function renderCart() {
             let container = document.getElementById("cartContainer");
-            
+
             if (cart.length === 0) {
                 container.innerHTML = `
                     <div class="empty-cart">
@@ -42,7 +44,7 @@
 
                 cart.forEach((game, index) => {
                     total += Number(game.price.replace("$", ""));
-                    
+
                     gamesHTML += `
                         <div class="cart-card" id="cartCard-${index}">
                             <div class="game-img-container">
@@ -89,7 +91,7 @@
                                         <button class="loyalty-apply-btn" onclick="applyLoyaltyCoins(${total})">Apply</button>
                                     </div>
                                     <div style="font-size:0.75rem; color:var(--text-muted);">
-                                        Max redeemable: ${maxRedeemableCoins} GLC (-$${(maxRedeemableCoins/100).toFixed(2)})
+                                        Max redeemable: ${maxRedeemableCoins} GLC (-$${(maxRedeemableCoins / 100).toFixed(2)})
                                     </div>
                                 </div>
                             </div>
@@ -115,10 +117,10 @@
                         </div>
                     </div>
                 `;
-                
+
                 // Run image fallback triggers in case new elements rendered in DOM
                 setupImageFallbacks();
-                
+
                 // Keep values if they had already applied coins previously in this session
                 let prevCoins = sessionStorage.getItem("coinsApplied");
                 if (prevCoins) {
@@ -141,23 +143,23 @@
         function applyLoyaltyCoins(total) {
             let input = document.getElementById("coinRedeemInput");
             if (!input) return;
-            
+
             let val = parseInt(input.value) || 0;
             let userCoins = getGLC();
             let maxRedeem = Math.min(userCoins, Math.floor(total * 100));
-            
+
             if (val > maxRedeem) val = maxRedeem;
-            
+
             coinsApplied = val;
             discountApplied = coinsApplied / 100;
-            
+
             // Store applied values inside SessionStorage so checkout can inherit them
             sessionStorage.setItem("coinsApplied", coinsApplied.toString());
             sessionStorage.setItem("discountApplied", discountApplied.toString());
 
             // Re-render UI calculation values
             let finalPrice = total - discountApplied;
-            
+
             let discountLine = document.getElementById("discountSummaryLine");
             let discountValSpan = document.getElementById("discountValueSummary");
             let cartTotalSpan = document.getElementById("cartTotalSummary");
@@ -169,7 +171,7 @@
             } else {
                 discountLine.style.display = "none";
             }
-            
+
             cartTotalSpan.innerText = `$${finalPrice.toFixed(2)}`;
         }
 
@@ -189,7 +191,7 @@
             let card = document.getElementById(`cartCard-${index}`);
             if (card) {
                 card.classList.add("removing");
-                
+
                 // Wait for the slide-out animation to complete (500ms) before splicing state
                 setTimeout(() => {
                     removeGame(index);
@@ -200,13 +202,13 @@
         function removeGame(index) {
             cart.splice(index, 1);
             localStorage.setItem("cart", JSON.stringify(cart));
-            
+
             // If cart becomes empty, clean up session loyalty discounts
             if (cart.length === 0) {
                 sessionStorage.removeItem("coinsApplied");
                 sessionStorage.removeItem("discountApplied");
             }
-            
+
             showToast("Item deleted from cart.");
             renderCart();
         }
@@ -220,4 +222,5 @@
     </footer>
 
 </body>
+
 </html>
